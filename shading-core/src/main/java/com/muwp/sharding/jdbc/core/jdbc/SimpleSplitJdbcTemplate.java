@@ -1,6 +1,9 @@
-package com.muwp.sharding.jdbc.core;
+package com.muwp.sharding.jdbc.core.jdbc;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
+import com.muwp.sharding.jdbc.core.manager.SplitTablesManager;
+import com.muwp.sharding.jdbc.core.manager.SplitJdbcTemplateManager;
+import com.muwp.sharding.jdbc.core.manager.SplitTableManager;
 import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
 import com.muwp.sharding.jdbc.enums.SearchOperationType;
 import com.muwp.sharding.jdbc.enums.UpdateOperationType;
@@ -18,7 +21,7 @@ import java.util.List;
  **/
 public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements SimpleSplitJdbcOperations {
 
-    protected SplitTablesHolder splitTablesHolder;
+    protected SplitTablesManager splitTablesManager;
 
     public SimpleSplitJdbcTemplate() {
     }
@@ -70,10 +73,10 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
     protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType searchOper) {
         log.debug("SimpleSplitJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
 
-        final SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
+        final SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
 
         final SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitNode> splitNdoes = splitTable.getSplitNodes();
+        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
 
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
@@ -84,7 +87,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
         log.info("SimpleSplitJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitNode sn = splitNdoes.get(nodeNo);
+        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = null;
@@ -111,10 +114,10 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
     protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
         log.debug("SimpleSplitJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
 
-        SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
         SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitNode> splitNdoes = splitTable.getSplitNodes();
+        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
 
         String tablePrefix = splitTable.getTableName();
         String dbPrefix = splitTable.getDbNam();
@@ -125,7 +128,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
         log.info("SimpleSplitJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitNode sn = splitNdoes.get(nodeNo);
+        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
@@ -140,10 +143,10 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
     protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType updateOper, T bean, long id) {
         log.debug("SimpleSplitJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, updateOper, bean, id);
 
-        SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
         SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitNode> splitNdoes = splitTable.getSplitNodes();
+        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
 
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
@@ -154,7 +157,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
         log.info("SimpleSplitJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitNode sn = splitNdoes.get(nodeNo);
+        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getWriteJdbcTemplate(sn);
 
         SqlBean srb = null;
@@ -175,7 +178,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         log.info("SimpleSplitJdbcTemplate.doUpdate, update record num: {}.", updateCount);
     }
 
-    public void setSplitTablesHolder(SplitTablesHolder splitTablesHolder) {
-        this.splitTablesHolder = splitTablesHolder;
+    public void setSplitTablesManager(SplitTablesManager splitTablesManager) {
+        this.splitTablesManager = splitTablesManager;
     }
 }

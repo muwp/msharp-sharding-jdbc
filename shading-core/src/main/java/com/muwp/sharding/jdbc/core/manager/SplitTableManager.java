@@ -1,21 +1,20 @@
-package com.muwp.sharding.jdbc.core;
+package com.muwp.sharding.jdbc.core.manager;
 
 import com.muwp.sharding.jdbc.core.strategy.HorizontalHashSplitStrategy;
 import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
 import com.muwp.sharding.jdbc.core.strategy.VerticalHashSplitStrategy;
 import com.muwp.sharding.jdbc.enums.SplitStrategyType;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * SplitTable
+ * SplitTableManager
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SplitTable implements Serializable {
+public class SplitTableManager {
 
     private String dbNam;
 
@@ -29,15 +28,15 @@ public class SplitTable implements Serializable {
 
     private SplitStrategy splitStrategy;
 
-    private List<SplitNode> splitNodes;
+    private List<SplitJdbcTemplateManager> splitTemplateManagers;
 
     private boolean readWriteSeparate = true;
 
     public void init() {
         if (splitStrategyType == SplitStrategyType.VERTICAL) {
-            this.splitStrategy = new VerticalHashSplitStrategy(splitNodes.size(), dbNum, tableNum);
+            this.splitStrategy = new VerticalHashSplitStrategy(splitTemplateManagers.size(), dbNum, tableNum);
         } else if (splitStrategyType == SplitStrategyType.HORIZONTAL) {
-            this.splitStrategy = new HorizontalHashSplitStrategy(splitNodes.size(), dbNum, tableNum);
+            this.splitStrategy = new HorizontalHashSplitStrategy(splitTemplateManagers.size(), dbNum, tableNum);
         }
     }
 
@@ -77,12 +76,12 @@ public class SplitTable implements Serializable {
         this.tableNum = tableNum;
     }
 
-    public List<SplitNode> getSplitNodes() {
-        return splitNodes;
+    public List<SplitJdbcTemplateManager> getSplitTemplateManagers() {
+        return splitTemplateManagers;
     }
 
-    public void setSplitNodes(List<SplitNode> splitNodes) {
-        this.splitNodes = splitNodes;
+    public void setSplitTemplateManagers(List<SplitJdbcTemplateManager> splitNodes) {
+        this.splitTemplateManagers = splitNodes;
     }
 
     public SplitStrategy getSplitStrategy() {

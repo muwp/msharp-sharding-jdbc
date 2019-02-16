@@ -1,6 +1,6 @@
 package com.muwp.sharding.jdbc;
 
-import com.muwp.sharding.jdbc.core.SimpleSplitJdbcTemplate;
+import com.muwp.sharding.jdbc.core.jdbc.SimpleSplitJdbcTemplate;
 import com.muwp.sharding.jdbc.model.TestModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;

@@ -8,52 +8,50 @@
         <property name="locations" value="classpath:spring/jdbc-test.properties"/>
     </bean>
 
-    <bean id="actionHandler" class="com.muwp.sharding.jdbc.core.handler.SplitActionHandler">
+    <bean id="executor" class="com.muwp.sharding.jdbc.core.handler.SplitExecutor">
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
-        <property name="splitTablesHolder" ref="splitTablesHolder"/>
+        <property name="splitTablesManager" ref="splitTablesManager"/>
     </bean>
 
-    <!-- SplitBizTemplate Entry -->
-    <bean name="simpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.SimpleSplitJdbcTemplate">
-        <property name="actionHandler" ref="actionHandler"/>
-        <property name="splitTablesHolder" ref="splitTablesHolder"/>
-
+    <!-- simpleSplitJdbcTemplate -->
+    <bean name="simpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.jdbc.SimpleSplitJdbcTemplate">
+        <property name="executor" ref="executor"/>
+        <property name="splitTablesManager" ref="splitTablesManager"/>
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
     </bean>
 
-    <!-- SplitTablesHolder -->
-    <bean name="splitTablesHolder" class="com.muwp.sharding.jdbc.core.SplitTablesHolder" init-method="init">
-        <property name="splitTables">
+    <!-- splitTablesManager -->
+    <bean name="splitTablesManager" class="com.muwp.sharding.jdbc.core.manager.SplitTablesManager" init-method="init">
+        <property name="splitTableManagers">
             <list>
-                <ref bean="splitTable"/>
+                <ref bean="splitTableManager"/>
             </list>
         </property>
     </bean>
 
-    <!-- SplitTables -->
-    <bean name="splitTable" class="com.muwp.sharding.jdbc.core.SplitTable" init-method="init">
+    <!-- splitTableManager -->
+    <bean name="splitTableManager" class="com.muwp.sharding.jdbc.core.manager.SplitTableManager" init-method="init">
         <property name="dbNam" value="sharding_jdbc"/>
         <property name="tableName" value="test"/>
         <property name="dbNum" value="1"/>
         <property name="tableNum" value="4"/>
         <property name="splitStrategyType" value="HORIZONTAL"/>
-        <property name="splitNodes">
+        <property name="splitTemplateManagers">
             <list>
-                <ref bean="node_0"/>
-                <ref bean="node_1"/>
+                <ref bean="templateManager_0"/>
+                <ref bean="templateManager_1"/>
             </list>
         </property>
-
         <property name="readWriteSeparate" value="false"/>
     </bean>
 
     <!-- SplitNodes -->
-    <bean name="node_0" class="com.muwp.sharding.jdbc.core.SplitNode">
-        <property name="masterTemplate" ref="jdbcTemplate_0"/>
+    <bean name="templateManager_0" class="com.muwp.sharding.jdbc.core.manager.SplitJdbcTemplateManager">
+        <property name="master" ref="jdbcTemplate_0"/>
     </bean>
 
-    <bean name="node_1" class="com.muwp.sharding.jdbc.core.SplitNode">
-        <property name="masterTemplate" ref="jdbcTemplate_1"/>
+    <bean name="templateManager_1" class="com.muwp.sharding.jdbc.core.manager.SplitJdbcTemplateManager">
+        <property name="master" ref="jdbcTemplate_1"/>
     </bean>
 
     <!-- Spring JdbcTemplates -->

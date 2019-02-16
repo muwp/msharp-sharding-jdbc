@@ -1,4 +1,4 @@
-package com.muwp.sharding.jdbc.core;
+package com.muwp.sharding.jdbc.core.jdbc;
 
 import java.util.List;
 
