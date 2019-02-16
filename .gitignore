@@ -4,4 +4,6 @@
 /.classpath
 /.project
 *.iml
+.gitignore
+.idea
 */.DS_Store
