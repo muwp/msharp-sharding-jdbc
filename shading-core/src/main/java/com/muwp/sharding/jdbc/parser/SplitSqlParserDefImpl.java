@@ -81,19 +81,21 @@ public class SplitSqlParserDefImpl implements SplitSqlParser {
                         break;
 
                     case "INTO":
-                        if (SqlType.INSERT.equals(splitSqlStructure.getSqlType()))
+                        if (SqlType.INSERT.equals(splitSqlStructure.getSqlType())) {
                             inProcess = true;
+                        }
                         break;
 
                     case "FROM":
-                        if (SqlType.SELECT.equals(splitSqlStructure.getSqlType()) || SqlType.DELETE.equals(splitSqlStructure
-                                .getSqlType()))
+                        if (SqlType.SELECT.equals(splitSqlStructure.getSqlType()) || SqlType.DELETE.equals(splitSqlStructure.getSqlType())) {
                             inProcess = true;
+                        }
                         break;
                 }
 
-            if (sebsequent)
+            if (sebsequent) {
                 sbSebsequentPart.append(tok == Token.IDENTIFIER ? lexer.stringVal() : tok.name).append(" ");
+            }
 
             if (inProcess) {
                 if (dbName == null && tok == Token.IDENTIFIER) {

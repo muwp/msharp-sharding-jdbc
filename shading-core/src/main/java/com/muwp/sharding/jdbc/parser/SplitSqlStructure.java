@@ -1,7 +1,7 @@
 package com.muwp.sharding.jdbc.parser;
 
 import com.muwp.sharding.jdbc.enums.SqlType;
-import org.springframework.util.StringUtils;
+import com.mysql.jdbc.StringUtils;
 
 /**
  * SplitSqlStructure
@@ -12,71 +12,70 @@ import org.springframework.util.StringUtils;
  **/
 public class SplitSqlStructure {
 
-	private SqlType sqlType;
+    private SqlType sqlType;
 
-	private String dbName;
+    private String dbName;
 
-	private String tableName;
+    private String tableName;
 
-	private String previousPart;
+    private String previousPart;
 
-	private String sebsequentPart;
+    private String sebsequentPart;
 
-	public SqlType getSqlType() {
-		return sqlType;
-	}
+    public SqlType getSqlType() {
+        return sqlType;
+    }
 
-	public void setSqlType(SqlType sqlType) {
-		this.sqlType = sqlType;
-	}
+    public void setSqlType(SqlType sqlType) {
+        this.sqlType = sqlType;
+    }
 
-	public String getDbName() {
-		return dbName;
-	}
+    public String getDbName() {
+        return dbName;
+    }
 
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
+    public String getTableName() {
+        return tableName;
+    }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
-	public String getPreviousPart() {
-		return previousPart;
-	}
+    public String getPreviousPart() {
+        return previousPart;
+    }
 
-	public void setPreviousPart(String previousPart) {
-		this.previousPart = previousPart;
-	}
+    public void setPreviousPart(String previousPart) {
+        this.previousPart = previousPart;
+    }
 
-	public String getSebsequentPart() {
-		return sebsequentPart;
-	}
+    public String getSebsequentPart() {
+        return sebsequentPart;
+    }
 
-	public void setSebsequentPart(String sebsequentPart) {
-		this.sebsequentPart = sebsequentPart;
-	}
+    public void setSebsequentPart(String sebsequentPart) {
+        this.sebsequentPart = sebsequentPart;
+    }
 
-	public String getSplitSql(int dbNo, int tableNo) {
-		if (sqlType == null || StringUtils.isEmpty(dbName)
-				|| StringUtils.isEmpty(tableName)
-				|| StringUtils.isEmpty(previousPart)
-				|| StringUtils.isEmpty(sebsequentPart))
-			throw new IllegalStateException(
-					"The split SQL should be constructed after the SQL is parsed completely.");
+    public String getSplitSql(int dbNo, int tableNo) {
+        if (sqlType == null || StringUtils.isEmptyOrWhitespaceOnly(dbName) || StringUtils.isEmptyOrWhitespaceOnly(tableName) || StringUtils.isEmptyOrWhitespaceOnly(previousPart)) {
+            throw new IllegalStateException("The split SQL should be constructed after the SQL is parsed completely.");
+        }
 
-		StringBuffer sb = new StringBuffer();
-		sb.append(previousPart).append(" ");
-		sb.append(dbName).append("_").append(dbNo);
-		sb.append(".");
-		sb.append(tableName).append("_").append(tableNo).append(" ");
-		sb.append(sebsequentPart);
+        StringBuffer sb = new StringBuffer();
+        sb.append(previousPart).append(" ");
+        sb.append(dbName).append("_").append(dbNo);
+        sb.append(".");
+        sb.append(tableName).append("_").append(tableNo).append(" ");
+        if (!StringUtils.isEmptyOrWhitespaceOnly(sebsequentPart)) {
+            sb.append(sebsequentPart);
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }

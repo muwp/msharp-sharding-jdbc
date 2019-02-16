@@ -1,6 +1,5 @@
 package com.muwp.sharding.jdbc.core;
 
-import com.muwp.sharding.jdbc.core.action.SplitAction;
 import com.muwp.sharding.jdbc.core.handler.ActionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     protected static final Logger log = LoggerFactory.getLogger(SplitJdbcTemplate.class);
 
-
     protected ActionHandler actionHandler;
 
     protected boolean readWriteSeparate = false;
@@ -47,8 +45,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     }
 
     @Override
-    public <T, K> T execute(K splitKey, StatementCallback<T> action)
-            throws DataAccessException {
+    public <T, K> T execute(K splitKey, StatementCallback<T> action) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
@@ -58,128 +55,56 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse)
-            throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
-            @Override
-            public T doSplitAction(JdbcTemplate jt, String sql) {
-                T result = jt.query(sql, rse);
-
-                return result;
-            }
-        });
+    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rse));
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, RowCallbackHandler rch)
-            throws DataAccessException {
-        actionHandler.execute(splitKey, sql, new SplitAction<Object>() {
-            @Override
-            public Object doSplitAction(JdbcTemplate jt, String sql) {
-                jt.query(sql, rch);
-
-                return null;
-            }
+    public <K> void query(K splitKey, String sql, RowCallbackHandler rch) throws DataAccessException {
+        actionHandler.execute(splitKey, sql, (jt, SQL) -> {
+            jt.query(SQL, rch);
+            return null;
         });
     }
 
     @Override
     public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> result = jt.query(sql, rowMapper);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper));
     }
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T result = jt.queryForObject(sql, rowMapper);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType)
-            throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
-            @Override
-            public T doSplitAction(JdbcTemplate jt, String sql) {
-                T result = jt.queryForObject(sql, requiredType);
-                return result;
-            }
-        });
+    public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType));
     }
 
     @Override
     public <K> Map<String, Object> queryForMap(K splitKey, String sql) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Map<String, Object>>() {
-                    @Override
-                    public Map<String, Object> doSplitAction(JdbcTemplate jt, String sql) {
-                        Map<String, Object> result = jt.queryForMap(sql);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL));
     }
 
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql, Class<T> elementType) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> result = jt.queryForList(sql, elementType);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType));
     }
 
     @Override
     public <K> List<Map<String, Object>> queryForList(K splitKey, String sql) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<Map<String, Object>>>() {
-                    @Override
-                    public List<Map<String, Object>> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<Map<String, Object>> result = jt.queryForList(sql);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL));
     }
 
     @Override
     public <K> SqlRowSet queryForRowSet(K splitKey, String sql) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<SqlRowSet>() {
-            @Override
-            public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
-                SqlRowSet result = jt.queryForRowSet(sql);
-
-                return result;
-            }
-        });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForRowSet(SQL));
     }
 
     @Override
     public <K> int update(K splitKey, String sql) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<Integer>() {
-                    @Override
-                    public Integer doSplitAction(JdbcTemplate jt, String sql) {
-                        Integer ret = jt.update(sql);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL));
     }
 
     @Override
@@ -204,55 +129,22 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T query(K splitKey, String sql, PreparedStatementSetter pss, ResultSetExtractor<T> rse) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
-            @Override
-            public T doSplitAction(JdbcTemplate jt, String sql) {
-                T result = jt.query(sql, pss, rse);
-
-                return result;
-            }
-        });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, pss, rse));
     }
 
     @Override
     public <T, K> T query(K splitKey, String sql, Object[] args, int[] argTypes, ResultSetExtractor<T> rse) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T result = jt.query(sql, args, argTypes, rse);
-
-                        return result;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rse));
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, Object[] args,
-                          ResultSetExtractor<T> rse) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T result = jt.query(sql, args, rse);
-
-                        return result;
-                    }
-                });
+    public <T, K> T query(K splitKey, String sql, Object[] args, ResultSetExtractor<T> rse) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, rse));
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse,
-                          Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T result = jt.query(sql, rse, args);
-
-                        return result;
-                    }
-                });
+    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse, Object... args) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rse, args));
     }
 
     @Override
@@ -262,54 +154,34 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> void query(K splitKey, String sql, PreparedStatementSetter pss, RowCallbackHandler rch) throws DataAccessException {
-        actionHandler.execute(splitKey, sql,
-                new SplitAction<Object>() {
-                    @Override
-                    public Object doSplitAction(JdbcTemplate jt, String sql) {
-                        jt.query(sql, pss, rch);
-
-                        return null;
-                    }
-                });
+        actionHandler.execute(splitKey, sql, (jt, SQL) -> {
+            jt.query(SQL, pss, rch);
+            return null;
+        });
     }
 
     @Override
     public <K> void query(K splitKey, String sql, Object[] args, int[] argTypes, RowCallbackHandler rch) throws DataAccessException {
-        actionHandler.execute(splitKey, sql, new SplitAction<Object>() {
-                    @Override
-                    public Object doSplitAction(JdbcTemplate jt, String sql) {
-                        jt.query(sql, args, argTypes, rch);
-
-                        return null;
-                    }
-                });
+        actionHandler.execute(splitKey, sql, (jt, SQL) -> {
+            jt.query(SQL, args, argTypes, rch);
+            return null;
+        });
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, Object[] args,
-                          RowCallbackHandler rch) throws DataAccessException {
-        actionHandler.execute(splitKey, sql,
-                new SplitAction<Object>() {
-                    @Override
-                    public Object doSplitAction(JdbcTemplate jt, String sql) {
-                        jt.query(sql, args, rch);
-
-                        return null;
-                    }
-                });
+    public <K> void query(K splitKey, String sql, Object[] args, RowCallbackHandler rch) throws DataAccessException {
+        actionHandler.execute(splitKey, sql, (jt, SQL) -> {
+            jt.query(SQL, args, rch);
+            return null;
+        });
     }
 
     @Override
     public <K> void query(K splitKey, String sql, RowCallbackHandler rch, Object... args) throws DataAccessException {
-        actionHandler.execute(splitKey, sql,
-                new SplitAction<Object>() {
-                    @Override
-                    public Object doSplitAction(JdbcTemplate jt, String sql) {
-                        jt.query(sql, rch, args);
-
-                        return null;
-                    }
-                });
+        actionHandler.execute(splitKey, sql, (jt, SQL) -> {
+            jt.query(SQL, rch, args);
+            return null;
+        });
     }
 
     @Override
@@ -318,253 +190,98 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql,
-                                PreparedStatementSetter pss, RowMapper<T> rowMapper)
-            throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.query(sql, pss, rowMapper);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> query(K splitKey, String sql, PreparedStatementSetter pss, RowMapper<T> rowMapper) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, pss, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, Object[] args,
-                                int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.query(sql, args, argTypes, rowMapper);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> query(K splitKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, Object[] args,
-                                RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.query(sql, args, rowMapper);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> query(K splitKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper,
-                                Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.query(sql, rowMapper, args);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper, args));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
-                                   int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, args, argTypes,
-                                rowMapper);
-                        return ret;
-                    }
-                });
+    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
-                                   RowMapper<T> rowMapper) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, args, rowMapper);
-                        return ret;
-                    }
-                });
+    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, rowMapper));
     }
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, rowMapper, args);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper, args));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
-                                   int[] argTypes, Class<T> requiredType) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, args, argTypes,
-                                requiredType);
-                        return ret;
-                    }
-                });
+    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, int[] argTypes, Class<T> requiredType) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, requiredType));
     }
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Object[] args, Class<T> requiredType) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, args, requiredType);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, requiredType));
     }
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType, Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<T>() {
-                    @Override
-                    public T doSplitAction(JdbcTemplate jt, String sql) {
-                        T ret = jt.queryForObject(sql, requiredType, args);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType, args));
     }
 
     @Override
-    public <K> Map<String, Object> queryForMap(K splitKey, String sql,
-                                               Object[] args, int[] argTypes) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Map<String, Object>>() {
-                    @Override
-                    public Map<String, Object> doSplitAction(JdbcTemplate jt,
-                                                             String sql) {
-                        Map<String, Object> ret = jt.queryForMap(sql, args,
-                                argTypes);
-                        return ret;
-                    }
-                });
+    public <K> Map<String, Object> queryForMap(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args, argTypes));
     }
 
     @Override
-    public <K> Map<String, Object> queryForMap(K splitKey, String sql,
-                                               Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Map<String, Object>>() {
-                    @Override
-                    public Map<String, Object> doSplitAction(JdbcTemplate jt,
-                                                             String sql) {
-                        Map<String, Object> ret = jt.queryForMap(sql, args);
-                        return ret;
-                    }
-                });
+    public <K> Map<String, Object> queryForMap(K splitKey, String sql, Object... args) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args));
     }
 
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args, int[] argTypes, Class<T> elementType) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.queryForList(sql, args, argTypes,
-                                elementType);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, argTypes, elementType));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args,
-                                       Class<T> elementType) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.queryForList(sql, args, elementType);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args, Class<T> elementType) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, elementType));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql,
-                                       Class<T> elementType, Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<T>>() {
-                    @Override
-                    public List<T> doSplitAction(JdbcTemplate jt, String sql) {
-                        List<T> ret = jt.queryForList(sql, elementType, args);
-                        return ret;
-                    }
-                });
+    public <T, K> List<T> queryForList(K splitKey, String sql, Class<T> elementType, Object... args) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType, args));
     }
 
     @Override
-    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql,
-                                                      Object[] args, int[] argTypes) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<Map<String, Object>>>() {
-                    public List<Map<String, Object>> doSplitAction(
-                            JdbcTemplate jt, String sql) {
-                        List<Map<String, Object>> ret = jt.queryForList(sql,
-                                args, argTypes);
-                        return ret;
-                    }
-                });
+    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args, argTypes));
     }
 
     @Override
-    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql,
-                                                      Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<List<Map<String, Object>>>() {
-                    public List<Map<String, Object>> doSplitAction(
-                            JdbcTemplate jt, String sql) {
-                        List<Map<String, Object>> ret = jt.queryForList(sql,
-                                args);
-                        return ret;
-                    }
-                });
+    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql, Object... args) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args));
     }
 
     @Override
-    public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object[] args,
-                                        int[] argTypes) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<SqlRowSet>() {
-                    @Override
-                    public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
-                        SqlRowSet ret = jt.queryForRowSet(sql, args, argTypes);
-                        return ret;
-                    }
-                });
-
+    public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return actionHandler.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForRowSet(SQL, args, argTypes));
     }
 
     @Override
     public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<SqlRowSet>() {
-                    @Override
-                    public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
-                        SqlRowSet ret = jt.queryForRowSet(sql, args);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.queryForRowSet(SQL, args));
     }
 
     @Override
@@ -579,39 +296,17 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> int update(K splitKey, String sql, PreparedStatementSetter pss) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Integer>() {
-                    @Override
-                    public Integer doSplitAction(JdbcTemplate jt, String sql) {
-                        Integer ret = jt.update(sql, pss);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, pss));
     }
 
     @Override
     public <K> int update(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Integer>() {
-                    @Override
-                    public Integer doSplitAction(JdbcTemplate jt, String sql) {
-                        Integer ret = jt.update(sql, args, argTypes);
-                        return ret;
-                    }
-                });
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, args, argTypes));
     }
 
     @Override
     public <K> int update(K splitKey, String sql, Object... args) throws DataAccessException {
-        return actionHandler.execute(splitKey, sql,
-                new SplitAction<Integer>() {
-                    @Override
-                    public Integer doSplitAction(JdbcTemplate jt, String sql) {
-                        Integer ret = jt.update(sql, args);
-                        return ret;
-                    }
-                });
-
+        return actionHandler.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, args));
     }
 
     @Override
@@ -679,7 +374,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
         }
 
         if (readWriteSeparate) {
-            return sn.getRoundRobinSlaveTempate();
+            return sn.getRoundRobinSlaveTemplate();
         }
 
         return sn.getMasterTemplate();

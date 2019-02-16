@@ -9,7 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
+@FunctionalInterface
 public interface SplitAction<T> {
 
-    T doSplitAction(JdbcTemplate jt, String sql);
+    T doAction(JdbcTemplate jt, String sql);
 }

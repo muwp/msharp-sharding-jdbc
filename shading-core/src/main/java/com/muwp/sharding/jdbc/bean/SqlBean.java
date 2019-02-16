@@ -4,19 +4,25 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * SqlRunningBean
+ * SqlBean
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SqlRunningBean implements Serializable {
+public class SqlBean implements Serializable {
 
+    /**
+     * sql
+     */
     private String sql;
 
+    /**
+     * sql param
+     */
     private Object[] params;
 
-    public SqlRunningBean(String sql, Object[] params) {
+    public SqlBean(String sql, Object[] params) {
         this.sql = sql;
         this.params = params;
     }
@@ -39,7 +45,7 @@ public class SqlRunningBean implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SqlRunningBean{");
+        final StringBuilder sb = new StringBuilder("SqlBean{");
         sb.append("sql='").append(sql).append('\'');
         sb.append(", params=").append(params == null ? "null" : Arrays.asList(params).toString());
         sb.append('}');

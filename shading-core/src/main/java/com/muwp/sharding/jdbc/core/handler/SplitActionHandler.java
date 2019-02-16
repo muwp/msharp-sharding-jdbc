@@ -53,7 +53,7 @@ public class SplitActionHandler implements ActionHandler {
         sql = splitSqlStructure.getSplitSql(dbNo, tableNo);
 
         log.debug("execute do action, splitKey {} sql {} dbName {} tableName {} nodeNo {} dbNo {} tableNo {}", splitKey, sql, dbName, tableName, nodeNo, dbNo, tableNo);
-        T result = splitAction.doSplitAction(jt, sql);
+        T result = splitAction.doAction(jt, sql);
 
         log.debug("execute return, {} are returned, splitKey {} sql {}", result, splitKey, sql);
         return result;

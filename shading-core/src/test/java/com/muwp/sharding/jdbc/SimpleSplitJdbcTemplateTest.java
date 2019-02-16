@@ -1,12 +1,15 @@
 package com.muwp.sharding.jdbc;
 
 import com.muwp.sharding.jdbc.core.SimpleSplitJdbcTemplate;
+import com.muwp.sharding.jdbc.model.TestModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +27,18 @@ public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTest
     @Test(groups = {"simpleSplitJdbcTemplate"})
     public void testQuery() {
         SimpleSplitJdbcTemplate jdbcTemplate = (SimpleSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
-        final List<RowMapper> result = jdbcTemplate.query("test", "select id,appkey,name,age,update_time from name=?", new Object[]{"one"}, (RowMapper) null);
+        final List<TestModel> result = jdbcTemplate.query("test", "select id,appkey,name,age,update_time from sharding_jdbc.test ", new RowMapper<TestModel>() {
+            @Override
+            public TestModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+                final TestModel model = new TestModel();
+                model.setId(rs.getLong(1));
+                model.setAppkey(rs.getString(2));
+                model.setName(rs.getString(3));
+                model.setAge(rs.getInt(4));
+                model.setUpdateTime(rs.getTimestamp(5));
+                return model;
+            }
+        });
         System.out.println("result:" + result);
     }
 
