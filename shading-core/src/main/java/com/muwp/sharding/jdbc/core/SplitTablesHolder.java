@@ -12,55 +12,54 @@ import java.util.List;
  **/
 public class SplitTablesHolder {
 
-	private static final String DB_TABLE_SEP = "$";
+    private static final String DB_TABLE_SEP = "$";
 
-	private List<SplitTable> splitTables;
+    private List<SplitTable> splitTables;
 
-	private HashMap<String, SplitTable> splitTablesMapFull;
+    private HashMap<String, SplitTable> splitTablesMapFull;
 
-	private HashMap<String, SplitTable> splitTablesMap;
+    private HashMap<String, SplitTable> splitTablesMap;
 
-	public SplitTablesHolder() {
+    public SplitTablesHolder() {
 
-	}
+    }
 
-	public SplitTablesHolder(List<SplitTable> splitTables) {
-		this.splitTables = splitTables;
+    public SplitTablesHolder(List<SplitTable> splitTables) {
+        this.splitTables = splitTables;
 
-		init();
-	}
+        init();
+    }
 
-	public void init() {
-		splitTablesMapFull = new HashMap<String, SplitTable>();
-		splitTablesMap = new HashMap<String, SplitTable>();
+    public void init() {
+        this.splitTablesMapFull = new HashMap<>();
+        this.splitTablesMap = new HashMap<>();
+        for (int i = 0; i < this.splitTables.size(); i++) {
+            SplitTable st = this.splitTables.get(i);
 
-		for (int i = 0; i < splitTables.size(); i++) {
-			SplitTable st = splitTables.get(i);
+            String key = constructKey(st.getDbNam(), st.getTableName());
+            this.splitTablesMapFull.put(key, st);
 
-			String key = constructKey(st.getDbNam(), st.getTableName());
-			splitTablesMapFull.put(key, st);
+            this.splitTablesMap.put(st.getTableName(), st);
+        }
+    }
 
-			splitTablesMap.put(st.getTableName(), st);
-		}
-	}
+    private String constructKey(String dbName, String tableName) {
+        return dbName + DB_TABLE_SEP + tableName;
+    }
 
-	private String constructKey(String dbName, String tableName) {
-		return dbName + DB_TABLE_SEP + tableName;
-	}
+    public SplitTable searchSplitTable(String dbName, String tableName) {
+        return this.splitTablesMapFull.get(constructKey(dbName, tableName));
+    }
 
-	public SplitTable searchSplitTable(String dbName, String tableName) {
-		return splitTablesMapFull.get(constructKey(dbName, tableName));
-	}
+    public SplitTable searchSplitTable(String tableName) {
+        return splitTablesMap.get(tableName);
+    }
 
-	public SplitTable searchSplitTable(String tableName) {
-		return splitTablesMap.get(tableName);
-	}
+    public List<SplitTable> getSplitTables() {
+        return splitTables;
+    }
 
-	public List<SplitTable> getSplitTables() {
-		return splitTables;
-	}
-
-	public void setSplitTables(List<SplitTable> splitTables) {
-		this.splitTables = splitTables;
-	}
+    public void setSplitTables(List<SplitTable> splitTables) {
+        this.splitTables = splitTables;
+    }
 }

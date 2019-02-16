@@ -9,18 +9,27 @@ package com.muwp.sharding.jdbc.core.strategy;
  **/
 public class HorizontalHashSplitStrategy implements SplitStrategy {
 
-    private int portNum;
+    /**
+     * 结点数
+     */
+    private int nodeNum;
 
+    /**
+     * 每个结果的数据库数
+     */
     private int dbNum;
 
+    /**
+     * 每个数据库的表个数
+     */
     private int tableNum;
 
     public HorizontalHashSplitStrategy() {
 
     }
 
-    public HorizontalHashSplitStrategy(int portNum, int dbNum, int tableNum) {
-        this.portNum = portNum;
+    public HorizontalHashSplitStrategy(int nodeNum, int dbNum, int tableNum) {
+        this.nodeNum = nodeNum;
         this.dbNum = dbNum;
         this.tableNum = tableNum;
     }
@@ -38,7 +47,7 @@ public class HorizontalHashSplitStrategy implements SplitStrategy {
     @Override
     public int getTableNo(Object splitKey) {
         int hashCode = calcHashCode(splitKey);
-        return hashCode % (portNum * dbNum * tableNum);
+        return hashCode % (nodeNum * dbNum * tableNum);
     }
 
     private int calcHashCode(Object splitKey) {

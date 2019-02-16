@@ -10,6 +10,13 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Date;
 
+/**
+ * OrmUtil
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/02/15 13:51
+ **/
 public abstract class OrmUtil {
 
     private static final Logger log = LoggerFactory.getLogger(OrmUtil.class);

@@ -2,8 +2,8 @@ package com.muwp.sharding.jdbc.core;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
 import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
-import com.muwp.sharding.jdbc.enums.SearchOper;
-import com.muwp.sharding.jdbc.enums.UpdateOper;
+import com.muwp.sharding.jdbc.enums.SearchOperationType;
+import com.muwp.sharding.jdbc.enums.UpdateOperationType;
 import com.muwp.sharding.jdbc.util.OrmUtil;
 import com.muwp.sharding.jdbc.util.SqlUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,17 +29,17 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
     @Override
     public <K, T> void insert(K splitKey, T bean) {
-        doUpdate(splitKey, bean.getClass(), UpdateOper.INSERT, bean, -1);
+        doUpdate(splitKey, bean.getClass(), UpdateOperationType.INSERT, bean, -1);
     }
 
     @Override
     public <K, T> void update(K splitKey, T bean) {
-        doUpdate(splitKey, bean.getClass(), UpdateOper.UPDATE, bean, -1);
+        doUpdate(splitKey, bean.getClass(), UpdateOperationType.UPDATE, bean, -1);
     }
 
     @Override
     public <K, T> void delete(K splitKey, long id, Class<T> clazz) {
-        doUpdate(splitKey, clazz, UpdateOper.DELETE, null, id);
+        doUpdate(splitKey, clazz, UpdateOperationType.DELETE, null, id);
     }
 
     @Override
@@ -54,20 +54,20 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
     @Override
     public <K, T> List<T> search(K splitKey, T bean) {
-        return doSearch(splitKey, bean, null, null, null, SearchOper.NORMAL);
+        return doSearch(splitKey, bean, null, null, null, SearchOperationType.NORMAL);
     }
 
     @Override
     public <K, T> List<T> search(K splitKey, T bean, String name, Object valueFrom, Object valueTo) {
-        return doSearch(splitKey, bean, name, valueFrom, valueTo, SearchOper.RANGE);
+        return doSearch(splitKey, bean, name, valueFrom, valueTo, SearchOperationType.RANGE);
     }
 
     @Override
     public <K, T> List<T> search(K splitKey, T bean, String name, Object value) {
-        return doSearch(splitKey, bean, name, value, null, SearchOper.FIELD);
+        return doSearch(splitKey, bean, name, value, null, SearchOperationType.FIELD);
     }
 
-    protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOper searchOper) {
+    protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType searchOper) {
         log.debug("SimpleSplitJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
 
         final SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
@@ -137,7 +137,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         return bean;
     }
 
-    protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOper updateOper, T bean, long id) {
+    protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType updateOper, T bean, long id) {
         log.debug("SimpleSplitJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, updateOper, bean, id);
 
         SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));

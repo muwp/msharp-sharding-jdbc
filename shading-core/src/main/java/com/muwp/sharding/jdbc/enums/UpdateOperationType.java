@@ -1,17 +1,17 @@
 package com.muwp.sharding.jdbc.enums;
 
 /**
- * SearchOper
+ * UpdateOperationType
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public enum SearchOper {
+public enum UpdateOperationType {
 
-    NORMAL,
+    INSERT,
 
-    RANGE,
+    UPDATE,
 
-    FIELD
+    DELETE
 }
