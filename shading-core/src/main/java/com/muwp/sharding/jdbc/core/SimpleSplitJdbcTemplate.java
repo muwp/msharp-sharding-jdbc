@@ -2,6 +2,8 @@ package com.muwp.sharding.jdbc.core;
 
 import com.muwp.sharding.jdbc.bean.SqlRunningBean;
 import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
+import com.muwp.sharding.jdbc.enums.SearchOper;
+import com.muwp.sharding.jdbc.enums.UpdateOper;
 import com.muwp.sharding.jdbc.util.OrmUtil;
 import com.muwp.sharding.jdbc.util.SqlUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,24 +22,13 @@ import java.util.List;
  **/
 public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements SimpleSplitJdbcOperations {
 
-    private enum UpdateOper {
-        INSERT, UPDATE, DELETE
-    }
-
-    private enum SearchOper {
-        NORMAL, RANGE, FIELD
-    }
+    protected SplitTablesHolder splitTablesHolder;
 
     public SimpleSplitJdbcTemplate() {
-
     }
 
     public SimpleSplitJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
         super(ipPorts, user, password, tables);
-    }
-
-    public SimpleSplitJdbcTemplate(SplitTablesHolder splitTablesHolder) {
-        super(splitTablesHolder);
     }
 
     @Override
@@ -88,8 +79,8 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         SplitStrategy splitStrategy = splitTable.getSplitStrategy();
         List<SplitNode> splitNdoes = splitTable.getSplitNodes();
 
-        String dbPrefix = splitTable.getDbNamePrefix();
-        String tablePrefix = splitTable.getTableNamePrefix();
+        String dbPrefix = splitTable.getDbNam();
+        String tablePrefix = splitTable.getTableName();
 
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int dbNo = splitStrategy.getDbNo(splitKey);
@@ -131,8 +122,7 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
 
     }
 
-    protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name,
-                                Object value) {
+    protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
         log.debug("SimpleSplitJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
 
         SplitTable splitTable = splitTablesHolder.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
@@ -140,8 +130,8 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         SplitStrategy splitStrategy = splitTable.getSplitStrategy();
         List<SplitNode> splitNdoes = splitTable.getSplitNodes();
 
-        String dbPrefix = splitTable.getDbNamePrefix();
-        String tablePrefix = splitTable.getTableNamePrefix();
+        String dbPrefix = splitTable.getDbNam();
+        String tablePrefix = splitTable.getTableName();
 
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int dbNo = splitStrategy.getDbNo(splitKey);
@@ -176,8 +166,8 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         SplitStrategy splitStrategy = splitTable.getSplitStrategy();
         List<SplitNode> splitNdoes = splitTable.getSplitNodes();
 
-        String dbPrefix = splitTable.getDbNamePrefix();
-        String tablePrefix = splitTable.getTableNamePrefix();
+        String dbPrefix = splitTable.getDbNam();
+        String tablePrefix = splitTable.getTableName();
 
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int dbNo = splitStrategy.getDbNo(splitKey);
@@ -191,21 +181,22 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         SqlRunningBean srb = null;
         switch (updateOper) {
             case INSERT:
-                srb = SqlUtil.generateInsertSql(bean, dbPrefix, tablePrefix, dbNo,
-                        tableNo);
+                srb = SqlUtil.generateInsertSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case UPDATE:
-                srb = SqlUtil.generateUpdateSql(bean, dbPrefix, tablePrefix, dbNo,
-                        tableNo);
+                srb = SqlUtil.generateUpdateSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case DELETE:
-                srb = SqlUtil.generateDeleteSql(id, clazz, dbPrefix, tablePrefix,
-                        dbNo, tableNo);
+                srb = SqlUtil.generateDeleteSql(id, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
         }
 
         log.debug("SimpleSplitJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         long updateCount = jt.update(srb.getSql(), srb.getParams());
         log.info("SimpleSplitJdbcTemplate.doUpdate, update record num: {}.", updateCount);
+    }
+
+    public void setSplitTablesHolder(SplitTablesHolder splitTablesHolder) {
+        this.splitTablesHolder = splitTablesHolder;
     }
 }

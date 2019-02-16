@@ -15,9 +15,11 @@ public class SplitSqlStructure {
 	private SqlType sqlType;
 
 	private String dbName;
+
 	private String tableName;
 
 	private String previousPart;
+
 	private String sebsequentPart;
 
 	public SqlType getSqlType() {

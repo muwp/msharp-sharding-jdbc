@@ -1,8 +1,7 @@
 package com.muwp.sharding.jdbc.core;
 
-import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
-import com.muwp.sharding.jdbc.parser.SplitSqlParser;
-import com.muwp.sharding.jdbc.parser.SplitSqlStructure;
+import com.muwp.sharding.jdbc.core.action.SplitAction;
+import com.muwp.sharding.jdbc.core.handler.ActionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -25,65 +24,20 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     protected static final Logger log = LoggerFactory.getLogger(SplitJdbcTemplate.class);
 
-    protected SplitTablesHolder splitTablesHolder;
 
-    protected SplitActionRunner splitActionRunner = new SplitActionRunner();
+    protected ActionHandler actionHandler;
 
     protected boolean readWriteSeparate = false;
-
-    interface SplitAction<T> {
-
-        T doSplitAction(JdbcTemplate jt, String sql);
-    }
-
-    class SplitActionRunner {
-
-        public <T, K> T runSplitAction(K splitKey, String sql, SplitAction<T> splitAction) {
-            log.debug("runSplitAction entry, splitKey {} sql {}", splitKey, sql);
-
-            SplitSqlStructure splitSqlStructure = SplitSqlParser.INST.parseSplitSql(sql);
-
-            String dbName = splitSqlStructure.getDbName();
-            String tableName = splitSqlStructure.getTableName();
-
-            SplitTable splitTable = splitTablesHolder.searchSplitTable(dbName, tableName);
-
-            SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-
-            int nodeNo = splitStrategy.getNodeNo(splitKey);
-            int dbNo = splitStrategy.getDbNo(splitKey);
-            int tableNo = splitStrategy.getTableNo(splitKey);
-
-            List<SplitNode> splitNodes = splitTable.getSplitNodes();
-
-            SplitNode sn = splitNodes.get(nodeNo);
-            JdbcTemplate jt = getJdbcTemplate(sn, false);
-
-            sql = splitSqlStructure.getSplitSql(dbNo, tableNo);
-
-            log.debug("runSplitAction do action, splitKey {} sql {} dbName {} tableName {} nodeNo {} dbNo {} tableNo {}", splitKey, sql, dbName, tableName, nodeNo, dbNo, tableNo);
-            T result = splitAction.doSplitAction(jt, sql);
-
-            log.debug("runSplitAction return, {} are returned, splitKey {} sql {}", result, splitKey, sql);
-            return result;
-        }
-    }
 
     public SplitJdbcTemplate() {
 
     }
 
-    public SplitJdbcTemplate(SplitTablesHolder splitTablesHolder) {
-        this.splitTablesHolder = splitTablesHolder;
-    }
-
-    public SplitJdbcTemplate(List<String> ipPorts, String user,
-                             String password, String... tables) {
+    public SplitJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
         this.addTable(ipPorts, user, password, tables);
     }
 
-    public void addTable(List<String> ipPorts, String user, String password,
-                         String... tables) {
+    public void addTable(List<String> ipPorts, String user, String password, String... tables) {
         // TODO parse datasources and tables
     }
 
@@ -106,7 +60,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse)
             throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<T>() {
+        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
             @Override
             public T doSplitAction(JdbcTemplate jt, String sql) {
                 T result = jt.query(sql, rse);
@@ -119,7 +73,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> void query(K splitKey, String sql, RowCallbackHandler rch)
             throws DataAccessException {
-        splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<Object>() {
+        actionHandler.execute(splitKey, sql, new SplitAction<Object>() {
             @Override
             public Object doSplitAction(JdbcTemplate jt, String sql) {
                 jt.query(sql, rch);
@@ -131,7 +85,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<List<T>>() {
+        return actionHandler.execute(splitKey, sql, new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
                         List<T> result = jt.query(sql, rowMapper);
@@ -143,7 +97,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -157,7 +111,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType)
             throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<T>() {
+        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
             @Override
             public T doSplitAction(JdbcTemplate jt, String sql) {
                 T result = jt.queryForObject(sql, requiredType);
@@ -168,7 +122,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> Map<String, Object> queryForMap(K splitKey, String sql) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Map<String, Object>>() {
                     @Override
                     public Map<String, Object> doSplitAction(JdbcTemplate jt, String sql) {
@@ -181,7 +135,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql, Class<T> elementType) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -194,7 +148,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> List<Map<String, Object>> queryForList(K splitKey, String sql) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<Map<String, Object>>>() {
                     @Override
                     public List<Map<String, Object>> doSplitAction(JdbcTemplate jt, String sql) {
@@ -207,7 +161,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> SqlRowSet queryForRowSet(K splitKey, String sql) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<SqlRowSet>() {
+        return actionHandler.execute(splitKey, sql, new SplitAction<SqlRowSet>() {
             @Override
             public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
                 SqlRowSet result = jt.queryForRowSet(sql);
@@ -219,7 +173,13 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> int update(K splitKey, String sql) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        return actionHandler.execute(splitKey, sql, new SplitAction<Integer>() {
+                    @Override
+                    public Integer doSplitAction(JdbcTemplate jt, String sql) {
+                        Integer ret = jt.update(sql);
+                        return ret;
+                    }
+                });
     }
 
     @Override
@@ -244,7 +204,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T query(K splitKey, String sql, PreparedStatementSetter pss, ResultSetExtractor<T> rse) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<T>() {
+        return actionHandler.execute(splitKey, sql, new SplitAction<T>() {
             @Override
             public T doSplitAction(JdbcTemplate jt, String sql) {
                 T result = jt.query(sql, pss, rse);
@@ -256,7 +216,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T query(K splitKey, String sql, Object[] args, int[] argTypes, ResultSetExtractor<T> rse) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -270,7 +230,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T query(K splitKey, String sql, Object[] args,
                           ResultSetExtractor<T> rse) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -284,7 +244,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse,
                           Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -302,7 +262,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> void query(K splitKey, String sql, PreparedStatementSetter pss, RowCallbackHandler rch) throws DataAccessException {
-        splitActionRunner.runSplitAction(splitKey, sql,
+        actionHandler.execute(splitKey, sql,
                 new SplitAction<Object>() {
                     @Override
                     public Object doSplitAction(JdbcTemplate jt, String sql) {
@@ -315,7 +275,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> void query(K splitKey, String sql, Object[] args, int[] argTypes, RowCallbackHandler rch) throws DataAccessException {
-        splitActionRunner.runSplitAction(splitKey, sql, new SplitAction<Object>() {
+        actionHandler.execute(splitKey, sql, new SplitAction<Object>() {
                     @Override
                     public Object doSplitAction(JdbcTemplate jt, String sql) {
                         jt.query(sql, args, argTypes, rch);
@@ -328,7 +288,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> void query(K splitKey, String sql, Object[] args,
                           RowCallbackHandler rch) throws DataAccessException {
-        splitActionRunner.runSplitAction(splitKey, sql,
+        actionHandler.execute(splitKey, sql,
                 new SplitAction<Object>() {
                     @Override
                     public Object doSplitAction(JdbcTemplate jt, String sql) {
@@ -341,7 +301,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> void query(K splitKey, String sql, RowCallbackHandler rch, Object... args) throws DataAccessException {
-        splitActionRunner.runSplitAction(splitKey, sql,
+        actionHandler.execute(splitKey, sql,
                 new SplitAction<Object>() {
                     @Override
                     public Object doSplitAction(JdbcTemplate jt, String sql) {
@@ -361,7 +321,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     public <T, K> List<T> query(K splitKey, String sql,
                                 PreparedStatementSetter pss, RowMapper<T> rowMapper)
             throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -374,7 +334,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> List<T> query(K splitKey, String sql, Object[] args,
                                 int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -387,7 +347,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> List<T> query(K splitKey, String sql, Object[] args,
                                 RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -400,7 +360,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper,
                                 Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -413,7 +373,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
                                    int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     public T doSplitAction(JdbcTemplate jt, String sql) {
                         T ret = jt.queryForObject(sql, args, argTypes,
@@ -426,7 +386,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
                                    RowMapper<T> rowMapper) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -438,7 +398,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -451,7 +411,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Object[] args,
                                    int[] argTypes, Class<T> requiredType) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     public T doSplitAction(JdbcTemplate jt, String sql) {
                         T ret = jt.queryForObject(sql, args, argTypes,
@@ -463,7 +423,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Object[] args, Class<T> requiredType) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -475,7 +435,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType, Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<T>() {
                     @Override
                     public T doSplitAction(JdbcTemplate jt, String sql) {
@@ -488,7 +448,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> Map<String, Object> queryForMap(K splitKey, String sql,
                                                Object[] args, int[] argTypes) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Map<String, Object>>() {
                     @Override
                     public Map<String, Object> doSplitAction(JdbcTemplate jt,
@@ -503,7 +463,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> Map<String, Object> queryForMap(K splitKey, String sql,
                                                Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Map<String, Object>>() {
                     @Override
                     public Map<String, Object> doSplitAction(JdbcTemplate jt,
@@ -516,7 +476,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args, int[] argTypes, Class<T> elementType) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -530,7 +490,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args,
                                        Class<T> elementType) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -543,7 +503,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <T, K> List<T> queryForList(K splitKey, String sql,
                                        Class<T> elementType, Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<T>>() {
                     @Override
                     public List<T> doSplitAction(JdbcTemplate jt, String sql) {
@@ -556,7 +516,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> List<Map<String, Object>> queryForList(K splitKey, String sql,
                                                       Object[] args, int[] argTypes) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<Map<String, Object>>>() {
                     public List<Map<String, Object>> doSplitAction(
                             JdbcTemplate jt, String sql) {
@@ -570,7 +530,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> List<Map<String, Object>> queryForList(K splitKey, String sql,
                                                       Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<List<Map<String, Object>>>() {
                     public List<Map<String, Object>> doSplitAction(
                             JdbcTemplate jt, String sql) {
@@ -584,7 +544,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object[] args,
                                         int[] argTypes) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<SqlRowSet>() {
                     @Override
                     public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
@@ -597,7 +557,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object... args) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<SqlRowSet>() {
                     @Override
                     public SqlRowSet doSplitAction(JdbcTemplate jt, String sql) {
@@ -613,14 +573,13 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     }
 
     @Override
-    public <K> int update(K splitKey, PreparedStatementCreator psc,
-                          KeyHolder generatedKeyHolder) throws DataAccessException {
+    public <K> int update(K splitKey, PreparedStatementCreator psc, KeyHolder generatedKeyHolder) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public <K> int update(K splitKey, String sql, PreparedStatementSetter pss) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Integer>() {
                     @Override
                     public Integer doSplitAction(JdbcTemplate jt, String sql) {
@@ -632,7 +591,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> int update(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Integer>() {
                     @Override
                     public Integer doSplitAction(JdbcTemplate jt, String sql) {
@@ -644,8 +603,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <K> int update(K splitKey, String sql, Object... args) throws DataAccessException {
-
-        return splitActionRunner.runSplitAction(splitKey, sql,
+        return actionHandler.execute(splitKey, sql,
                 new SplitAction<Integer>() {
                     @Override
                     public Integer doSplitAction(JdbcTemplate jt, String sql) {
@@ -657,29 +615,22 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql,
-                                 BatchPreparedStatementSetter pss) throws DataAccessException {
+    public <K> int[] batchUpdate(K splitKey, String sql, BatchPreparedStatementSetter pss) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql,
-                                 List<Object[]> batchArgs) throws DataAccessException {
+    public <K> int[] batchUpdate(K splitKey, String sql, List<Object[]> batchArgs) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql,
-                                 List<Object[]> batchArgs, int[] argTypes)
-            throws DataAccessException {
+    public <K> int[] batchUpdate(K splitKey, String sql, List<Object[]> batchArgs, int[] argTypes) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T, K> int[][] batchUpdate(K splitKey, String sql,
-                                      Collection<T> batchArgs, int batchSize,
-                                      ParameterizedPreparedStatementSetter<T> pss)
-            throws DataAccessException {
+    public <T, K> int[][] batchUpdate(K splitKey, String sql, Collection<T> batchArgs, int batchSize, ParameterizedPreparedStatementSetter<T> pss) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
@@ -698,12 +649,12 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
         throw new UnsupportedOperationException();
     }
 
-    public SplitTablesHolder getSplitTablesHolder() {
-        return splitTablesHolder;
+    public ActionHandler getActionHandler() {
+        return actionHandler;
     }
 
-    public void setSplitTablesHolder(SplitTablesHolder splitTablesHolder) {
-        this.splitTablesHolder = splitTablesHolder;
+    public void setActionHandler(ActionHandler actionHandler) {
+        this.actionHandler = actionHandler;
     }
 
     public boolean isReadWriteSeparate() {
@@ -722,7 +673,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
         return getJdbcTemplate(sn, true);
     }
 
-    protected JdbcTemplate getJdbcTemplate(SplitNode sn, boolean read) {
+    public JdbcTemplate getJdbcTemplate(SplitNode sn, boolean read) {
         if (!read) {
             return sn.getMasterTemplate();
         }

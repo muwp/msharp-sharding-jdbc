@@ -5,6 +5,7 @@ import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
 import com.muwp.sharding.jdbc.core.strategy.VerticalHashSplitStrategy;
 import com.muwp.sharding.jdbc.enums.SplitStrategyType;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,17 +15,17 @@ import java.util.List;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SplitTable {
+public class SplitTable implements Serializable {
 
-    private String dbNamePrefix;
-
-    private String tableNamePrefix;
+    private String dbNam;
 
     private int dbNum;
 
+    private String tableName;
+
     private int tableNum;
 
-    private SplitStrategyType splitStrategyType = SplitStrategyType.VERTICAL;
+    private SplitStrategyType splitStrategyType = SplitStrategyType.HORIZONTAL;
 
     private SplitStrategy splitStrategy;
 
@@ -44,20 +45,20 @@ public class SplitTable {
         this.splitStrategyType = SplitStrategyType.valueOf(splitStrategyType);
     }
 
-    public String getDbNamePrefix() {
-        return dbNamePrefix;
+    public String getDbNam() {
+        return dbNam;
     }
 
-    public void setDbNamePrefix(String dbNamePrifix) {
-        this.dbNamePrefix = dbNamePrifix;
+    public void setDbNam(String dbNamePrifix) {
+        this.dbNam = dbNamePrifix;
     }
 
-    public String getTableNamePrefix() {
-        return tableNamePrefix;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setTableNamePrefix(String tableNamePrifix) {
-        this.tableNamePrefix = tableNamePrifix;
+    public void setTableName(String tableNamePrifix) {
+        this.tableName = tableNamePrifix;
     }
 
     public int getDbNum() {
