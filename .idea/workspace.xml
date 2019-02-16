@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="909908bf-7d54-43f4-9b98-fbf8a5b24cf6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/action/SplitAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/ActionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/enums/SearchOper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/enums/UpdateOper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/test/java/com/muwp/sharding/jdbc/SimpleSplitJdbcTemplateTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/test/resources/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTablesHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTablesHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/parser/SplitSqlStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/parser/SplitSqlStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,99 +27,9 @@
         <entry file="file://$PROJECT_DIR$/shading-core/src/test/java/com/muwp/sharding/jdbc/SimpleSplitJdbcTemplateTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="28">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2419#2420#0" expanded="true" />
-                <element signature="e#2477#2478#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/ActionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="30" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1409#1410#0" expanded="true" />
-                <element signature="e#1444#1445#0" expanded="true" />
-                <element signature="e#1500#1501#0" expanded="true" />
-                <element signature="e#1548#1549#0" expanded="true" />
-                <element signature="e#1590#1591#0" expanded="true" />
-                <element signature="e#1628#1629#0" expanded="true" />
-                <element signature="e#1690#1691#0" expanded="true" />
-                <element signature="e#1744#1745#0" expanded="true" />
-                <element signature="e#1773#1774#0" expanded="true" />
-                <element signature="e#1801#1802#0" expanded="true" />
-                <element signature="e#1840#1841#0" expanded="true" />
-                <element signature="e#1874#1875#0" expanded="true" />
-                <element signature="e#1906#1907#0" expanded="true" />
-                <element signature="e#1937#1938#0" expanded="true" />
-                <element signature="e#1982#1983#0" expanded="true" />
-                <element signature="e#2022#2023#0" expanded="true" />
-                <element signature="e#2068#2069#0" expanded="true" />
-                <element signature="e#2101#2102#0" expanded="true" />
-                <element signature="e#2162#2163#0" expanded="true" />
-                <element signature="e#2206#2207#0" expanded="true" />
-                <element signature="e#2253#2254#0" expanded="true" />
-                <element signature="e#2289#2290#0" expanded="true" />
-                <element signature="e#2354#2355#0" expanded="true" />
-                <element signature="e#2404#2405#0" expanded="true" />
-                <element signature="e#2448#2449#0" expanded="true" />
-                <element signature="e#2488#2489#0" expanded="true" />
-                <element signature="e#2555#2556#0" expanded="true" />
-                <element signature="e#2613#2614#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8525#8526#0" expanded="true" />
-                <element signature="e#8565#8566#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
-              <folding>
-                <element signature="e#627#663#0" expanded="true" />
-                <element signature="e#1010#1046#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -146,8 +39,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="569">
-                <caret line="71" column="10" selection-start-line="71" selection-start-column="10" selection-end-line="71" selection-end-column="10" />
+              <first_editor relative-caret-position="108">
+                <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
               </first_editor>
               <second_editor />
             </state>
@@ -167,7 +60,7 @@
         <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1317">
-              <caret line="679" lean-forward="true" selection-start-line="679" selection-end-line="679" />
+              <caret line="679" selection-start-line="679" selection-end-line="679" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#25839#25840#0" expanded="true" />
@@ -233,7 +126,6 @@
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/parser/SplitSqlParserDefImpl.java" />
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/bean/SqlRunningBean.java" />
         <option value="$PROJECT_DIR$/shading-core/.gitignore" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.properties" />
         <option value="$PROJECT_DIR$/shading-core/src/test/resources/spring/dbsplit-test.xml" />
@@ -243,13 +135,14 @@
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/parser/SplitSqlStructure.java" />
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/action/SplitAction.java" />
         <option value="$PROJECT_DIR$/shading-core/src/test/resources/schema.sql" />
-        <option value="$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.xml" />
-        <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java" />
         <option value="$PROJECT_DIR$/shading-core/src/test/java/com/muwp/sharding/jdbc/SimpleSplitJdbcTemplateTest.java" />
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTable.java" />
-        <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java" />
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/ActionHandler.java" />
         <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java" />
+        <option value="$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.xml" />
+        <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java" />
+        <option value="$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -279,7 +172,7 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="207" />
+    <option name="x" value="138" />
     <option name="y" value="23" />
     <option name="width" value="1388" />
     <option name="height" value="801" />
@@ -352,88 +245,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="enums" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="parser" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="reflect" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="rowmapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="single" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="jdbc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="msharp-shading-jdbc" type="462c0819:PsiDirectoryNode" />
-              <item name="shading-core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="spring" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="msharp-shading-jdbc" type="b2602c69:ProjectViewProjectNode" />
@@ -448,7 +260,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550311954926" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550312235760" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -609,7 +421,7 @@
       <option name="presentableId" value="Default" />
       <updated>1550299292694</updated>
       <workItem from="1550299294680" duration="2635000" />
-      <workItem from="1550302816070" duration="8333000" />
+      <workItem from="1550302816070" duration="8626000" />
     </task>
     <servers />
   </component>
@@ -646,13 +458,12 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10968000" />
+    <option name="totallyTimeSpent" value="11261000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="226" y="23" width="1388" height="801" extended-state="0" />
-    <editor active="true" />
+    <frame x="207" y="23" width="1388" height="801" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16220239" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16220239" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -670,7 +481,7 @@
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
       <window_info anchor="bottom" id="Tail" order="8" />
       <window_info anchor="bottom" id="Spring" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32863188" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32863188" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="CheckStyle" order="12" />
       <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" />
@@ -786,13 +597,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/msharp-shading-jdbc.iml">
       <provider selected="true" editor-type-id="text-editor" />
@@ -954,20 +758,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shading-core/src/test/java/com/muwp/sharding/jdbc/SimpleSplitJdbcTemplateTest.java">
+    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="1317">
+          <caret line="679" selection-start-line="679" selection-end-line="679" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#25839#25840#0" expanded="true" />
+            <element signature="e#25879#25880#0" expanded="true" />
+            <element signature="e#25650#25651#0" expanded="true" />
+            <element signature="e#25688#25689#0" expanded="true" />
+            <element signature="e#26101#26102#0" expanded="true" />
+            <element signature="e#26141#26142#0" expanded="true" />
+            <element signature="e#26208#26209#0" expanded="true" />
+            <element signature="e#26266#26267#0" expanded="true" />
+            <element signature="e#26331#26332#0" expanded="true" />
+            <element signature="e#26380#26381#0" expanded="true" />
+            <element signature="e#26444#26445#0" expanded="true" />
+            <element signature="e#26492#26493#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="53" column="11" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="57" column="29" selection-start-line="57" selection-start-column="29" selection-end-line="57" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2419#2420#0" expanded="true" />
+            <element signature="e#2477#2478#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/ActionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="30" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
+        <state relative-caret-position="279">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1409#1410#0" expanded="true" />
@@ -1002,70 +844,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/SplitActionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2419#2420#0" expanded="true" />
-            <element signature="e#2477#2478#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/handler/ActionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="30" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SplitJdbcTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1317">
-          <caret line="679" lean-forward="true" selection-start-line="679" selection-end-line="679" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#25839#25840#0" expanded="true" />
-            <element signature="e#25879#25880#0" expanded="true" />
-            <element signature="e#25650#25651#0" expanded="true" />
-            <element signature="e#25688#25689#0" expanded="true" />
-            <element signature="e#26101#26102#0" expanded="true" />
-            <element signature="e#26141#26142#0" expanded="true" />
-            <element signature="e#26208#26209#0" expanded="true" />
-            <element signature="e#26266#26267#0" expanded="true" />
-            <element signature="e#26331#26332#0" expanded="true" />
-            <element signature="e#26380#26381#0" expanded="true" />
-            <element signature="e#26444#26445#0" expanded="true" />
-            <element signature="e#26492#26493#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shading-core/src/main/java/com/muwp/sharding/jdbc/core/SimpleSplitJdbcTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+        <state relative-caret-position="2475">
+          <caret line="169" column="17" selection-start-line="169" selection-start-column="17" selection-end-line="169" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
-            <element signature="e#8565#8566#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="53" column="11" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shading-core/src/test/resources/spring/jdbc-test.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+        <state relative-caret-position="150">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
           <folding>
             <element signature="e#627#663#0" expanded="true" />
             <element signature="e#1010#1046#0" expanded="true" />
@@ -1080,11 +872,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shading-core/src/test/java/com/muwp/sharding/jdbc/SimpleSplitJdbcTemplateTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="569">
-            <caret line="71" column="10" selection-start-line="71" selection-start-column="10" selection-end-line="71" selection-end-column="10" />
+          <first_editor relative-caret-position="108">
+            <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           </first_editor>
           <second_editor />
         </state>

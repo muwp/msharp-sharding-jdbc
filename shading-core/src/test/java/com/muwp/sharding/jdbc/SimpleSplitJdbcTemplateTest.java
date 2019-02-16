@@ -17,7 +17,7 @@ public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTest
     @Test(groups = {"simpleSplitJdbcTemplate"})
     public void testSimpleSplitJdbcTemplate() {
         SimpleSplitJdbcTemplate jdbcTemplate = (SimpleSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
-        final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{2, "test", "two", 19, new Date()});
+        final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
         System.out.println("result:" + update);
     }
 

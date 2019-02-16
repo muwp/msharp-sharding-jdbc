@@ -15,7 +15,7 @@
 
     <!-- SplitBizTemplate Entry -->
     <bean name="simpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.SimpleSplitJdbcTemplate">
-        <property name="splitActionRunner" ref="actionHandler"/>
+        <property name="actionHandler" ref="actionHandler"/>
         <property name="splitTablesHolder" ref="splitTablesHolder"/>
 
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
@@ -32,8 +32,8 @@
 
     <!-- SplitTables -->
     <bean name="splitTable" class="com.muwp.sharding.jdbc.core.SplitTable" init-method="init">
-        <property name="dbNamePrefix" value="sharding_jdbc"/>
-        <property name="tableNamePrefix" value="test"/>
+        <property name="dbNam" value="sharding_jdbc"/>
+        <property name="tableName" value="test"/>
         <property name="dbNum" value="1"/>
         <property name="tableNum" value="4"/>
         <property name="splitStrategyType" value="HORIZONTAL"/>
