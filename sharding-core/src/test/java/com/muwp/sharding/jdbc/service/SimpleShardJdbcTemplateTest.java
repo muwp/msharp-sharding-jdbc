@@ -1,4 +1,4 @@
-package com.muwp.sharding.jdbc;
+package com.muwp.sharding.jdbc.service;
 
 import com.muwp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate;
 import com.muwp.sharding.jdbc.model.TestModel;

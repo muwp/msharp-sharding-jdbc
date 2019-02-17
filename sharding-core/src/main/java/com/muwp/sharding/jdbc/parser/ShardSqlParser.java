@@ -9,7 +9,5 @@ package com.muwp.sharding.jdbc.parser;
  **/
 public interface ShardSqlParser {
 
-    ShardSqlParser INST = new ShardSqlParserDefImpl();
-
     ShardSqlStructure parseShardSql(String sql);
 }

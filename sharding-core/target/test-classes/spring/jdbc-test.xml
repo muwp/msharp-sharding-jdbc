@@ -9,7 +9,7 @@
     </bean>
 
     <!-- simpleSplitJdbcTemplate -->
-    <bean name="highLevelSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate">
+    <bean name="highLevelShardJdbcTemplate" class="com.muwp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate">
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
         <property name="shardTablesManager" ref="shardTablesManager"/>
     </bean>
@@ -29,7 +29,7 @@
         <property name="tableName" value="test"/>
         <property name="dbNum" value="1"/>
         <property name="tableNum" value="4"/>
-        <property name="splitStrategyType" value="HORIZONTAL"/>
+        <property name="routerStrategyType" value="HORIZONTAL"/>
         <property name="shardTemplateManagers">
             <list>
                 <ref bean="templateManager_0"/>

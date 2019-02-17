@@ -9,6 +9,7 @@ import com.muwp.sharding.jdbc.enums.UpdateOperationType;
 import com.muwp.sharding.jdbc.util.OrmUtil;
 import com.muwp.sharding.jdbc.util.SqlUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.util.List;
 
 /**
@@ -73,12 +74,12 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
 
         final RouterStrategy splitStrategy = shardTableManager.getRouterStrategy();
-        List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();
+        final List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();
 
-        String dbPrefix = shardTableManager.getDbNam();
-        String tablePrefix = shardTableManager.getTableName();
+        final String dbPrefix = shardTableManager.getDbNam();
+        final String tablePrefix = shardTableManager.getTableName();
 
-        int dbNo = splitStrategy.getDbNo(splitKey);
+        int dbNo = splitStrategy.getDatabasebNo(splitKey);
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int tableNo = splitStrategy.getTableNo(splitKey);
 
@@ -120,7 +121,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         String dbPrefix = splitTable.getDbNam();
 
         int nodeNo = routerStrategy.getNodeNo(splitKey);
-        int dbNo = routerStrategy.getDbNo(splitKey);
+        int dbNo = routerStrategy.getDatabasebNo(splitKey);
         int tableNo = routerStrategy.getTableNo(splitKey);
 
         log.info("HighLevelShardJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
@@ -140,22 +141,22 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
         log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
 
-        ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        final ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
-        RouterStrategy routerStrategy = splitTable.getRouterStrategy();
-        List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
+        final RouterStrategy routerStrategy = splitTable.getRouterStrategy();
+        final List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
 
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
 
-        int nodeNo = routerStrategy.getNodeNo(splitKey);
-        int dbNo = routerStrategy.getDbNo(splitKey);
-        int tableNo = routerStrategy.getTableNo(splitKey);
+        final int nodeNo = routerStrategy.getNodeNo(splitKey);
+        final int dbNo = routerStrategy.getDatabasebNo(splitKey);
+        final int tableNo = routerStrategy.getTableNo(splitKey);
 
         log.info("HighLevelShardJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
-        JdbcTemplate jt = getWriteJdbcTemplate(sn);
+        final ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
+        final JdbcTemplate jt = getWriteJdbcTemplate(sn);
 
         SqlBean srb = null;
         switch (operationType) {

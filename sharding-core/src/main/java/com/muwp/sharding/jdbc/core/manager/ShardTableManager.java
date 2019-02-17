@@ -24,7 +24,7 @@ public class ShardTableManager {
 
     private int tableNum;
 
-    private RouterStrategyType splitStrategyType = RouterStrategyType.HORIZONTAL;
+    private RouterStrategyType routerStrategyType = RouterStrategyType.HORIZONTAL;
 
     private RouterStrategy routerStrategy;
 
@@ -33,31 +33,31 @@ public class ShardTableManager {
     private boolean readWriteSeparate = true;
 
     public void init() {
-        if (splitStrategyType == RouterStrategyType.VERTICAL) {
+        if (routerStrategyType == RouterStrategyType.VERTICAL) {
             this.routerStrategy = new VerticalHashRouterStrategy(shardTemplateManagers.size(), dbNum, tableNum);
-        } else if (splitStrategyType == RouterStrategyType.HORIZONTAL) {
+        } else if (routerStrategyType == RouterStrategyType.HORIZONTAL) {
             this.routerStrategy = new HorizontalHashRouterStrategy(shardTemplateManagers.size(), dbNum, tableNum);
         }
     }
 
-    public void setSplitStrategyType(String splitStrategyType) {
-        this.splitStrategyType = RouterStrategyType.valueOf(splitStrategyType);
+    public void setRouterStrategyType(String routerStrategyType) {
+        this.routerStrategyType = RouterStrategyType.valueOf(routerStrategyType);
     }
 
     public String getDbNam() {
         return dbNam;
     }
 
-    public void setDbNam(String dbNamePrifix) {
-        this.dbNam = dbNamePrifix;
+    public void setDbNam(String dbNam) {
+        this.dbNam = dbNam;
     }
 
     public String getTableName() {
         return tableName;
     }
 
-    public void setTableName(String tableNamePrifix) {
-        this.tableName = tableNamePrifix;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public int getDbNum() {

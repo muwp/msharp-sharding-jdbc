@@ -6,6 +6,7 @@ import com.muwp.sharding.jdbc.core.manager.ShardTablesManager;
 import com.muwp.sharding.jdbc.core.action.ShardAction;
 import com.muwp.sharding.jdbc.core.strategy.RouterStrategy;
 import com.muwp.sharding.jdbc.parser.ShardSqlParser;
+import com.muwp.sharding.jdbc.parser.ShardSqlParserImpl;
 import com.muwp.sharding.jdbc.parser.ShardSqlStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class ShardExecutor implements Executor {
     public <T, K> T execute(K partitionKey, String sql, ShardAction<T> shardAction) {
         log.debug("execute entry, partitionKey {} sql {}", partitionKey, sql);
 
-        final ShardSqlStructure shardSqlStructure = ShardSqlParser.INST.parseShardSql(sql);
+        final ShardSqlStructure shardSqlStructure = ShardSqlParserImpl.getInstance().parseShardSql(sql);
 
         String dbName = shardSqlStructure.getDbName();
         String tableName = shardSqlStructure.getTableName();
@@ -47,7 +48,7 @@ public class ShardExecutor implements Executor {
         RouterStrategy routerStrategy = shardTableManager.getRouterStrategy();
 
         int nodeNo = routerStrategy.getNodeNo(partitionKey);
-        int dbNo = routerStrategy.getDbNo(partitionKey);
+        int dbNo = routerStrategy.getDatabasebNo(partitionKey);
         int tableNo = routerStrategy.getTableNo(partitionKey);
 
         List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();

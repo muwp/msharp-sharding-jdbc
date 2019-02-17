@@ -11,36 +11,45 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 /**
- * ShardSqlParserDefImpl
+ * ShardSqlParserImpl
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class ShardSqlParserDefImpl implements ShardSqlParser {
+public class ShardSqlParserImpl implements ShardSqlParser {
 
-    private static final Logger log = LoggerFactory.getLogger(ShardSqlParserDefImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ShardSqlParserImpl.class);
 
-    private static final int CACHE_SIZE = 1000;
+    private static final int CACHE_SIZE = 5000;
 
-    @SuppressWarnings("unchecked")
+    private static ShardSqlParser INSTANCE = new ShardSqlParserImpl();
+
     private Map<String, ShardSqlStructure> cache = new LRUMap(CACHE_SIZE);
 
-    public ShardSqlParserDefImpl() {
-        log.info("Default ShardSqlParserDefImpl is used.");
+    public static ShardSqlParser getInstance() {
+        return INSTANCE;
     }
 
     @Override
-    public ShardSqlStructure parseShardSql(String sql) {
-        ShardSqlStructure splitSqlStructure = cache.get(sql);
+    public ShardSqlStructure parseShardSql(final String sql) {
+        ShardSqlStructure shardSqlStructure = cache.get(sql);
+        if (null == shardSqlStructure) {
+            shardSqlStructure = load(sql);
+        }
+        return shardSqlStructure;
+    }
+
+    private synchronized ShardSqlStructure load(final String sql) {
+        ShardSqlStructure shardSqlStructure = cache.get(sql);
 
         // Don't use if contains then get, race conditon may happens due to LRU
         // map
-        if (splitSqlStructure != null) {
-            return splitSqlStructure;
+        if (shardSqlStructure != null) {
+            return shardSqlStructure;
         }
 
-        splitSqlStructure = new ShardSqlStructure();
+        shardSqlStructure = new ShardSqlStructure();
 
         String dbName = null;
         String tableName = null;
@@ -61,37 +70,38 @@ public class ShardSqlParserDefImpl implements ShardSqlParser {
                 break;
             }
 
-            if (tok.name != null)
+            if (tok.name != null) {
                 switch (tok.name) {
                     case "SELECT":
-                        splitSqlStructure.setSqlType(SqlType.SELECT);
+                        shardSqlStructure.setSqlType(SqlType.SELECT);
                         break;
 
                     case "INSERT":
-                        splitSqlStructure.setSqlType(SqlType.INSERT);
+                        shardSqlStructure.setSqlType(SqlType.INSERT);
                         break;
 
                     case "UPDATE":
                         inProcess = true;
-                        splitSqlStructure.setSqlType(SqlType.UPDATE);
+                        shardSqlStructure.setSqlType(SqlType.UPDATE);
                         break;
 
                     case "DELETE":
-                        splitSqlStructure.setSqlType(SqlType.DELETE);
+                        shardSqlStructure.setSqlType(SqlType.DELETE);
                         break;
 
                     case "INTO":
-                        if (SqlType.INSERT.equals(splitSqlStructure.getSqlType())) {
+                        if (SqlType.INSERT.equals(shardSqlStructure.getSqlType())) {
                             inProcess = true;
                         }
                         break;
 
                     case "FROM":
-                        if (SqlType.SELECT.equals(splitSqlStructure.getSqlType()) || SqlType.DELETE.equals(splitSqlStructure.getSqlType())) {
+                        if (SqlType.SELECT.equals(shardSqlStructure.getSqlType()) || SqlType.DELETE.equals(shardSqlStructure.getSqlType())) {
                             inProcess = true;
                         }
                         break;
                 }
+            }
 
             if (sebsequent) {
                 sbSebsequentPart.append(tok == Token.IDENTIFIER ? lexer.stringVal() : tok.name).append(" ");
@@ -119,16 +129,17 @@ public class ShardSqlParserDefImpl implements ShardSqlParser {
             throw new UnsupportedOperationException("The split sql is not supported: " + sql);
         }
 
-        splitSqlStructure.setDbName(dbName);
-        splitSqlStructure.setTableName(tableName);
+        shardSqlStructure.setDbName(dbName);
+        shardSqlStructure.setTableName(tableName);
 
-        splitSqlStructure.setPreviousPart(sbPreviousPart.toString());
-        splitSqlStructure.setSebsequentPart(sbSebsequentPart.toString());
+        shardSqlStructure.setPreviousPart(sbPreviousPart.toString());
+        shardSqlStructure.setSebSequentPart(sbSebsequentPart.toString());
 
         // if race condition, it is not severe
-        if (!cache.containsKey(splitSqlStructure))
-            cache.put(sql, splitSqlStructure);
+        if (!cache.containsKey(shardSqlStructure)) {
+            cache.put(sql, shardSqlStructure);
+        }
 
-        return splitSqlStructure;
+        return shardSqlStructure;
     }
 }

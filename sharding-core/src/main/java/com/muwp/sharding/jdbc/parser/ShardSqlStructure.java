@@ -20,7 +20,7 @@ public class ShardSqlStructure {
 
     private String previousPart;
 
-    private String sebsequentPart;
+    private String sebSequentPart;
 
     public SqlType getSqlType() {
         return sqlType;
@@ -54,12 +54,12 @@ public class ShardSqlStructure {
         this.previousPart = previousPart;
     }
 
-    public String getSebsequentPart() {
-        return sebsequentPart;
+    public String getSebSequentPart() {
+        return sebSequentPart;
     }
 
-    public void setSebsequentPart(String sebsequentPart) {
-        this.sebsequentPart = sebsequentPart;
+    public void setSebSequentPart(String sebSequentPart) {
+        this.sebSequentPart = sebSequentPart;
     }
 
     public String getShardSql(int dbNo, int tableNo) {
@@ -72,8 +72,8 @@ public class ShardSqlStructure {
         sb.append(dbName).append("_").append(dbNo);
         sb.append(".");
         sb.append(tableName).append("_").append(tableNo).append(" ");
-        if (!StringUtils.isEmptyOrWhitespaceOnly(sebsequentPart)) {
-            sb.append(sebsequentPart);
+        if (!StringUtils.isEmptyOrWhitespaceOnly(sebSequentPart)) {
+            sb.append(sebSequentPart);
         }
 
         return sb.toString();

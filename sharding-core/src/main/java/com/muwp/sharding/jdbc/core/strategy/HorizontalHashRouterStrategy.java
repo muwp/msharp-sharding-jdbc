@@ -36,11 +36,11 @@ public class HorizontalHashRouterStrategy implements RouterStrategy {
 
     @Override
     public int getNodeNo(Object partitionKey) {
-        return getDbNo(partitionKey) / dbNum;
+        return getDatabasebNo(partitionKey) / dbNum;
     }
 
     @Override
-    public int getDbNo(Object partitionKey) {
+    public int getDatabasebNo(Object partitionKey) {
         return getTableNo(partitionKey) / tableNum;
     }
 

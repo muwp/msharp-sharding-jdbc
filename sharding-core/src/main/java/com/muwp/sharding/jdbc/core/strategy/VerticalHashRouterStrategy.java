@@ -59,25 +59,25 @@ public class VerticalHashRouterStrategy implements RouterStrategy {
 	}
 
 	@Override
-	public int getNodeNo(Object partitionKey) {
-		int hashCode = calcHashCode(partitionKey);
+	public int getNodeNo(final Object partitionKey) {
+		final int hashCode = calcHashCode(partitionKey);
 		return hashCode % nodeNum;
 	}
 
 	@Override
-	public int getDbNo(Object partitionKey) {
+	public int getDatabasebNo(final Object partitionKey) {
 		int hashCode = calcHashCode(partitionKey);
 		return hashCode / nodeNum % dbNum;
 	}
 
 	@Override
-	public int getTableNo(Object partitionKey) {
-		int hashCode = calcHashCode(partitionKey);
+	public int getTableNo(final Object partitionKey) {
+		final int hashCode = calcHashCode(partitionKey);
 		return hashCode / nodeNum / dbNum % tableNum;
 	}
 
-	private int calcHashCode(Object partitionKey) {
-		int hashCode = partitionKey.hashCode();
+	private int calcHashCode(final Object partitionKey) {
+		final int hashCode = partitionKey.hashCode();
 		return hashCode;
 	}
 }
