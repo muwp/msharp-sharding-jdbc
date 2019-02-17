@@ -15,6 +15,8 @@ public class TestModel implements Serializable {
 
     private Date updateTime;
 
+    private String appKeyValue;
+
     public Long getId() {
         return id;
     }
@@ -53,6 +55,14 @@ public class TestModel implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getAppKeyValue() {
+        return appKeyValue;
+    }
+
+    public void setAppKeyValue(String appKeyValue) {
+        this.appKeyValue = appKeyValue;
     }
 
     @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="TestSuite" time="0.375" errors="0" skipped="0">
+<testsuite tests="2" failures="0" name="TestSuite" time="0.383" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2018.3"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -22,7 +22,7 @@
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="visualvm.id" value="236252356311814"/>
+    <property name="visualvm.id" value="251272837063369"/>
     <property name="java.io.tmpdir" value="/var/folders/_g/y_6klxk93s744k8vhbsc2bbm0000gn/T/"/>
     <property name="line.separator" value="
 "/>
@@ -64,6 +64,6 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.muwp.sharding.jdbc.SimpleShardJdbcTemplateTest" name="testQuery" time="0.375"/>
-  <testcase classname="com.muwp.sharding.jdbc.SimpleShardJdbcTemplateTest" name="testSimpleSplitJdbcTemplate" time="0"/>
+  <testcase classname="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest" name="testQuery" time="0.383"/>
+  <testcase classname="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest" name="testSimpleSplitJdbcTemplate" time="0"/>
 </testsuite>

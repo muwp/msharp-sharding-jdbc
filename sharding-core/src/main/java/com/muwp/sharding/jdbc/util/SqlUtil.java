@@ -33,15 +33,13 @@ public abstract class SqlUtil {
 
         final List<Object> params = new LinkedList<Object>();
 
-        new FieldVisitor<T>(bean).visit(new FieldHandler() {
+        FieldVisitor.getInstance().visit(bean, new FieldHandler() {
             @Override
             public void handle(int index, Field field, Object value) {
                 if (index != 0) {
                     sb.append(",");
                 }
-
                 sb.append(OrmUtil.javaFieldName2DbFieldName(field.getName()));
-
                 if (value instanceof Enum) {
                     value = ((Enum<?>) value).ordinal();
                 }
@@ -53,7 +51,6 @@ public abstract class SqlUtil {
         sb.append(") values (");
         sb.append(OrmUtil.generateParamPlaceholders(params.size()));
         sb.append(")");
-
         return new SqlBean(sb.toString(), params.toArray());
     }
 
@@ -83,7 +80,7 @@ public abstract class SqlUtil {
 
         final List<Object> params = new LinkedList<Object>();
 
-        new FieldVisitor<T>(bean).visit(new FieldHandler() {
+        FieldVisitor.getInstance().visit(bean, new FieldHandler() {
             @Override
             public void handle(int index, Field field, Object value) {
                 if (index != 0) {
@@ -195,7 +192,7 @@ public abstract class SqlUtil {
 
         final List<Object> params = new LinkedList<Object>();
 
-        new FieldVisitor<T>(bean).visit(new FieldHandler() {
+        FieldVisitor.getInstance().visit(bean, new FieldHandler() {
             @Override
             public void handle(int index, Field field, Object value) {
                 if (index != 0) {

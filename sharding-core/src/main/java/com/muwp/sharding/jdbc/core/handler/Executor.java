@@ -12,5 +12,13 @@ import com.muwp.sharding.jdbc.core.action.ShardAction;
 @FunctionalInterface
 public interface Executor {
 
+    /**
+     * @param partitionKey 分片key
+     * @param sql          sql语句
+     * @param shardAction  分片处理
+     * @param <T>          分片关键字类型
+     * @param <K>          返回结果类型
+     * @return
+     */
     <T, K> T execute(K partitionKey, String sql, ShardAction<T> shardAction);
 }

@@ -28,7 +28,6 @@ public abstract class ReflectionUtil {
                 if (!field.isAccessible()) {
                     try {
                         Method method = clazz.getMethod(fieldName2GetterName(field.getName()));
-
                         if (method.getReturnType() != field.getType()) {
                             log.error("The getter for field {} may not be correct.", field);
                             continue;

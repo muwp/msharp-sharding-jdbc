@@ -6,6 +6,7 @@ import com.muwp.sharding.jdbc.util.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -33,28 +34,34 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
-    public <T> void insert(final T bean) {
-        SqlBean srb = SqlUtil.generateInsertSql(bean);
-        log.debug("Insert, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
-        this.update(srb.getSql(), srb.getParams());
+    public <T> int insert(final T bean) {
+        final SqlBean srb = SqlUtil.generateInsertSql(bean);
+        if (logger.isDebugEnabled()) {
+            log.debug("Insert, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
+        }
+        return this.update(srb.getSql(), srb.getParams());
     }
 
     @Override
-    public <T> void update(T bean) {
-        SqlBean srb = SqlUtil.generateUpdateSql(bean);
-        log.debug("Update, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
-        this.update(srb.getSql(), srb.getParams());
+    public <T> int update(T bean) {
+        final SqlBean srb = SqlUtil.generateUpdateSql(bean);
+        if (logger.isDebugEnabled()) {
+            log.debug("Update, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
+        }
+        return this.update(srb.getSql(), srb.getParams());
     }
 
     @Override
-    public <T> void delete(long id, Class<T> clazz) {
-        SqlBean srb = SqlUtil.generateDeleteSql(id, clazz);
-        log.debug("Delete, the bean: {} ---> the SQL: {} ---> the params: {}", id, srb.getSql(), srb.getParams());
-        this.update(srb.getSql(), srb.getParams());
+    public <T> int delete(long id, Class<T> clazz) {
+        final SqlBean srb = SqlUtil.generateDeleteSql(id, clazz);
+        if (logger.isDebugEnabled()) {
+            log.debug("Delete, the bean: {} ---> the SQL: {} ---> the params: {}", id, srb.getSql(), srb.getParams());
+        }
+        return this.update(srb.getSql(), srb.getParams());
     }
 
     @Override
-    public <T> T get(long id, final Class<T> clazz) {
+    public <T> T load(long id, final Class<T> clazz) {
         final SqlBean srb = SqlUtil.generateSelectSql("id", id, clazz);
         final T bean = this.queryForObject(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return bean;
@@ -62,17 +69,24 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> T get(String name, Object value, final Class<T> clazz) {
-        SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz);
+        final SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz);
         T bean = this.queryForObject(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return bean;
     }
 
     @Override
     public <T> List<T> query(final T bean) {
-        SqlBean srb = SqlUtil.generateSearchSql(bean);
-        Class<T> clazz = (Class<T>) bean.getClass();
-        List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
+        final SqlBean srb = SqlUtil.generateSearchSql(bean);
+        final Class<T> clazz = (Class<T>) bean.getClass();
+        final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return beans;
+    }
+
+    @Override
+    public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper) {
+        final SqlBean srb = SqlUtil.generateSearchSql(bean);
+        final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
+        return results;
     }
 
     @Override

@@ -14,7 +14,7 @@
         <property name="shardTablesManager" ref="shardTablesManager"/>
     </bean>
 
-    <!-- splitTablesManager -->
+    <!-- shardTablesManager -->
     <bean name="shardTablesManager" class="com.muwp.sharding.jdbc.core.manager.ShardTablesManager" init-method="init">
         <property name="splitTableManagers">
             <list>
@@ -23,7 +23,7 @@
         </property>
     </bean>
 
-    <!-- splitTableManager -->
+    <!-- shardTableManager -->
     <bean name="shardTableManager" class="com.muwp.sharding.jdbc.core.manager.ShardTableManager" init-method="init">
         <property name="dbNam" value="sharding_jdbc"/>
         <property name="tableName" value="test"/>
@@ -39,7 +39,7 @@
         <property name="readWriteSeparate" value="false"/>
     </bean>
 
-    <!-- SplitNodes -->
+    <!-- ShardJdbcTemplateManager -->
     <bean name="templateManager_0" class="com.muwp.sharding.jdbc.core.manager.ShardJdbcTemplateManager">
         <property name="master" ref="jdbcTemplate_0"/>
     </bean>

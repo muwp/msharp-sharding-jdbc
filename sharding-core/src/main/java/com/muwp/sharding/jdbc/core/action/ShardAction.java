@@ -12,5 +12,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @FunctionalInterface
 public interface ShardAction<T> {
 
+    /**
+     * 分片处理
+     *
+     * @param jt  spring jdbc template
+     * @param sql sql
+     * @return 返回处理结果
+     */
     T doAction(JdbcTemplate jt, String sql);
 }

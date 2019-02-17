@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * FieldVisitor
@@ -13,25 +15,30 @@ import java.util.List;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class FieldVisitor<T> {
+public class FieldVisitor {
 
     private static final Logger log = LoggerFactory.getLogger(FieldVisitor.class);
 
-    private T bean;
+    private static final Map<Class, List<Field>> cache = new ConcurrentHashMap<>();
 
-    public FieldVisitor(T bean) {
-        this.bean = bean;
+    private static final FieldVisitor INSTANCE = new FieldVisitor();
+
+    public static FieldVisitor getInstance() {
+        return INSTANCE;
     }
 
-    public void visit(FieldHandler fieldHandler) {
-        List<Field> fields = ReflectionUtil.getClassEffectiveFields(bean.getClass());
+    public <T> void visit(T bean, FieldHandler fieldHandler) {
+        final Class clazz = bean.getClass();
+        List<Field> fields = cache.get(clazz);
+        if (null == fields) {
+            fields = ReflectionUtil.getClassEffectiveFields(bean.getClass());
+        }
         int count = 0;
         for (int i = 0; i < fields.size(); i++) {
             Field field = fields.get(i);
             Object value = null;
             try {
-                boolean access = field.isAccessible();
-
+                final boolean access = field.isAccessible();
                 field.setAccessible(true);
                 value = field.get(bean);
 
@@ -42,10 +49,8 @@ public class FieldVisitor<T> {
                     if (value instanceof List) {
                         continue;
                     }
-
                     fieldHandler.handle(count++, field, value);
                 }
-
                 field.setAccessible(access);
             } catch (IllegalArgumentException e) {
                 log.error("Fail to obtain bean {} property {}.", bean, field);
