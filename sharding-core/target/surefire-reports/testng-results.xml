@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Command line suite" duration-ms="1031" started-at="2019-02-16T23:22:13Z" finished-at="2019-02-16T23:22:14Z">
+    <groups>
+      <group name="simpleSplitJdbcTemplate">
+        <method signature="com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testQuery()" name="testQuery" class="com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest"/>
+        <method signature="com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testSimpleSplitJdbcTemplate()" name="testSimpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest"/>
+      </group>
+    </groups>
+    <test name="Command line test" duration-ms="1031" started-at="2019-02-16T23:22:13Z" finished-at="2019-02-16T23:22:14Z">
+      <class name="com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest">
+        <test-method status="PASS" signature="springTestContextBeforeTestClass()" name="springTestContextBeforeTestClass" is-config="true" duration-ms="7" started-at="2019-02-16T23:22:13Z" finished-at="2019-02-16T23:22:13Z">
+        </test-method>
+        <test-method status="PASS" signature="springTestContextPrepareTestInstance()" name="springTestContextPrepareTestInstance" is-config="true" duration-ms="620" started-at="2019-02-16T23:22:13Z" depends-on-methods="org.springframework.test.context.testng.AbstractTestNGSpringContextTests.springTestContextBeforeTestClass" finished-at="2019-02-16T23:22:13Z">
+        </test-method>
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="1" started-at="2019-02-16T23:22:13Z" finished-at="2019-02-16T23:22:13Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testQuery()]]>
+              </value>
+            </param>
+          </params>
+        </test-method>
+        <test-method status="PASS" signature="testQuery()" name="testQuery" duration-ms="398" started-at="2019-02-16T23:22:13Z" finished-at="2019-02-16T23:22:14Z">
+        </test-method>
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-16T23:22:14Z" finished-at="2019-02-16T23:22:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testQuery()]]>
+              </value>
+            </param>
+          </params>
+        </test-method>
+        <test-method status="PASS" signature="springTestContextAfterTestClass()" name="springTestContextAfterTestClass" is-config="true" duration-ms="0" started-at="2019-02-16T23:22:14Z" finished-at="2019-02-16T23:22:14Z">
+        </test-method>
+        <test-method status="PASS" signature="testSimpleSplitJdbcTemplate()" name="testSimpleSplitJdbcTemplate" duration-ms="0" started-at="2019-02-16T23:22:14Z" finished-at="2019-02-16T23:22:14Z">
+        </test-method>
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-16T23:22:14Z" finished-at="2019-02-16T23:22:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testSimpleSplitJdbcTemplate()]]>
+              </value>
+            </param>
+          </params>
+        </test-method>
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="0" started-at="2019-02-16T23:22:14Z" finished-at="2019-02-16T23:22:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.muwp.sharding.jdbc.SimpleSplitJdbcTemplateTest.testSimpleSplitJdbcTemplate()]]>
+              </value>
+            </param>
+          </params>
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>
