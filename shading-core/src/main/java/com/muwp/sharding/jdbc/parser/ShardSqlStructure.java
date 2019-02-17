@@ -4,13 +4,13 @@ import com.muwp.sharding.jdbc.enums.SqlType;
 import com.mysql.jdbc.StringUtils;
 
 /**
- * SplitSqlStructure
+ * ShardSqlStructure
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SplitSqlStructure {
+public class ShardSqlStructure {
 
     private SqlType sqlType;
 
@@ -62,7 +62,7 @@ public class SplitSqlStructure {
         this.sebsequentPart = sebsequentPart;
     }
 
-    public String getSplitSql(int dbNo, int tableNo) {
+    public String getShardSql(int dbNo, int tableNo) {
         if (sqlType == null || StringUtils.isEmptyOrWhitespaceOnly(dbName) || StringUtils.isEmptyOrWhitespaceOnly(tableName) || StringUtils.isEmptyOrWhitespaceOnly(previousPart)) {
             throw new IllegalStateException("The split SQL should be constructed after the SQL is parsed completely.");
         }

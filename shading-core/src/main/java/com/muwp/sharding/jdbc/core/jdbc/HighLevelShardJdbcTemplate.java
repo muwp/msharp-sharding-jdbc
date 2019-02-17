@@ -1,10 +1,9 @@
 package com.muwp.sharding.jdbc.core.jdbc;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
-import com.muwp.sharding.jdbc.core.manager.SplitTablesManager;
-import com.muwp.sharding.jdbc.core.manager.SplitJdbcTemplateManager;
-import com.muwp.sharding.jdbc.core.manager.SplitTableManager;
-import com.muwp.sharding.jdbc.core.strategy.SplitStrategy;
+import com.muwp.sharding.jdbc.core.manager.ShardJdbcTemplateManager;
+import com.muwp.sharding.jdbc.core.manager.ShardTableManager;
+import com.muwp.sharding.jdbc.core.strategy.RouterStrategy;
 import com.muwp.sharding.jdbc.enums.SearchOperationType;
 import com.muwp.sharding.jdbc.enums.UpdateOperationType;
 import com.muwp.sharding.jdbc.util.OrmUtil;
@@ -13,20 +12,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 /**
- * HighLevelSplitJdbcTemplate
+ * HighLevelShardJdbcTemplate
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class HighLevelSplitJdbcTemplate extends SplitJdbcTemplate implements HighLevelSplitJdbcOperations {
+public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements HighLevelShardJdbcOperations {
 
-    protected SplitTablesManager splitTablesManager;
-
-    public HighLevelSplitJdbcTemplate() {
+    public HighLevelShardJdbcTemplate() {
     }
 
-    public HighLevelSplitJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
+    public HighLevelShardJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
         super(ipPorts, user, password, tables);
     }
 
@@ -71,23 +68,23 @@ public class HighLevelSplitJdbcTemplate extends SplitJdbcTemplate implements Hig
     }
 
     protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
-        log.debug("HighLevelSplitJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
+        log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
 
-        final SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
+        final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
 
-        final SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
+        final RouterStrategy splitStrategy = shardTableManager.getRouterStrategy();
+        List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();
 
-        String dbPrefix = splitTable.getDbNam();
-        String tablePrefix = splitTable.getTableName();
+        String dbPrefix = shardTableManager.getDbNam();
+        String tablePrefix = shardTableManager.getTableName();
 
         int dbNo = splitStrategy.getDbNo(splitKey);
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int tableNo = splitStrategy.getTableNo(splitKey);
 
-        log.info("HighLevelSplitJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelShardJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
+        ShardJdbcTemplateManager sn = shardTemplateManagers.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = null;
@@ -104,60 +101,60 @@ public class HighLevelSplitJdbcTemplate extends SplitJdbcTemplate implements Hig
                 break;
         }
 
-        log.debug("HighLevelSplitJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelShardJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         List<T> beans = jt.query(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, bean.getClass()));
 
-        log.info("HighLevelSplitJdbcTemplate.doSearch, search result: {}.", beans);
+        log.info("HighLevelShardJdbcTemplate.doSearch, search result: {}.", beans);
         return beans;
     }
 
     protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
-        log.debug("HighLevelSplitJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
+        log.debug("HighLevelShardJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
 
-        SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
-        SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
+        RouterStrategy routerStrategy = splitTable.getRouterStrategy();
+        List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
 
         String tablePrefix = splitTable.getTableName();
         String dbPrefix = splitTable.getDbNam();
 
-        int nodeNo = splitStrategy.getNodeNo(splitKey);
-        int dbNo = splitStrategy.getDbNo(splitKey);
-        int tableNo = splitStrategy.getTableNo(splitKey);
+        int nodeNo = routerStrategy.getNodeNo(splitKey);
+        int dbNo = routerStrategy.getDbNo(splitKey);
+        int tableNo = routerStrategy.getTableNo(splitKey);
 
-        log.info("HighLevelSplitJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelShardJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
+        ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
 
-        log.debug("HighLevelSplitJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelShardJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         T bean = jt.queryForObject(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, clazz));
 
-        log.info("HighLevelSplitJdbcTemplate.doSelect, select result: {}.", bean);
+        log.info("HighLevelShardJdbcTemplate.doSelect, select result: {}.", bean);
         return bean;
     }
 
     protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
-        log.debug("HighLevelSplitJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
+        log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
 
-        SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
-        SplitStrategy splitStrategy = splitTable.getSplitStrategy();
-        List<SplitJdbcTemplateManager> splitNdoes = splitTable.getSplitTemplateManagers();
+        RouterStrategy routerStrategy = splitTable.getRouterStrategy();
+        List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
 
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
 
-        int nodeNo = splitStrategy.getNodeNo(splitKey);
-        int dbNo = splitStrategy.getDbNo(splitKey);
-        int tableNo = splitStrategy.getTableNo(splitKey);
+        int nodeNo = routerStrategy.getNodeNo(splitKey);
+        int dbNo = routerStrategy.getDbNo(splitKey);
+        int tableNo = routerStrategy.getTableNo(splitKey);
 
-        log.info("HighLevelSplitJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelShardJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
+        ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getWriteJdbcTemplate(sn);
 
         SqlBean srb = null;
@@ -173,12 +170,8 @@ public class HighLevelSplitJdbcTemplate extends SplitJdbcTemplate implements Hig
                 break;
         }
 
-        log.debug("HighLevelSplitJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelShardJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         long updateCount = jt.update(srb.getSql(), srb.getParams());
-        log.info("HighLevelSplitJdbcTemplate.doUpdate, update record num: {}.", updateCount);
-    }
-
-    public void setSplitTablesManager(SplitTablesManager splitTablesManager) {
-        this.splitTablesManager = splitTablesManager;
+        log.info("HighLevelShardJdbcTemplate.doUpdate, update record num: {}.", updateCount);
     }
 }

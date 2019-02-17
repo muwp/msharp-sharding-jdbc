@@ -3,13 +3,13 @@ package com.muwp.sharding.jdbc.core.jdbc;
 import java.util.List;
 
 /**
- * HighLevelSplitJdbcOperations
+ * HighLevelShardJdbcOperations
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public interface HighLevelSplitJdbcOperations extends SplitJdbcOperations {
+public interface HighLevelShardJdbcOperations extends ShardJdbcOperations {
 
     <K, T> void insert(K splitKey, T bean);
 

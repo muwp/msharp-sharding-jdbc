@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * SplitJdbcTemplateManager
+ * ShardJdbcTemplateManager
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SplitJdbcTemplateManager {
+public class ShardJdbcTemplateManager {
 
     /**
      * 主表
@@ -26,19 +26,6 @@ public class SplitJdbcTemplateManager {
     private List<JdbcTemplate> slaves;
 
     private AtomicLong iter = new AtomicLong(0);
-
-    public SplitJdbcTemplateManager() {
-    }
-
-    public SplitJdbcTemplateManager(final JdbcTemplate masterTemplate, final List<JdbcTemplate> slaveTemplates) {
-        this.master = masterTemplate;
-        this.slaves = slaveTemplates;
-    }
-
-    public SplitJdbcTemplateManager(final JdbcTemplate masterTemplate, final JdbcTemplate... slaveTemplates) {
-        this.master = masterTemplate;
-        this.slaves = Arrays.asList(slaveTemplates);
-    }
 
     public JdbcTemplate getMaster() {
         return master;
@@ -67,7 +54,7 @@ public class SplitJdbcTemplateManager {
     public JdbcTemplate getRoundRobinSlaveTemplate() {
         long iterValue = iter.incrementAndGet();
         // Still race condition, but it doesn't matter
-        if (iterValue == Long.MAX_VALUE) {
+        if (iterValue == Long.MAX_VALUE || iterValue < 0) {
             iter.set(0);
         }
 

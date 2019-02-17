@@ -1,13 +1,13 @@
 package com.muwp.sharding.jdbc.core.strategy;
 
 /**
- * HorizontalHashSplitStrategy
+ * HorizontalHashRouterStrategy
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class HorizontalHashSplitStrategy implements SplitStrategy {
+public class HorizontalHashRouterStrategy implements RouterStrategy {
 
     /**
      * 结点数
@@ -24,34 +24,34 @@ public class HorizontalHashSplitStrategy implements SplitStrategy {
      */
     private int tableNum;
 
-    public HorizontalHashSplitStrategy() {
+    public HorizontalHashRouterStrategy() {
 
     }
 
-    public HorizontalHashSplitStrategy(int nodeNum, int dbNum, int tableNum) {
+    public HorizontalHashRouterStrategy(int nodeNum, int dbNum, int tableNum) {
         this.nodeNum = nodeNum;
         this.dbNum = dbNum;
         this.tableNum = tableNum;
     }
 
     @Override
-    public int getNodeNo(Object splitKey) {
-        return getDbNo(splitKey) / dbNum;
+    public int getNodeNo(Object partitionKey) {
+        return getDbNo(partitionKey) / dbNum;
     }
 
     @Override
-    public int getDbNo(Object splitKey) {
-        return getTableNo(splitKey) / tableNum;
+    public int getDbNo(Object partitionKey) {
+        return getTableNo(partitionKey) / tableNum;
     }
 
     @Override
-    public int getTableNo(Object splitKey) {
-        int hashCode = calcHashCode(splitKey);
+    public int getTableNo(Object partitionKey) {
+        int hashCode = calcHashCode(partitionKey);
         return hashCode % (nodeNum * dbNum * tableNum);
     }
 
-    private int calcHashCode(Object splitKey) {
-        int hashCode = splitKey.hashCode();
+    private int calcHashCode(Object partitionKey) {
+        int hashCode = partitionKey.hashCode();
         if (hashCode < 0) {
             hashCode = -hashCode;
         }

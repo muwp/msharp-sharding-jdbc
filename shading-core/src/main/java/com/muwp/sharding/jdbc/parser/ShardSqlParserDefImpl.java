@@ -11,28 +11,28 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 /**
- * SplitSqlParserDefImpl
+ * ShardSqlParserDefImpl
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SplitSqlParserDefImpl implements SplitSqlParser {
+public class ShardSqlParserDefImpl implements ShardSqlParser {
 
-    private static final Logger log = LoggerFactory.getLogger(SplitSqlParserDefImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ShardSqlParserDefImpl.class);
 
     private static final int CACHE_SIZE = 1000;
 
     @SuppressWarnings("unchecked")
-    private Map<String, SplitSqlStructure> cache = new LRUMap(CACHE_SIZE);
+    private Map<String, ShardSqlStructure> cache = new LRUMap(CACHE_SIZE);
 
-    public SplitSqlParserDefImpl() {
-        log.info("Default SplitSqlParserDefImpl is used.");
+    public ShardSqlParserDefImpl() {
+        log.info("Default ShardSqlParserDefImpl is used.");
     }
 
     @Override
-    public SplitSqlStructure parseSplitSql(String sql) {
-        SplitSqlStructure splitSqlStructure = cache.get(sql);
+    public ShardSqlStructure parseShardSql(String sql) {
+        ShardSqlStructure splitSqlStructure = cache.get(sql);
 
         // Don't use if contains then get, race conditon may happens due to LRU
         // map
@@ -40,7 +40,7 @@ public class SplitSqlParserDefImpl implements SplitSqlParser {
             return splitSqlStructure;
         }
 
-        splitSqlStructure = new SplitSqlStructure();
+        splitSqlStructure = new ShardSqlStructure();
 
         String dbName = null;
         String tableName = null;

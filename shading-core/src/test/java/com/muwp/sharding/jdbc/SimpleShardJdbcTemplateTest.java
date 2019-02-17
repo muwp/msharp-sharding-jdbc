@@ -1,6 +1,6 @@
 package com.muwp.sharding.jdbc;
 
-import com.muwp.sharding.jdbc.core.jdbc.HighLevelSplitJdbcTemplate;
+import com.muwp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate;
 import com.muwp.sharding.jdbc.model.TestModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,18 +15,18 @@ import java.util.List;
 
 
 @ContextConfiguration(locations = "/spring/jdbc-test.xml")
-public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTests {
+public class SimpleShardJdbcTemplateTest extends AbstractTestNGSpringContextTests {
 
-    @Test(groups = {"simpleSplitJdbcTemplate"})
+    @Test(groups = {"highLevelShardJdbcTemplate"})
     public void testSimpleSplitJdbcTemplate() {
-        // HighLevelSplitJdbcTemplate jdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
+        // HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
         // final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
         // System.out.println("result:" + update);
     }
 
-    @Test(groups = {"simpleSplitJdbcTemplate"})
+    @Test(groups = {"highLevelShardJdbcTemplate"})
     public void testQuery() {
-        HighLevelSplitJdbcTemplate jdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
+        HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("highLevelShardJdbcTemplate");
         final List<TestModel> result = jdbcTemplate.query("test", "select id,appkey,name,age,update_time from sharding_jdbc.test ", new RowMapper<TestModel>() {
             @Override
             public TestModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -44,7 +44,7 @@ public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTest
 
     //@Test(groups = {"splitJdbcTemplate"})
     public void testSplitJdbcTemplate() {
-        HighLevelSplitJdbcTemplate simpleSplitJdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext;
+        HighLevelShardJdbcTemplate simpleSplitJdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext;
 
         long id = 1;
         System.out.println("id:" + id);

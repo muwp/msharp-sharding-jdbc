@@ -1,6 +1,6 @@
 package com.muwp.sharding.jdbc.core.handler;
 
-import com.muwp.sharding.jdbc.core.action.SplitAction;
+import com.muwp.sharding.jdbc.core.action.ShardAction;
 
 /**
  * Executor
@@ -12,5 +12,5 @@ import com.muwp.sharding.jdbc.core.action.SplitAction;
 @FunctionalInterface
 public interface Executor {
 
-    <T, K> T execute(K splitKey, String sql, SplitAction<T> splitAction);
+    <T, K> T execute(K partitionKey, String sql, ShardAction<T> shardAction);
 }
