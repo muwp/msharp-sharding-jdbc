@@ -1,6 +1,6 @@
 package com.muwp.sharding.jdbc;
 
-import com.muwp.sharding.jdbc.core.jdbc.SimpleSplitJdbcTemplate;
+import com.muwp.sharding.jdbc.core.jdbc.HighLevelSplitJdbcTemplate;
 import com.muwp.sharding.jdbc.model.TestModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,14 +19,14 @@ public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTest
 
     @Test(groups = {"simpleSplitJdbcTemplate"})
     public void testSimpleSplitJdbcTemplate() {
-        // SimpleSplitJdbcTemplate jdbcTemplate = (SimpleSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
+        // HighLevelSplitJdbcTemplate jdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
         // final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
         // System.out.println("result:" + update);
     }
 
     @Test(groups = {"simpleSplitJdbcTemplate"})
     public void testQuery() {
-        SimpleSplitJdbcTemplate jdbcTemplate = (SimpleSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
+        HighLevelSplitJdbcTemplate jdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
         final List<TestModel> result = jdbcTemplate.query("test", "select id,appkey,name,age,update_time from sharding_jdbc.test ", new RowMapper<TestModel>() {
             @Override
             public TestModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -44,7 +44,7 @@ public class SimpleSplitJdbcTemplateTest extends AbstractTestNGSpringContextTest
 
     //@Test(groups = {"splitJdbcTemplate"})
     public void testSplitJdbcTemplate() {
-        SimpleSplitJdbcTemplate simpleSplitJdbcTemplate = (SimpleSplitJdbcTemplate) applicationContext;
+        HighLevelSplitJdbcTemplate simpleSplitJdbcTemplate = (HighLevelSplitJdbcTemplate) applicationContext;
 
         long id = 1;
         System.out.println("id:" + id);

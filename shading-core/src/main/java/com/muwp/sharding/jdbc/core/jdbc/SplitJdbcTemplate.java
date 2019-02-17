@@ -120,7 +120,7 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
 
     @Override
     public <T, K> T execute(K splitKey, String sql, PreparedStatementCallback<T> action) throws DataAccessException {
-        throw new UnsupportedOperationException();
+        return executor.execute(splitKey, sql, (jt, SQL) -> jt.execute(SQL, action));
     }
 
     @Override
@@ -343,10 +343,6 @@ public class SplitJdbcTemplate implements SplitJdbcOperations {
     @Override
     public <K> Map<String, Object> call(K splitKey, CallableStatementCreator csc, List<SqlParameter> declaredParameters) throws DataAccessException {
         throw new UnsupportedOperationException();
-    }
-
-    public Executor getExecutor() {
-        return executor;
     }
 
     public void setExecutor(Executor executor) {

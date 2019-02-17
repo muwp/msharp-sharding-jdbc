@@ -13,20 +13,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 /**
- * SimpleSplitJdbcTemplate
+ * HighLevelSplitJdbcTemplate
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements SimpleSplitJdbcOperations {
+public class HighLevelSplitJdbcTemplate extends SplitJdbcTemplate implements HighLevelSplitJdbcOperations {
 
     protected SplitTablesManager splitTablesManager;
 
-    public SimpleSplitJdbcTemplate() {
+    public HighLevelSplitJdbcTemplate() {
     }
 
-    public SimpleSplitJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
+    public HighLevelSplitJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
         super(ipPorts, user, password, tables);
     }
 
@@ -70,8 +70,8 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         return doSearch(splitKey, bean, name, value, null, SearchOperationType.FIELD);
     }
 
-    protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType searchOper) {
-        log.debug("SimpleSplitJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
+    protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
+        log.debug("HighLevelSplitJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
 
         final SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
 
@@ -85,14 +85,14 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         int nodeNo = splitStrategy.getNodeNo(splitKey);
         int tableNo = splitStrategy.getTableNo(splitKey);
 
-        log.info("SimpleSplitJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelSplitJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
         SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = null;
 
-        switch (searchOper) {
+        switch (operationType) {
             case NORMAL:
                 srb = SqlUtil.generateSearchSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
@@ -104,15 +104,15 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
                 break;
         }
 
-        log.debug("SimpleSplitJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelSplitJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         List<T> beans = jt.query(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, bean.getClass()));
 
-        log.info("SimpleSplitJdbcTemplate.doSearch, search result: {}.", beans);
+        log.info("HighLevelSplitJdbcTemplate.doSearch, search result: {}.", beans);
         return beans;
     }
 
     protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
-        log.debug("SimpleSplitJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
+        log.debug("HighLevelSplitJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
 
         SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
@@ -126,22 +126,22 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         int dbNo = splitStrategy.getDbNo(splitKey);
         int tableNo = splitStrategy.getTableNo(splitKey);
 
-        log.info("SimpleSplitJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelSplitJdbcTemplate.doSelect, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
         SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
         SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
 
-        log.debug("SimpleSplitJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelSplitJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         T bean = jt.queryForObject(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, clazz));
 
-        log.info("SimpleSplitJdbcTemplate.doSelect, select result: {}.", bean);
+        log.info("HighLevelSplitJdbcTemplate.doSelect, select result: {}.", bean);
         return bean;
     }
 
-    protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType updateOper, T bean, long id) {
-        log.debug("SimpleSplitJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, updateOper, bean, id);
+    protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
+        log.debug("HighLevelSplitJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
 
         SplitTableManager splitTable = splitTablesManager.searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
 
@@ -155,13 +155,13 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
         int dbNo = splitStrategy.getDbNo(splitKey);
         int tableNo = splitStrategy.getTableNo(splitKey);
 
-        log.info("SimpleSplitJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelSplitJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
         SplitJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getWriteJdbcTemplate(sn);
 
         SqlBean srb = null;
-        switch (updateOper) {
+        switch (operationType) {
             case INSERT:
                 srb = SqlUtil.generateInsertSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
@@ -173,9 +173,9 @@ public class SimpleSplitJdbcTemplate extends SplitJdbcTemplate implements Simple
                 break;
         }
 
-        log.debug("SimpleSplitJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        log.debug("HighLevelSplitJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
         long updateCount = jt.update(srb.getSql(), srb.getParams());
-        log.info("SimpleSplitJdbcTemplate.doUpdate, update record num: {}.", updateCount);
+        log.info("HighLevelSplitJdbcTemplate.doUpdate, update record num: {}.", updateCount);
     }
 
     public void setSplitTablesManager(SplitTablesManager splitTablesManager) {

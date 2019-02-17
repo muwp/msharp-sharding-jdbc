@@ -14,7 +14,7 @@
     </bean>
 
     <!-- simpleSplitJdbcTemplate -->
-    <bean name="simpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.jdbc.SimpleSplitJdbcTemplate">
+    <bean name="highLevelSplitJdbcTemplate" class="com.muwp.sharding.jdbc.core.jdbc.HighLevelSplitJdbcTemplate">
         <property name="executor" ref="executor"/>
         <property name="splitTablesManager" ref="splitTablesManager"/>
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
