@@ -10,5 +10,4 @@
 *.iml
 .idea
 
-sharding-core/src/main/resources/
-
+/.gitignore

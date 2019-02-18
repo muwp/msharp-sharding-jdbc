@@ -75,38 +75,44 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
-    public <T> List<T> query(final T bean) {
-        final SqlBean srb = SqlParserManager.generateSearchSql(bean);
-        final Class<T> clazz = (Class<T>) bean.getClass();
+    public <T> List<T> query(final T request) {
+        final SqlBean srb = SqlParserManager.generateSearchSql(request);
+        final Class<T> clazz = (Class<T>) request.getClass();
         final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return beans;
     }
 
     @Override
-    public <T> List<T> query(final T bean, final int offset, final int pageSize) {
-        final SqlBean srb = SqlParserManager.generateSearchSql(bean, offset, pageSize);
-        final Class<T> clazz = (Class<T>) bean.getClass();
+    public <T> List<T> query(final T request, final int offset, final int pageSize) {
+        final SqlBean srb = SqlParserManager.generateSearchSql(request, offset, pageSize);
+        final Class<T> clazz = (Class<T>) request.getClass();
         final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return beans;
     }
 
     @Override
-    public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper) {
-        final SqlBean srb = SqlParserManager.generateSearchSql(bean);
+    public <Request, Result> List<Result> query(Request request, RowMapper<Result> rowMapper) {
+        final SqlBean srb = SqlParserManager.generateSearchSql(request);
         final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
         return results;
     }
 
     @Override
-    public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper, final int offset, final int pageSize) {
-        final SqlBean srb = SqlParserManager.generateSearchSql(bean, offset, pageSize);
+    public <Request, Result> List<Result> query(Request request, RowMapper<Result> rowMapper, final int offset, final int pageSize) {
+        final SqlBean srb = SqlParserManager.generateSearchSql(request, offset, pageSize);
         final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
         return results;
     }
 
     @Override
-    public <T> List<T> query(String sql, Object[] params, final Class<T> clazz) {
-        final List<T> beans = this.query(sql, params, new DefaultRowMapper<>(clazz));
+    public <Result> List<Result> query(String sql, Object[] params, final Class<Result> clazz) {
+        final List<Result> beans = this.query(sql, params, new DefaultRowMapper<>(clazz));
+        return beans;
+    }
+
+    @Override
+    public <Result> List<Result> query(String sql, Object[] params, final RowMapper<Result> rowMapper) {
+        final List<Result> beans = this.query(sql, params, rowMapper);
         return beans;
     }
 }

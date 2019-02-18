@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -150,10 +151,7 @@ public class SqlParserManager {
                 .append(name)
                 .append("=?");
 
-        List<Object> params = new LinkedList<Object>();
-        params.add(value);
-
-        return new SqlBean(sb.toString(), params.toArray());
+        return new SqlBean(sb.toString(), new Object[]{value});
     }
 
     public static <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz) {
@@ -237,37 +235,37 @@ public class SqlParserManager {
         final List<Object> paramList = new ArrayList<>();
         final StringBuilder condition = new StringBuilder();
         FieldVisitor.getInstance().visit(bean, (index, columnName, value) -> {
-            if (index != 0) {
-                condition.append(" and ");
-            }
-            if (value instanceof Enum) {
-                value = ((Enum<?>) value).ordinal();
-                condition.append(columnName).append("=? ");
-                paramList.add(value);
-            } else if (value instanceof List) {
-                final List<Object> valList = (List) value;
-                if (CollectionUtils.isEmpty(valList)) {
-                    return;
-                }
-                condition
-                        .append(columnName)
-                        .append(" in ( ");
-                for (int i = 0, size = valList.size(); i < size; i++) {
-                    if (i != 0) {
-                        condition.append(",");
+                    if (index != 0) {
+                        condition.append(" and ");
                     }
-                    final Object val = valList.get(i);
-                    condition.append(" ? ");
-                    paramList.add(val);
+                    if (value instanceof Enum) {
+                        value = ((Enum<?>) value).ordinal();
+                        condition.append(columnName).append("=? ");
+                        paramList.add(value);
+                    } else if (value instanceof List) {
+                        final List<Object> valList = (List) value;
+                        if (CollectionUtils.isEmpty(valList)) {
+                            return;
+                        }
+                        condition
+                                .append(columnName)
+                                .append(" in (");
+                        for (int i = 0, size = valList.size(); i < size; i++) {
+                            if (i != 0) {
+                                condition.append(",");
+                            }
+                            final Object val = valList.get(i);
+                            condition.append(" ?");
+                            paramList.add(val);
+                        }
+                        condition.append(")");
+                    } else {
+                        condition
+                                .append(columnName)
+                                .append("=? ");
+                        paramList.add(value);
+                    }
                 }
-                condition.append(" )");
-            } else {
-                condition
-                        .append(columnName)
-                        .append("=? ");
-                paramList.add(value);
-            }
-        }
         );
 
         if (paramList.size() > 0) {
@@ -279,7 +277,6 @@ public class SqlParserManager {
             paramList.add(pageSize);
             sb.append(" limit ?,?");
         }
-
         return new SqlBean(sb.toString(), paramList.toArray());
     }
 

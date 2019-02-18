@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * ShardJdbcTemplate
+ * https://github.com/growup818/spring-learning-examples
  *
  * @author mwup
  * @version 1.0
@@ -49,7 +50,6 @@ public class ShardJdbcTemplate implements ShardJdbcOperations {
             jt.execute(SQL);
             return null;
         });
-
     }
 
     @Override

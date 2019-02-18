@@ -19,9 +19,9 @@ public class SimpleShardJdbcTemplateTest extends AbstractTestNGSpringContextTest
 
     @Test(groups = {"highLevelShardJdbcTemplate"})
     public void testSimpleSplitJdbcTemplate() {
-        // HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("simpleSplitJdbcTemplate");
-        // final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
-        // System.out.println("result:" + update);
+         HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("highLevelShardJdbcTemplate");
+         //final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
+         //System.out.println("result:" + update);
     }
 
     @Test(groups = {"highLevelShardJdbcTemplate"})

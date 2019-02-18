@@ -54,22 +54,25 @@ public abstract class OrmManager {
     private synchronized static String getTableName(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
-            if (Character.isUpperCase(name.charAt(i)) && i != 0) {
+            char val = name.charAt(i);
+            if (Character.isUpperCase(val) && i != 0) {
                 sb.append("_");
+                val = Character.toLowerCase(val);
             }
-            sb.append(Character.toUpperCase(name.charAt(i)));
+            sb.append(val);
         }
         return sb.toString();
     }
 
     public static String javaFieldName2DbFieldName(String name) {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < name.length(); i++) {
-            if (Character.isUpperCase(name.charAt(i))) {
+            char val = name.charAt(i);
+            if (Character.isUpperCase(val)) {
                 sb.append("_");
+                val = Character.toLowerCase(val);
             }
-            sb.append(Character.toUpperCase(name.charAt(i)));
+            sb.append(val);
         }
         return sb.toString();
     }
@@ -121,8 +124,8 @@ public abstract class OrmManager {
                     Object value = enumParseFactoryMethod.invoke(enumParamClazz, rs.getInt(i));
                     setter.invoke(bean, value);
                 } else {
-                    Class<? extends Object> param = null;
-                    Object value = null;
+                    Class<? extends Object> param;
+                    Object value;
                     switch (columnType) {
                         case Types.VARCHAR:
                             param = String.class;
@@ -145,7 +148,7 @@ public abstract class OrmManager {
                             value = rs.getTimestamp(i);
                             break;
                         default:
-                            log.error("Dbsplit doesn't support column {} type {}.", columnName, columnType);
+                            log.error("sharding-jdbc doesn't support column {} type {}.", columnName, columnType);
                             throw new Exception("Db column not supported.");
                     }
 
