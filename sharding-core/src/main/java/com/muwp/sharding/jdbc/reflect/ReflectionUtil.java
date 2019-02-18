@@ -1,11 +1,16 @@
 package com.muwp.sharding.jdbc.reflect;
 
+import com.muwp.sharding.jdbc.bean.FieldWrapper;
+import com.muwp.sharding.jdbc.util.OrmUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,14 +25,24 @@ public abstract class ReflectionUtil {
 
     private static final Logger log = LoggerFactory.getLogger(ReflectionUtil.class);
 
-    public static List<Field> getClassEffectiveFields(Class<? extends Object> clazz) {
-        List<Field> effectiveFields = new LinkedList<Field>();
+    public static List<FieldWrapper> getClassEffectiveFields(Class<? extends Object> clazz) {
+        final List<FieldWrapper> effectiveFields = new ArrayList<>();
+        String columnName;
         while (clazz != null) {
-            Field[] fields = clazz.getDeclaredFields();
+            final Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
+                if (field.isAnnotationPresent(Transient.class)) {
+                    continue;
+                }
+                final Column column = field.getAnnotation(Column.class);
+                if (column != null) {
+                    columnName = column.name();
+                } else {
+                    columnName = OrmUtil.javaFieldName2DbFieldName(field.getName());
+                }
                 if (!field.isAccessible()) {
                     try {
-                        Method method = clazz.getMethod(fieldName2GetterName(field.getName()));
+                        final Method method = clazz.getMethod(fieldName2GetterName(field.getName()));
                         if (method.getReturnType() != field.getType()) {
                             log.error("The getter for field {} may not be correct.", field);
                             continue;
@@ -35,16 +50,19 @@ public abstract class ReflectionUtil {
                     } catch (NoSuchMethodException e) {
                         log.error("Fail to obtain getter method for non-accessible field {}.", field);
                         log.error("Exception--->", e);
-
                         continue;
                     } catch (SecurityException e) {
                         log.error("Fail to obtain getter method for non-accessible field {}.", field);
                         log.error("Exception--->", e);
-
                         continue;
                     }
                 }
-                effectiveFields.add(field);
+                field.setAccessible(true);
+                final FieldWrapper fieldWrapper = new FieldWrapper();
+                fieldWrapper.setField(field);
+                fieldWrapper.setFieldName(field.getName());
+                fieldWrapper.setColumnName(columnName);
+                effectiveFields.add(fieldWrapper);
             }
             clazz = clazz.getSuperclass();
         }

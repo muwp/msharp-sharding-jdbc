@@ -25,7 +25,11 @@ public interface SimpleJdbcOperations {
 
     <Request> List<Request> query(final Request bean);
 
+    <Request> List<Request> query(final Request bean, int offset, int pageSize);
+
     <Request, Result> List<Result> query(final Request bean, RowMapper<Result> rowMapper);
+
+    <Request, Result> List<Result> query(final Request bean, RowMapper<Result> rowMapper, int offset, int pageSize);
 
     <T> List<T> query(String sql, Object[] params, final Class<T> clazz);
 }

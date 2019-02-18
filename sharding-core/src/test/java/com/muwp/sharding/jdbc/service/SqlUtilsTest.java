@@ -12,7 +12,8 @@ public class SqlUtilsTest {
         TestModel model = new TestModel();
         model.setId(2L);
         model.setAge(2);
-        model.setAppKeyValue("dd");
+        model.setAppkey("dd");
+
         model.setUpdateTime(new Date());
         SqlBean sqlBean = SqlUtil.generateUpdateSql(model);
         System.out.println(sqlBean);

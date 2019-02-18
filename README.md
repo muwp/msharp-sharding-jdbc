@@ -63,3 +63,5 @@ create table test_3
   
   
  我们把这个DDL脚本保存到resources/schema.sql文件中，然后，我们需要准备好一个Mysql的数据库实例，实例端口为localhost:3306, 因为环境的限制，我们用着一个数据库实例，我们为sharding_jdbc设计了1个数据库实例、每个实例1个数据库、每个数据库4个表，共4个分片表。
+ 
+ 待续。。。。。。

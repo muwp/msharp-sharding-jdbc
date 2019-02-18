@@ -2,7 +2,6 @@ com/muwp/sharding/jdbc/parser/ShardSqlParser.class
 com/muwp/sharding/jdbc/core/jdbc/ShardJdbcTemplate.class
 com/muwp/sharding/jdbc/core/action/ShardAction.class
 com/muwp/sharding/jdbc/reflect/FieldVisitor.class
-com/muwp/sharding/jdbc/util/SqlUtil$2.class
 com/muwp/sharding/jdbc/bean/SqlBean.class
 com/muwp/sharding/jdbc/rowmapper/DefaultRowMapper.class
 com/muwp/sharding/jdbc/core/manager/ShardJdbcTemplateManager.class
@@ -16,18 +15,15 @@ com/muwp/sharding/jdbc/core/manager/ShardTableManager.class
 com/muwp/sharding/jdbc/core/strategy/RouterStrategy.class
 com/muwp/sharding/jdbc/single/SimpleJdbcTemplate.class
 com/muwp/sharding/jdbc/parser/ShardSqlStructure.class
-com/muwp/sharding/jdbc/util/SqlUtil$1.class
 com/muwp/sharding/jdbc/single/SimpleJdbcOperations.class
 com/muwp/sharding/jdbc/core/jdbc/HighLevelShardJdbcTemplate.class
 com/muwp/sharding/jdbc/core/strategy/VerticalHashRouterStrategy.class
 com/muwp/sharding/jdbc/util/OrmUtil.class
 com/muwp/sharding/jdbc/reflect/ReflectionUtil.class
 com/muwp/sharding/jdbc/core/handler/Executor.class
-com/muwp/sharding/jdbc/reflect/FieldHandler.class
 com/muwp/sharding/jdbc/core/manager/ShardTablesManager.class
 com/muwp/sharding/jdbc/enums/UpdateOperationType.class
 com/muwp/sharding/jdbc/core/handler/ShardExecutor.class
 com/muwp/sharding/jdbc/core/jdbc/HighLevelShardJdbcTemplate$1.class
 com/muwp/sharding/jdbc/parser/ShardSqlParserImpl.class
 com/muwp/sharding/jdbc/core/jdbc/ShardJdbcOperations.class
-com/muwp/sharding/jdbc/util/SqlUtil$3.class

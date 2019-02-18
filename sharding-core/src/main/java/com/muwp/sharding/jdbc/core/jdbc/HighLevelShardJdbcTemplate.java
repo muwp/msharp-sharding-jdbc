@@ -71,7 +71,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
         log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
 
-        final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass().getSimpleName()));
+        final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass()));
 
         final RouterStrategy splitStrategy = shardTableManager.getRouterStrategy();
         final List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();
@@ -95,7 +95,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
                 srb = SqlUtil.generateSearchSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case RANGE:
-                srb = SqlUtil.generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlUtil.generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo,-1,-1);
                 break;
             case FIELD:
                 srb = SqlUtil.generateSearchSql(bean, name, valueFrom, dbPrefix, tablePrefix, dbNo, tableNo);
@@ -112,7 +112,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
         log.debug("HighLevelShardJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
 
-        ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz));
 
         RouterStrategy routerStrategy = splitTable.getRouterStrategy();
         List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
@@ -141,7 +141,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
         log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
 
-        final ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz.getSimpleName()));
+        final ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz));
 
         final RouterStrategy routerStrategy = splitTable.getRouterStrategy();
         final List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();

@@ -105,6 +105,12 @@
             <artifactId>logback-core</artifactId>
             <version>1.0.13</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
 </project>

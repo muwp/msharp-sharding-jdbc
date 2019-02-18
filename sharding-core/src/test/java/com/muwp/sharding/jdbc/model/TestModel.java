@@ -1,12 +1,17 @@
 package com.muwp.sharding.jdbc.model;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
+@Table(name = "test")
 public class TestModel implements Serializable {
 
     private Long id;
 
+    @Column(name = "app_ap")
     private String appkey;
 
     private String name;

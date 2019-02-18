@@ -54,7 +54,7 @@ public class ShardExecutor implements Executor {
         List<ShardJdbcTemplateManager> shardTemplateManagers = shardTableManager.getShardTemplateManagers();
 
         ShardJdbcTemplateManager sn = shardTemplateManagers.get(nodeNo);
-        JdbcTemplate jt = getJdbcTemplate(sn, false);
+        final JdbcTemplate jt = getJdbcTemplate(sn, false);
 
         sql = shardSqlStructure.getShardSql(dbNo, tableNo);
 

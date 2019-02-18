@@ -83,8 +83,23 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
+    public <T> List<T> query(final T bean, final int offset, final int pageSize) {
+        final SqlBean srb = SqlUtil.generateSearchSql(bean, offset, pageSize);
+        final Class<T> clazz = (Class<T>) bean.getClass();
+        final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
+        return beans;
+    }
+
+    @Override
     public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper) {
         final SqlBean srb = SqlUtil.generateSearchSql(bean);
+        final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
+        return results;
+    }
+
+    @Override
+    public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper, final int offset, final int pageSize) {
+        final SqlBean srb = SqlUtil.generateSearchSql(bean, offset, pageSize);
         final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
         return results;
     }

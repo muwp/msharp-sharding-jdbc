@@ -8,6 +8,6 @@ package com.muwp.sharding.jdbc.parser;
  * @created 2019/02/15 13:51
  **/
 public interface ShardSqlParser {
-
+    
     ShardSqlStructure parseShardSql(String sql);
 }
