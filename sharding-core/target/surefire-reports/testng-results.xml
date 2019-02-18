@@ -2,22 +2,22 @@
 <testng-results skipped="0" failed="0" total="2" passed="2">
   <reporter-output>
   </reporter-output>
-  <suite name="Command line suite" duration-ms="1287" started-at="2019-02-18T01:03:28Z" finished-at="2019-02-18T01:03:29Z">
+  <suite name="Command line suite" duration-ms="1221" started-at="2019-02-18T10:22:44Z" finished-at="2019-02-18T10:22:45Z">
     <groups>
       <group name="highLevelShardJdbcTemplate">
         <method signature="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest.testQuery()" name="testQuery" class="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest"/>
         <method signature="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest.testSimpleSplitJdbcTemplate()" name="testSimpleSplitJdbcTemplate" class="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest"/>
       </group>
     </groups>
-    <test name="Command line test" duration-ms="1287" started-at="2019-02-18T01:03:28Z" finished-at="2019-02-18T01:03:29Z">
+    <test name="Command line test" duration-ms="1221" started-at="2019-02-18T10:22:44Z" finished-at="2019-02-18T10:22:45Z">
       <class name="com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest">
-        <test-method status="PASS" signature="springTestContextBeforeTestClass()" name="springTestContextBeforeTestClass" is-config="true" duration-ms="5" started-at="2019-02-18T01:03:28Z" finished-at="2019-02-18T01:03:28Z">
+        <test-method status="PASS" signature="springTestContextBeforeTestClass()" name="springTestContextBeforeTestClass" is-config="true" duration-ms="7" started-at="2019-02-18T10:22:44Z" finished-at="2019-02-18T10:22:44Z">
         </test-method>
-        <test-method status="PASS" signature="springTestContextPrepareTestInstance()" name="springTestContextPrepareTestInstance" is-config="true" duration-ms="887" started-at="2019-02-18T01:03:28Z" depends-on-methods="org.springframework.test.context.testng.AbstractTestNGSpringContextTests.springTestContextBeforeTestClass" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="springTestContextPrepareTestInstance()" name="springTestContextPrepareTestInstance" is-config="true" duration-ms="816" started-at="2019-02-18T10:22:44Z" depends-on-methods="org.springframework.test.context.testng.AbstractTestNGSpringContextTests.springTestContextBeforeTestClass" finished-at="2019-02-18T10:22:45Z">
         </test-method>
-        <test-method status="PASS" signature="testQuery()" name="testQuery" duration-ms="388" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="testQuery()" name="testQuery" duration-ms="391" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
         </test-method>
-        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
           <params>
             <param index="0">
               <value>
@@ -26,16 +26,7 @@
             </param>
           </params>
         </test-method>
-        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="1" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[public void com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest.testSimpleSplitJdbcTemplate()]]>
-              </value>
-            </param>
-          </params>
-        </test-method>
-        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
           <params>
             <param index="0">
               <value>
@@ -44,9 +35,9 @@
             </param>
           </params>
         </test-method>
-        <test-method status="PASS" signature="testSimpleSplitJdbcTemplate()" name="testSimpleSplitJdbcTemplate" duration-ms="0" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="testSimpleSplitJdbcTemplate()" name="testSimpleSplitJdbcTemplate" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
         </test-method>
-        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)" name="springTestContextAfterTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
           <params>
             <param index="0">
               <value>
@@ -55,7 +46,16 @@
             </param>
           </params>
         </test-method>
-        <test-method status="PASS" signature="springTestContextAfterTestClass()" name="springTestContextAfterTestClass" is-config="true" duration-ms="0" started-at="2019-02-18T01:03:29Z" finished-at="2019-02-18T01:03:29Z">
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.muwp.sharding.jdbc.service.SimpleShardJdbcTemplateTest.testSimpleSplitJdbcTemplate()]]>
+              </value>
+            </param>
+          </params>
+        </test-method>
+        <test-method status="PASS" signature="springTestContextAfterTestClass()" name="springTestContextAfterTestClass" is-config="true" duration-ms="0" started-at="2019-02-18T10:22:45Z" finished-at="2019-02-18T10:22:45Z">
         </test-method>
       </class>
     </test>

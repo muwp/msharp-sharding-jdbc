@@ -69,7 +69,9 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     }
 
     protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
-        log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
+        }
 
         final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(bean.getClass()));
 
@@ -95,22 +97,26 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
                 srb = SqlUtil.generateSearchSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case RANGE:
-                srb = SqlUtil.generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo,-1,-1);
+                srb = SqlUtil.generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo, -1, -1);
                 break;
             case FIELD:
                 srb = SqlUtil.generateSearchSql(bean, name, valueFrom, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
         }
 
-        log.debug("HighLevelShardJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
-        List<T> beans = jt.query(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, bean.getClass()));
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doSearch, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        }
+        final List<T> beans = jt.query(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, bean.getClass()));
 
         log.info("HighLevelShardJdbcTemplate.doSearch, search result: {}.", beans);
         return beans;
     }
 
     protected <K, T> T doSelect(K splitKey, final Class<T> clazz, String name, Object value) {
-        log.debug("HighLevelShardJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doSelect, the split key: {}, the clazz: {}, where {} = {}.", splitKey, clazz, name, value);
+        }
 
         ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz));
 
@@ -131,20 +137,24 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
 
         SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
 
-        log.debug("HighLevelShardJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
-        T bean = jt.queryForObject(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, clazz));
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        }
+
+        final T bean = jt.queryForObject(srb.getSql(), srb.getParams(), (rs, rowNum) -> (T) OrmUtil.convertRow2Bean(rs, clazz));
 
         log.info("HighLevelShardJdbcTemplate.doSelect, select result: {}.", bean);
         return bean;
     }
 
     protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
-        log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
-
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
+        }
         final ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmUtil.javaClassName2DbTableName(clazz));
 
         final RouterStrategy routerStrategy = splitTable.getRouterStrategy();
-        final List<ShardJdbcTemplateManager> splitNdoes = splitTable.getShardTemplateManagers();
+        final List<ShardJdbcTemplateManager> shardTemplateManagers = splitTable.getShardTemplateManagers();
 
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
@@ -155,7 +165,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
 
         log.info("HighLevelShardJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
-        final ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
+        final ShardJdbcTemplateManager sn = shardTemplateManagers.get(nodeNo);
         final JdbcTemplate jt = getWriteJdbcTemplate(sn);
 
         SqlBean srb = null;
@@ -171,7 +181,9 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
                 break;
         }
 
-        log.debug("HighLevelShardJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        if (log.isDebugEnabled()) {
+            log.debug("HighLevelShardJdbcTemplate.doUpdate, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
+        }
         long updateCount = jt.update(srb.getSql(), srb.getParams());
         log.info("HighLevelShardJdbcTemplate.doUpdate, update record num: {}.", updateCount);
     }
