@@ -33,7 +33,6 @@ public class ShardJdbcTemplate implements ShardJdbcOperations {
     protected boolean readWriteSeparate = false;
 
     public ShardJdbcTemplate() {
-
     }
 
     public ShardJdbcTemplate(List<String> ipPorts, String user, String password, String... tables) {
@@ -45,54 +44,54 @@ public class ShardJdbcTemplate implements ShardJdbcOperations {
     }
 
     @Override
-    public <K> void execute(K splitKey, String sql) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void execute(K shardKey, String sql) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.execute(SQL);
             return null;
         });
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rse));
+    public <T, K> T query(K shardKey, String sql, ResultSetExtractor<T> rse) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, rse));
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, RowCallbackHandler rch) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void query(K shardKey, String sql, RowCallbackHandler rch) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.query(SQL, rch);
             return null;
         });
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper));
+    public <T, K> List<T> query(K shardKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper));
+    public <T, K> T queryForObject(K shardKey, String sql, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType));
+    public <T, K> T queryForObject(K shardKey, String sql, Class<T> requiredType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType));
     }
 
     @Override
-    public <K> Map<String, Object> queryForMap(K splitKey, String sql) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL));
+    public <K> Map<String, Object> queryForMap(K shardKey, String sql) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForMap(SQL));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql, Class<T> elementType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType));
+    public <T, K> List<T> queryForList(K shardKey, String sql, Class<T> elementType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType));
     }
 
     @Override
-    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL));
+    public <K> List<Map<String, Object>> queryForList(K shardKey, String sql) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL));
     }
 
     @Override
@@ -101,18 +100,18 @@ public class ShardJdbcTemplate implements ShardJdbcOperations {
     }
 
     @Override
-    public <K> int update(K splitKey, String sql) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL));
+    public <K> int update(K shardKey, String sql) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.update(SQL));
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String... sql) throws DataAccessException {
+    public <K> int[] batchUpdate(K shardKey, String... sql) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T, K> T execute(K splitKey, String sql, PreparedStatementCallback<T> action) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.execute(SQL, action));
+    public <T, K> T execute(K shardKey, String sql, PreparedStatementCallback<T> action) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.execute(SQL, action));
     }
 
     @Override
@@ -121,179 +120,179 @@ public class ShardJdbcTemplate implements ShardJdbcOperations {
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, Object[] args, int[] argTypes, ResultSetExtractor<T> rse) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rse));
+    public <T, K> T query(K shardKey, String sql, Object[] args, int[] argTypes, ResultSetExtractor<T> rse) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rse));
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, Object[] args, ResultSetExtractor<T> rse) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, rse));
+    public <T, K> T query(K shardKey, String sql, Object[] args, ResultSetExtractor<T> rse) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, args, rse));
     }
 
     @Override
-    public <T, K> T query(K splitKey, String sql, ResultSetExtractor<T> rse, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rse, args));
+    public <T, K> T query(K shardKey, String sql, ResultSetExtractor<T> rse, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, rse, args));
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, PreparedStatementSetter pss, RowCallbackHandler rch) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void query(K shardKey, String sql, PreparedStatementSetter pss, RowCallbackHandler rch) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.query(SQL, pss, rch);
             return null;
         });
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, Object[] args, int[] argTypes, RowCallbackHandler rch) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void query(K shardKey, String sql, Object[] args, int[] argTypes, RowCallbackHandler rch) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.query(SQL, args, argTypes, rch);
             return null;
         });
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, Object[] args, RowCallbackHandler rch) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void query(K shardKey, String sql, Object[] args, RowCallbackHandler rch) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.query(SQL, args, rch);
             return null;
         });
     }
 
     @Override
-    public <K> void query(K splitKey, String sql, RowCallbackHandler rch, Object... args) throws DataAccessException {
-        this.executor.execute(splitKey, sql, (jt, SQL) -> {
+    public <K> void query(K shardKey, String sql, RowCallbackHandler rch, Object... args) throws DataAccessException {
+        this.executor.execute(shardKey, sql, (jt, SQL) -> {
             jt.query(SQL, rch, args);
             return null;
         });
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, PreparedStatementSetter pss, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, pss, rowMapper));
+    public <T, K> List<T> query(K shardKey, String sql, PreparedStatementSetter pss, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, pss, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rowMapper));
+    public <T, K> List<T> query(K shardKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, args, argTypes, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, args, rowMapper));
+    public <T, K> List<T> query(K shardKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, args, rowMapper));
     }
 
     @Override
-    public <T, K> List<T> query(K splitKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper, args));
+    public <T, K> List<T> query(K shardKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.query(SQL, rowMapper, args));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, rowMapper));
+    public <T, K> T queryForObject(K shardKey, String sql, Object[] args, int[] argTypes, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, rowMapper));
+    public <T, K> T queryForObject(K shardKey, String sql, Object[] args, RowMapper<T> rowMapper) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, rowMapper));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper, args));
+    public <T, K> T queryForObject(K shardKey, String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, rowMapper, args));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, int[] argTypes, Class<T> requiredType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, requiredType));
+    public <T, K> T queryForObject(K shardKey, String sql, Object[] args, int[] argTypes, Class<T> requiredType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, argTypes, requiredType));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Object[] args, Class<T> requiredType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, requiredType));
+    public <T, K> T queryForObject(K shardKey, String sql, Object[] args, Class<T> requiredType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, args, requiredType));
     }
 
     @Override
-    public <T, K> T queryForObject(K splitKey, String sql, Class<T> requiredType, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType, args));
+    public <T, K> T queryForObject(K shardKey, String sql, Class<T> requiredType, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForObject(SQL, requiredType, args));
     }
 
     @Override
-    public <K> Map<String, Object> queryForMap(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args, argTypes));
+    public <K> Map<String, Object> queryForMap(K shardKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args, argTypes));
     }
 
     @Override
-    public <K> Map<String, Object> queryForMap(K splitKey, String sql, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args));
+    public <K> Map<String, Object> queryForMap(K shardKey, String sql, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForMap(SQL, args));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args, int[] argTypes, Class<T> elementType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, argTypes, elementType));
+    public <T, K> List<T> queryForList(K shardKey, String sql, Object[] args, int[] argTypes, Class<T> elementType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, argTypes, elementType));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql, Object[] args, Class<T> elementType) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, elementType));
+    public <T, K> List<T> queryForList(K shardKey, String sql, Object[] args, Class<T> elementType) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForList(SQL, args, elementType));
     }
 
     @Override
-    public <T, K> List<T> queryForList(K splitKey, String sql, Class<T> elementType, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType, args));
+    public <T, K> List<T> queryForList(K shardKey, String sql, Class<T> elementType, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, elementType, args));
     }
 
     @Override
-    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args, argTypes));
+    public <K> List<Map<String, Object>> queryForList(K shardKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args, argTypes));
     }
 
     @Override
-    public <K> List<Map<String, Object>> queryForList(K splitKey, String sql, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args));
+    public <K> List<Map<String, Object>> queryForList(K shardKey, String sql, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForList(SQL, args));
     }
 
     @Override
-    public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForRowSet(SQL, args, argTypes));
+    public <K> SqlRowSet queryForRowSet(K shardKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jdbcTemplate, SQL) -> jdbcTemplate.queryForRowSet(SQL, args, argTypes));
     }
 
     @Override
-    public <K> SqlRowSet queryForRowSet(K splitKey, String sql, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.queryForRowSet(SQL, args));
+    public <K> SqlRowSet queryForRowSet(K shardKey, String sql, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.queryForRowSet(SQL, args));
     }
 
     @Override
-    public <K> int update(K splitKey, String sql, PreparedStatementSetter pss) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, pss));
+    public <K> int update(K shardKey, String sql, PreparedStatementSetter pss) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.update(SQL, pss));
     }
 
     @Override
-    public <K> int update(K splitKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, args, argTypes));
+    public <K> int update(K shardKey, String sql, Object[] args, int[] argTypes) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.update(SQL, args, argTypes));
     }
 
     @Override
-    public <K> int update(K splitKey, String sql, Object... args) throws DataAccessException {
-        return this.executor.execute(splitKey, sql, (jt, SQL) -> jt.update(SQL, args));
+    public <K> int update(K shardKey, String sql, Object... args) throws DataAccessException {
+        return this.executor.execute(shardKey, sql, (jt, SQL) -> jt.update(SQL, args));
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql, BatchPreparedStatementSetter pss) throws DataAccessException {
+    public <K> int[] batchUpdate(K shardKey, String sql, BatchPreparedStatementSetter pss) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql, List<Object[]> batchArgs) throws DataAccessException {
+    public <K> int[] batchUpdate(K shardKey, String sql, List<Object[]> batchArgs) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <K> int[] batchUpdate(K splitKey, String sql, List<Object[]> batchArgs, int[] argTypes) throws DataAccessException {
+    public <K> int[] batchUpdate(K shardKey, String sql, List<Object[]> batchArgs, int[] argTypes) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T, K> int[][] batchUpdate(K splitKey, String sql, Collection<T> batchArgs, int batchSize, ParameterizedPreparedStatementSetter<T> pss) throws DataAccessException {
+    public <T, K> int[][] batchUpdate(K shardKey, String sql, Collection<T> batchArgs, int batchSize, ParameterizedPreparedStatementSetter<T> pss) throws DataAccessException {
         throw new UnsupportedOperationException();
     }
 

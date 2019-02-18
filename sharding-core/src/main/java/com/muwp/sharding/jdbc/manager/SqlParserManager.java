@@ -2,12 +2,10 @@ package com.muwp.sharding.jdbc.manager;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
 import com.muwp.sharding.jdbc.reflect.FieldVisitor;
-import com.muwp.sharding.jdbc.reflect.ReflectionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +18,13 @@ import java.util.List;
  **/
 public class SqlParserManager {
 
-    public static <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix, int databseIndex, int tableIndex) {
+    public static SqlParserManager INSTANCE = new SqlParserManager();
+
+    public static SqlParserManager getInstance() {
+        return INSTANCE;
+    }
+
+    public <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix, int databseIndex, int tableIndex) {
         final StringBuilder sb = new StringBuilder();
         sb.append("insert into ");
         if (StringUtils.isEmpty(tablePrefix)) {
@@ -50,19 +54,19 @@ public class SqlParserManager {
         return new SqlBean(sb.toString(), params.toArray());
     }
 
-    public static <T> SqlBean generateInsertSql(T bean) {
+    public <T> SqlBean generateInsertSql(T bean) {
         return generateInsertSql(bean, null, null, -1, -1);
     }
 
-    public static <T> SqlBean generateInsertSql(T bean, String databasePrefix) {
+    public <T> SqlBean generateInsertSql(T bean, String databasePrefix) {
         return generateInsertSql(bean, databasePrefix, null, -1, -1);
     }
 
-    public static <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix) {
+    public <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix) {
         return generateInsertSql(bean, databasePrefix, tablePrefix, -1, -1);
     }
 
-    public static <T> SqlBean generateUpdateSql(T bean, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
+    public <T> SqlBean generateUpdateSql(T bean, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
         final StringBuilder sb = new StringBuilder();
         sb.append(" update ");
 
@@ -91,24 +95,24 @@ public class SqlParserManager {
 
         sb.append(" where ID = ?");
 
-        params.add(ReflectionUtil.getFieldValue(bean, "id"));
+        params.add(ReflectionManager.getInstance().getFieldValue(bean, "id"));
 
         return new SqlBean(sb.toString(), params.toArray());
     }
 
-    public static <T> SqlBean generateUpdateSql(T bean) {
+    public <T> SqlBean generateUpdateSql(T bean) {
         return generateUpdateSql(bean, null, null, -1, -1);
     }
 
-    public static <T> SqlBean generateUpdateSql(T bean, String databasePrefix) {
+    public <T> SqlBean generateUpdateSql(T bean, String databasePrefix) {
         return generateUpdateSql(bean, databasePrefix, null, -1, -1);
     }
 
-    public static <T> SqlBean generateUpdateSql(T bean, String databasePrefix, String tablePrefix) {
+    public <T> SqlBean generateUpdateSql(T bean, String databasePrefix, String tablePrefix) {
         return generateUpdateSql(bean, databasePrefix, tablePrefix, -1, -1);
     }
 
-    public static <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
+    public <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
         final StringBuilder sb = new StringBuilder();
         sb.append("delete from ");
 
@@ -125,19 +129,19 @@ public class SqlParserManager {
         return new SqlBean(sb.toString(), params.toArray());
     }
 
-    public static <T> SqlBean generateDeleteSql(long id, Class<T> clazz) {
+    public <T> SqlBean generateDeleteSql(long id, Class<T> clazz) {
         return generateDeleteSql(id, clazz, null, null, -1, -1);
     }
 
-    public static <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix) {
+    public <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix) {
         return generateDeleteSql(id, clazz, databasePrefix, null, -1, -1);
     }
 
-    public static <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix, String tablePrefix) {
+    public <T> SqlBean generateDeleteSql(long id, Class<T> clazz, String databasePrefix, String tablePrefix) {
         return generateDeleteSql(id, clazz, databasePrefix, tablePrefix, -1, -1);
     }
 
-    public static <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
+    public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
         StringBuilder sb = new StringBuilder();
         sb.append("select * from ");
 
@@ -154,20 +158,20 @@ public class SqlParserManager {
         return new SqlBean(sb.toString(), new Object[]{value});
     }
 
-    public static <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz) {
+    public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz) {
         return generateSelectSql(name, value, clazz, null, null, -1, -1);
     }
 
-    public static <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix) {
+    public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix) {
         return generateSelectSql(name, value, clazz, databasePrefix, null, -1,
                 -1);
     }
 
-    public static <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix) {
+    public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix) {
         return generateSelectSql(name, value, clazz, databasePrefix, tablePrefix, -1, -1);
     }
 
-    public static <T> SqlBean generateSearchSql(T bean, String name, Object valueFrom, Object valueTo, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex, final int offset, int pageSize) {
+    public <T> SqlBean generateSearchSql(T bean, String name, Object valueFrom, Object valueTo, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex, final int offset, int pageSize) {
         final StringBuilder sb = new StringBuilder();
         sb.append("select * from ");
 
@@ -214,22 +218,21 @@ public class SqlParserManager {
         return new SqlBean(sb.toString(), params.toArray());
     }
 
-    public static <T> SqlBean generateSearchSql(T bean, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
+    public <T> SqlBean generateSearchSql(T bean, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
         return generateSearchSql(bean, null, null, null, databasePrefix, tablePrefix, databaseIndex, tableIndex, -1, -1);
     }
 
-    public static <T> SqlBean generateSearchSql(T bean, String name, Object value, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
+    public <T> SqlBean generateSearchSql(T bean, String name, Object value, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
         return generateSearchSql(bean, name, value, null, databasePrefix, tablePrefix, databaseIndex, tableIndex, -1, -1);
     }
 
-    public static <T> SqlBean generateSearchSql(T bean) {
+    public <T> SqlBean generateSearchSql(T bean) {
         return generateSearchSql(bean, -1, -1);
     }
 
-    public static <T> SqlBean generateSearchSql(final T bean, final int offset, final int pageSize) {
+    public <T> SqlBean generateSearchSql(final T bean, final int offset, final int pageSize) {
         final StringBuilder sb = new StringBuilder();
-        sb
-                .append("select * from ")
+        sb.append("select * from ")
                 .append(OrmManager.getTableName(bean.getClass()));
 
         final List<Object> paramList = new ArrayList<>();
@@ -280,7 +283,7 @@ public class SqlParserManager {
         return new SqlBean(sb.toString(), paramList.toArray());
     }
 
-    private static String getQualifiedTableName(String databasePrefix, String tablePrefix, int dbIndex, int tableIndex) {
+    private String getQualifiedTableName(String databasePrefix, String tablePrefix, int dbIndex, int tableIndex) {
         StringBuffer sb = new StringBuffer();
 
         if (!StringUtils.isEmpty(databasePrefix)) {

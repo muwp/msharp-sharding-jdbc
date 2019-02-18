@@ -1,6 +1,5 @@
 package com.muwp.sharding.jdbc.manager;
 
-import com.muwp.sharding.jdbc.reflect.ReflectionUtil;
 import com.mysql.jdbc.ResultSetMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +19,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public abstract class OrmManager {
+public class OrmManager {
 
     private static final Logger log = LoggerFactory.getLogger(OrmManager.class);
 
     private static Map<Class, String> className2DbTableCache = new ConcurrentHashMap<>();
+
+    private static final OrmManager INSTANCE = new OrmManager();
+
+    public static OrmManager getInstance() {
+        return INSTANCE;
+    }
 
     public static String getTableName(final Class clazz) {
         String tableName = className2DbTableCache.get(clazz);
@@ -115,10 +120,10 @@ public abstract class OrmManager {
                 int columnType = rsmd.getColumnType(i);
                 String columnName = rsmd.getColumnName(i);
                 String fieldName = OrmManager.dbFieldName2JavaFieldName(columnName);
-                String setterName = ReflectionUtil.fieldName2SetterName(fieldName);
+                String setterName = ReflectionManager.getInstance().fieldName2SetterName(fieldName);
 
                 if (columnType == Types.SMALLINT) {
-                    Method setter = ReflectionUtil.searchEnumSetter(clazz, setterName);
+                    Method setter = ReflectionManager.getInstance().searchEnumSetter(clazz, setterName);
                     Class<?> enumParamClazz = setter.getParameterTypes()[0];
                     Method enumParseFactoryMethod = enumParamClazz.getMethod("parse", int.class);
                     Object value = enumParseFactoryMethod.invoke(enumParamClazz, rs.getInt(i));

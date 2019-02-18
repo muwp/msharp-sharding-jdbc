@@ -29,48 +29,48 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
     }
 
     @Override
-    public <K, T> void insert(K splitKey, T bean) {
-        doUpdate(splitKey, bean.getClass(), UpdateOperationType.INSERT, bean, -1);
+    public <K, T> void insert(K shardKey, T bean) {
+        doUpdate(shardKey, bean.getClass(), UpdateOperationType.INSERT, bean, -1);
     }
 
     @Override
-    public <K, T> void update(K splitKey, T bean) {
-        doUpdate(splitKey, bean.getClass(), UpdateOperationType.UPDATE, bean, -1);
+    public <K, T> void update(K shardKey, T bean) {
+        doUpdate(shardKey, bean.getClass(), UpdateOperationType.UPDATE, bean, -1);
     }
 
     @Override
-    public <K, T> void delete(K splitKey, long id, Class<T> clazz) {
-        doUpdate(splitKey, clazz, UpdateOperationType.DELETE, null, id);
+    public <K, T> void delete(K shardKey, long id, Class<T> clazz) {
+        doUpdate(shardKey, clazz, UpdateOperationType.DELETE, null, id);
     }
 
     @Override
-    public <K, T> T get(K splitKey, long id, final Class<T> clazz) {
-        return doSelect(splitKey, clazz, "id", new Long(id));
+    public <K, T> T get(K shardKey, long id, final Class<T> clazz) {
+        return doSelect(shardKey, clazz, "id", new Long(id));
     }
 
     @Override
-    public <K, T> T get(K splitKey, String name, String value, final Class<T> clazz) {
-        return doSelect(splitKey, clazz, name, value);
+    public <K, T> T get(K shardKey, String name, String value, final Class<T> clazz) {
+        return doSelect(shardKey, clazz, name, value);
     }
 
     @Override
-    public <K, T> List<T> search(K splitKey, T bean) {
-        return doSearch(splitKey, bean, null, null, null, SearchOperationType.NORMAL);
+    public <K, T> List<T> search(K shardKey, T bean) {
+        return doSearch(shardKey, bean, null, null, null, SearchOperationType.NORMAL);
     }
 
     @Override
-    public <K, T> List<T> search(K splitKey, T bean, String name, Object valueFrom, Object valueTo) {
-        return doSearch(splitKey, bean, name, valueFrom, valueTo, SearchOperationType.RANGE);
+    public <K, T> List<T> search(K shardKey, T bean, String name, Object valueFrom, Object valueTo) {
+        return doSearch(shardKey, bean, name, valueFrom, valueTo, SearchOperationType.RANGE);
     }
 
     @Override
-    public <K, T> List<T> search(K splitKey, T bean, String name, Object value) {
-        return doSearch(splitKey, bean, name, value, null, SearchOperationType.FIELD);
+    public <K, T> List<T> search(K shardKey, T bean, String name, Object value) {
+        return doSearch(shardKey, bean, name, value, null, SearchOperationType.FIELD);
     }
 
-    protected <K, T> List<T> doSearch(K splitKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
+    protected <K, T> List<T> doSearch(K shardKey, final T bean, String name, Object valueFrom, Object valueTo, SearchOperationType operationType) {
         if (log.isDebugEnabled()) {
-            log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", splitKey, bean, name, valueFrom, valueTo);
+            log.debug("HighLevelShardJdbcTemplate.doSearch, the split key: {}, the bean: {}, the name: {}, the valueFrom: {}, the valueTo: {}.", shardKey, bean, name, valueFrom, valueTo);
         }
 
         final ShardTableManager shardTableManager = getShardTablesManager().searchSplitTable(OrmManager.getTableName(bean.getClass()));
@@ -81,11 +81,11 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         final String dbPrefix = shardTableManager.getDbNam();
         final String tablePrefix = shardTableManager.getTableName();
 
-        int dbNo = splitStrategy.getDatabasebNo(splitKey);
-        int nodeNo = splitStrategy.getNodeNo(splitKey);
-        int tableNo = splitStrategy.getTableNo(splitKey);
+        int dbNo = splitStrategy.getDatabasebNo(shardKey);
+        int nodeNo = splitStrategy.getNodeNo(shardKey);
+        int tableNo = splitStrategy.getTableNo(shardKey);
 
-        log.info("HighLevelShardJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelShardJdbcTemplate.doSearch, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", shardKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
         ShardJdbcTemplateManager sn = shardTemplateManagers.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
@@ -94,13 +94,13 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
 
         switch (operationType) {
             case NORMAL:
-                srb = SqlParserManager.generateSearchSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlParserManager.getInstance().generateSearchSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case RANGE:
-                srb = SqlParserManager.generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo, -1, -1);
+                srb = SqlParserManager.getInstance().generateSearchSql(bean, name, valueFrom, valueTo, dbPrefix, tablePrefix, dbNo, tableNo, -1, -1);
                 break;
             case FIELD:
-                srb = SqlParserManager.generateSearchSql(bean, name, valueFrom, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlParserManager.getInstance().generateSearchSql(bean, name, valueFrom, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
         }
 
@@ -135,7 +135,7 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         ShardJdbcTemplateManager sn = splitNdoes.get(nodeNo);
         JdbcTemplate jt = getReadJdbcTemplate(sn);
 
-        SqlBean srb = SqlParserManager.generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
+        SqlBean srb = SqlParserManager.getInstance().generateSelectSql(name, value, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
 
         if (log.isDebugEnabled()) {
             log.debug("HighLevelShardJdbcTemplate.doSelect, the split SQL: {}, the split params: {}.", srb.getSql(), srb.getParams());
@@ -147,9 +147,9 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         return bean;
     }
 
-    protected <K, T> void doUpdate(K splitKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
+    protected <K, T> void doUpdate(K shardKey, final Class<?> clazz, UpdateOperationType operationType, T bean, long id) {
         if (log.isDebugEnabled()) {
-            log.debug("HighLevelShardJdbcTemplate.doUpdate, the split key: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", splitKey, clazz, operationType, bean, id);
+            log.debug("HighLevelShardJdbcTemplate.doUpdate, the shardKey: {}, the clazz: {}, the updateOper: {}, the split bean: {}, the ID: {}.", shardKey, clazz, operationType, bean, id);
         }
         final ShardTableManager splitTable = getShardTablesManager().searchSplitTable(OrmManager.getTableName(clazz));
 
@@ -159,11 +159,11 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         String dbPrefix = splitTable.getDbNam();
         String tablePrefix = splitTable.getTableName();
 
-        final int nodeNo = routerStrategy.getNodeNo(splitKey);
-        final int dbNo = routerStrategy.getDatabasebNo(splitKey);
-        final int tableNo = routerStrategy.getTableNo(splitKey);
+        final int nodeNo = routerStrategy.getNodeNo(shardKey);
+        final int dbNo = routerStrategy.getDatabasebNo(shardKey);
+        final int tableNo = routerStrategy.getTableNo(shardKey);
 
-        log.info("HighLevelShardJdbcTemplate.doUpdate, splitKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", splitKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
+        log.info("HighLevelShardJdbcTemplate.doUpdate, shardKey={} dbPrefix={} tablePrefix={} nodeNo={} dbNo={} tableNo={}.", shardKey, dbPrefix, tablePrefix, nodeNo, dbNo, tableNo);
 
         final ShardJdbcTemplateManager sn = shardTemplateManagers.get(nodeNo);
         final JdbcTemplate jt = getWriteJdbcTemplate(sn);
@@ -171,13 +171,13 @@ public class HighLevelShardJdbcTemplate extends ShardJdbcTemplate implements Hig
         SqlBean srb = null;
         switch (operationType) {
             case INSERT:
-                srb = SqlParserManager.generateInsertSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlParserManager.getInstance().generateInsertSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case UPDATE:
-                srb = SqlParserManager.generateUpdateSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlParserManager.getInstance().generateUpdateSql(bean, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
             case DELETE:
-                srb = SqlParserManager.generateDeleteSql(id, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
+                srb = SqlParserManager.getInstance().generateDeleteSql(id, clazz, dbPrefix, tablePrefix, dbNo, tableNo);
                 break;
         }
 
