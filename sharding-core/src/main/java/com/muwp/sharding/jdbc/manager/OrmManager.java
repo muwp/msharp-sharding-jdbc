@@ -1,4 +1,4 @@
-package com.muwp.sharding.jdbc.util;
+package com.muwp.sharding.jdbc.manager;
 
 import com.muwp.sharding.jdbc.reflect.ReflectionUtil;
 import com.mysql.jdbc.ResultSetMetaData;
@@ -14,19 +14,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * OrmUtil
+ * OrmManager
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public abstract class OrmUtil {
+public abstract class OrmManager {
 
-    private static final Logger log = LoggerFactory.getLogger(OrmUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(OrmManager.class);
 
     private static Map<Class, String> className2DbTableCache = new ConcurrentHashMap<>();
 
-    public static String javaClassName2DbTableName(final Class clazz) {
+    public static String getTableName(final Class clazz) {
         String tableName = className2DbTableCache.get(clazz);
         if (null != tableName) {
             return tableName;
@@ -45,13 +45,13 @@ public abstract class OrmUtil {
             tableName = table.name();
             className2DbTableCache.put(clazz, tableName);
         } else {
-            tableName = javaClassName2DbTableName(clazz.getSimpleName());
+            tableName = getTableName(clazz.getSimpleName());
             className2DbTableCache.put(clazz, tableName);
         }
         return tableName;
     }
 
-    private synchronized static String javaClassName2DbTableName(String name) {
+    private synchronized static String getTableName(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
             if (Character.isUpperCase(name.charAt(i)) && i != 0) {
@@ -111,7 +111,7 @@ public abstract class OrmUtil {
             for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                 int columnType = rsmd.getColumnType(i);
                 String columnName = rsmd.getColumnName(i);
-                String fieldName = OrmUtil.dbFieldName2JavaFieldName(columnName);
+                String fieldName = OrmManager.dbFieldName2JavaFieldName(columnName);
                 String setterName = ReflectionUtil.fieldName2SetterName(fieldName);
 
                 if (columnType == Types.SMALLINT) {
@@ -149,7 +149,7 @@ public abstract class OrmUtil {
                             throw new Exception("Db column not supported.");
                     }
 
-                    Method setter = clazz.getMethod(setterName, param);
+                    final Method setter = clazz.getMethod(setterName, param);
                     setter.invoke(bean, value);
                 }
             }

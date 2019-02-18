@@ -13,6 +13,8 @@ import com.muwp.sharding.jdbc.core.action.ShardAction;
 public interface Executor {
 
     /**
+     * 根据分片关键字处理sql
+     *
      * @param partitionKey 分片key
      * @param sql          sql语句
      * @param shardAction  分片处理

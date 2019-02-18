@@ -1,7 +1,7 @@
 package com.muwp.sharding.jdbc.reflect;
 
 import com.muwp.sharding.jdbc.bean.FieldWrapper;
-import com.muwp.sharding.jdbc.util.OrmUtil;
+import com.muwp.sharding.jdbc.manager.OrmManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -11,7 +11,6 @@ import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public abstract class ReflectionUtil {
                 if (column != null) {
                     columnName = column.name();
                 } else {
-                    columnName = OrmUtil.javaFieldName2DbFieldName(field.getName());
+                    columnName = OrmManager.javaFieldName2DbFieldName(field.getName());
                 }
                 if (!field.isAccessible()) {
                     try {

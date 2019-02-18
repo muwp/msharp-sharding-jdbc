@@ -5,6 +5,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "test")
 public class TestModel implements Serializable {
@@ -21,6 +22,8 @@ public class TestModel implements Serializable {
     private Date updateTime;
 
     private String appKeyValue;
+
+    private List<String> valueList;
 
     public Long getId() {
         return id;
@@ -68,6 +71,14 @@ public class TestModel implements Serializable {
 
     public void setAppKeyValue(String appKeyValue) {
         this.appKeyValue = appKeyValue;
+    }
+
+    public List<String> getValueList() {
+        return valueList;
+    }
+
+    public void setValueList(List<String> valueList) {
+        this.valueList = valueList;
     }
 
     @Override

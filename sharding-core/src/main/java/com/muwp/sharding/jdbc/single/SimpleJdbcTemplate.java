@@ -1,8 +1,8 @@
 package com.muwp.sharding.jdbc.single;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
+import com.muwp.sharding.jdbc.manager.SqlParserManager;
 import com.muwp.sharding.jdbc.rowmapper.DefaultRowMapper;
-import com.muwp.sharding.jdbc.util.SqlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +35,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> int insert(final T bean) {
-        final SqlBean srb = SqlUtil.generateInsertSql(bean);
+        final SqlBean srb = SqlParserManager.generateInsertSql(bean);
         if (logger.isDebugEnabled()) {
             log.debug("Insert, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
         }
@@ -44,7 +44,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> int update(T bean) {
-        final SqlBean srb = SqlUtil.generateUpdateSql(bean);
+        final SqlBean srb = SqlParserManager.generateUpdateSql(bean);
         if (logger.isDebugEnabled()) {
             log.debug("Update, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
         }
@@ -53,7 +53,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> int delete(long id, Class<T> clazz) {
-        final SqlBean srb = SqlUtil.generateDeleteSql(id, clazz);
+        final SqlBean srb = SqlParserManager.generateDeleteSql(id, clazz);
         if (logger.isDebugEnabled()) {
             log.debug("Delete, the bean: {} ---> the SQL: {} ---> the params: {}", id, srb.getSql(), srb.getParams());
         }
@@ -62,21 +62,21 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> T load(long id, final Class<T> clazz) {
-        final SqlBean srb = SqlUtil.generateSelectSql("id", id, clazz);
+        final SqlBean srb = SqlParserManager.generateSelectSql("id", id, clazz);
         final T bean = this.queryForObject(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return bean;
     }
 
     @Override
     public <T> T get(String name, Object value, final Class<T> clazz) {
-        final SqlBean srb = SqlUtil.generateSelectSql(name, value, clazz);
+        final SqlBean srb = SqlParserManager.generateSelectSql(name, value, clazz);
         T bean = this.queryForObject(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return bean;
     }
 
     @Override
     public <T> List<T> query(final T bean) {
-        final SqlBean srb = SqlUtil.generateSearchSql(bean);
+        final SqlBean srb = SqlParserManager.generateSearchSql(bean);
         final Class<T> clazz = (Class<T>) bean.getClass();
         final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return beans;
@@ -84,7 +84,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <T> List<T> query(final T bean, final int offset, final int pageSize) {
-        final SqlBean srb = SqlUtil.generateSearchSql(bean, offset, pageSize);
+        final SqlBean srb = SqlParserManager.generateSearchSql(bean, offset, pageSize);
         final Class<T> clazz = (Class<T>) bean.getClass();
         final List<T> beans = this.query(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
         return beans;
@@ -92,14 +92,14 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper) {
-        final SqlBean srb = SqlUtil.generateSearchSql(bean);
+        final SqlBean srb = SqlParserManager.generateSearchSql(bean);
         final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
         return results;
     }
 
     @Override
     public <Request, Result> List<Result> query(Request bean, RowMapper<Result> rowMapper, final int offset, final int pageSize) {
-        final SqlBean srb = SqlUtil.generateSearchSql(bean, offset, pageSize);
+        final SqlBean srb = SqlParserManager.generateSearchSql(bean, offset, pageSize);
         final List<Result> results = this.query(srb.getSql(), srb.getParams(), rowMapper);
         return results;
     }

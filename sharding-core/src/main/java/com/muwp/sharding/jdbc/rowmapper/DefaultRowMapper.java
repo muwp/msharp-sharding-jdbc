@@ -1,6 +1,6 @@
 package com.muwp.sharding.jdbc.rowmapper;
 
-import com.muwp.sharding.jdbc.util.OrmUtil;
+import com.muwp.sharding.jdbc.manager.OrmManager;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -23,6 +23,6 @@ public class DefaultRowMapper<T> implements RowMapper<T> {
 
     @Override
     public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return OrmUtil.convertRow2Bean(rs, clazz);
+        return OrmManager.convertRow2Bean(rs, clazz);
     }
 }

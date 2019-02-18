@@ -1,9 +1,9 @@
-package com.muwp.sharding.jdbc.util;
+package com.muwp.sharding.jdbc.manager;
 
 import com.muwp.sharding.jdbc.bean.SqlBean;
-import com.muwp.sharding.jdbc.handler.FieldHandler;
 import com.muwp.sharding.jdbc.reflect.FieldVisitor;
 import com.muwp.sharding.jdbc.reflect.ReflectionUtil;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -11,19 +11,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * SqlUtil
+ * ShardSqlParser
  *
  * @author mwup
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-public abstract class SqlUtil {
+public class SqlParserManager {
 
     public static <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix, int databseIndex, int tableIndex) {
         final StringBuilder sb = new StringBuilder();
         sb.append("insert into ");
         if (StringUtils.isEmpty(tablePrefix)) {
-            tablePrefix = OrmUtil.javaClassName2DbTableName(bean.getClass());
+            tablePrefix = OrmManager.getTableName(bean.getClass());
         }
 
         sb.append(getQualifiedTableName(databasePrefix, tablePrefix, databseIndex, tableIndex))
@@ -44,7 +44,7 @@ public abstract class SqlUtil {
         });
 
         sb.append(") values (")
-                .append(OrmUtil.generateParamPlaceholders(params.size()))
+                .append(OrmManager.generateParamPlaceholders(params.size()))
                 .append(")");
         return new SqlBean(sb.toString(), params.toArray());
     }
@@ -66,7 +66,7 @@ public abstract class SqlUtil {
         sb.append(" update ");
 
         if (StringUtils.isEmpty(tablePrefix)) {
-            tablePrefix = OrmUtil.javaClassName2DbTableName(bean.getClass());
+            tablePrefix = OrmManager.getTableName(bean.getClass());
         }
 
         sb.append(getQualifiedTableName(databasePrefix, tablePrefix, databaseIndex, tableIndex));
@@ -112,7 +112,7 @@ public abstract class SqlUtil {
         sb.append("delete from ");
 
         if (StringUtils.isEmpty(tablePrefix)) {
-            tablePrefix = OrmUtil.javaClassName2DbTableName(clazz);
+            tablePrefix = OrmManager.getTableName(clazz);
         }
 
         sb.append(getQualifiedTableName(databasePrefix, tablePrefix, databaseIndex, tableIndex))
@@ -141,7 +141,7 @@ public abstract class SqlUtil {
         sb.append("select * from ");
 
         if (StringUtils.isEmpty(tablePrefix)) {
-            tablePrefix = OrmUtil.javaClassName2DbTableName(clazz);
+            tablePrefix = OrmManager.getTableName(clazz);
         }
 
         sb.append(getQualifiedTableName(databasePrefix, tablePrefix, databaseIndex, tableIndex));
@@ -174,14 +174,14 @@ public abstract class SqlUtil {
         sb.append("select * from ");
 
         if (StringUtils.isEmpty(tablePrefix)) {
-            tablePrefix = OrmUtil.javaClassName2DbTableName(bean.getClass());
+            tablePrefix = OrmManager.getTableName(bean.getClass());
         }
 
         sb.append(getQualifiedTableName(databasePrefix, tablePrefix, databaseIndex, tableIndex));
 
         sb.append(" where ");
 
-        final List<Object> params = new LinkedList<Object>();
+        final List<Object> params = new ArrayList<>();
 
         FieldVisitor.getInstance().visit(bean, (index, columnName, value) -> {
             if (index != 0) {
@@ -225,11 +225,62 @@ public abstract class SqlUtil {
     }
 
     public static <T> SqlBean generateSearchSql(T bean) {
-        return generateSearchSql(bean, null, null, null, null, null, -1, -1, -1, -1);
+        return generateSearchSql(bean, -1, -1);
     }
 
-    public static <T> SqlBean generateSearchSql(T bean, int offset, int pageSize) {
-        return generateSearchSql(bean, null, null, null, null, null, -1, -1, offset, pageSize);
+    public static <T> SqlBean generateSearchSql(final T bean, final int offset, final int pageSize) {
+        final StringBuilder sb = new StringBuilder();
+        sb
+                .append("select * from ")
+                .append(OrmManager.getTableName(bean.getClass()));
+
+        final List<Object> paramList = new ArrayList<>();
+        final StringBuilder condition = new StringBuilder();
+        FieldVisitor.getInstance().visit(bean, (index, columnName, value) -> {
+            if (index != 0) {
+                condition.append(" and ");
+            }
+            if (value instanceof Enum) {
+                value = ((Enum<?>) value).ordinal();
+                condition.append(columnName).append("=? ");
+                paramList.add(value);
+            } else if (value instanceof List) {
+                final List<Object> valList = (List) value;
+                if (CollectionUtils.isEmpty(valList)) {
+                    return;
+                }
+                condition
+                        .append(columnName)
+                        .append(" in ( ");
+                for (int i = 0, size = valList.size(); i < size; i++) {
+                    if (i != 0) {
+                        condition.append(",");
+                    }
+                    final Object val = valList.get(i);
+                    condition.append(" ? ");
+                    paramList.add(val);
+                }
+                condition.append(" )");
+            } else {
+                condition
+                        .append(columnName)
+                        .append("=? ");
+                paramList.add(value);
+            }
+        }
+        );
+
+        if (paramList.size() > 0) {
+            sb.append(" where ").append(condition.toString());
+        }
+
+        if (offset >= 0 && pageSize > 0) {
+            paramList.add(offset);
+            paramList.add(pageSize);
+            sb.append(" limit ?,?");
+        }
+
+        return new SqlBean(sb.toString(), paramList.toArray());
     }
 
     private static String getQualifiedTableName(String databasePrefix, String tablePrefix, int dbIndex, int tableIndex) {

@@ -1,7 +1,7 @@
 package com.muwp.sharding.jdbc.reflect;
 
 import com.muwp.sharding.jdbc.bean.FieldWrapper;
-import com.muwp.sharding.jdbc.handler.FieldHandler;
+import com.muwp.sharding.jdbc.handler.SqlHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class FieldVisitor {
         return INSTANCE;
     }
 
-    public <T> void visit(T bean, FieldHandler fieldHandler) {
+    public <T> void visit(T bean, SqlHandler sqlHandler) {
         final Class clazz = bean.getClass();
         List<FieldWrapper> fieldWrappers = cache.get(clazz);
         if (null == fieldWrappers) {
@@ -44,15 +44,13 @@ public class FieldVisitor {
                 final boolean access = field.isAccessible();
                 field.setAccessible(true);
                 value = field.get(bean);
-                if (value != null) {
-                    if (value instanceof Number && ((Number) value).doubleValue() == -1d) {
-                        continue;
-                    }
-                    if (value instanceof List) {
-                        continue;
-                    }
-                    fieldHandler.handle(count++, fieldWrapper.getColumnName(), value);
+                if (null == value) {
+                    continue;
                 }
+                if (value instanceof Number && ((Number) value).doubleValue() == -1d) {
+                    continue;
+                }
+                sqlHandler.handle(count++, fieldWrapper.getColumnName(), value);
                 field.setAccessible(access);
             } catch (IllegalArgumentException e) {
                 log.error("Fail to obtain bean {} property {}", bean, field);
