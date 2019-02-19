@@ -18,7 +18,7 @@ public interface SimpleJdbcOperations {
      *
      * @param bean
      * @param <T>
-     * @return
+     * @return 返回影响的个数
      */
     <T> int insert(T bean);
 

@@ -24,10 +24,10 @@ public class SqlParserManager {
         return INSTANCE;
     }
 
-    public <T> SqlBean generateInsertSql(T bean, String databasePrefix, String tablePrefix, int databseIndex, int tableIndex) {
+    public <T> SqlBean generateInsertSql(final T bean, final String databasePrefix, String tablePrefix, int databseIndex, int tableIndex) {
         final StringBuilder sb = new StringBuilder();
         sb.append("insert into ");
-        if (StringUtils.isEmpty(tablePrefix)) {
+        if (null == tablePrefix) {
             tablePrefix = OrmManager.getTableName(bean.getClass());
         }
 
@@ -40,7 +40,6 @@ public class SqlParserManager {
                 sb.append(",");
             }
             sb.append(columnName);
-
             if (value instanceof Enum) {
                 value = ((Enum<?>) value).ordinal();
             }
@@ -70,7 +69,7 @@ public class SqlParserManager {
         final StringBuilder sb = new StringBuilder();
         sb.append(" update ");
 
-        if (StringUtils.isEmpty(tablePrefix)) {
+        if (null == tablePrefix) {
             tablePrefix = OrmManager.getTableName(bean.getClass());
         }
 
@@ -79,7 +78,6 @@ public class SqlParserManager {
         sb.append(" set ");
 
         final List<Object> params = new ArrayList<>();
-
         FieldVisitor.getInstance().visit(bean, (index, columnName, value) -> {
             if (index != 0) {
                 sb.append(", ");
@@ -116,7 +114,7 @@ public class SqlParserManager {
         final StringBuilder sb = new StringBuilder();
         sb.append("delete from ");
 
-        if (StringUtils.isEmpty(tablePrefix)) {
+        if (null == tablePrefix) {
             tablePrefix = OrmManager.getTableName(clazz);
         }
 
@@ -142,7 +140,7 @@ public class SqlParserManager {
     }
 
     public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix, int databaseIndex, int tableIndex) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("select * from ");
 
         if (StringUtils.isEmpty(tablePrefix)) {
@@ -163,8 +161,7 @@ public class SqlParserManager {
     }
 
     public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix) {
-        return generateSelectSql(name, value, clazz, databasePrefix, null, -1,
-                -1);
+        return generateSelectSql(name, value, clazz, databasePrefix, null, -1, -1);
     }
 
     public <T> SqlBean generateSelectSql(String name, Object value, Class<T> clazz, String databasePrefix, String tablePrefix) {
@@ -272,7 +269,9 @@ public class SqlParserManager {
         );
 
         if (paramList.size() > 0) {
-            sb.append(" where ").append(condition.toString());
+            sb
+                    .append(" where ")
+                    .append(condition.toString());
         }
 
         if (offset >= 0 && pageSize > 0) {
@@ -291,7 +290,9 @@ public class SqlParserManager {
         }
 
         if (dbIndex != -1) {
-            sb.append("_").append(dbIndex).append(".");
+            sb.append("_")
+                    .append(dbIndex)
+                    .append(".");
         }
 
         if (!StringUtils.isEmpty(tablePrefix)) {
@@ -299,7 +300,9 @@ public class SqlParserManager {
         }
 
         if (tableIndex != -1) {
-            sb.append("_").append(tableIndex).append(" ");
+            sb.append("_")
+                    .append(tableIndex)
+                    .append(" ");
         }
 
         return sb.toString();

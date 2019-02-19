@@ -7,7 +7,7 @@ import com.muwp.sharding.jdbc.manager.SqlParserManager;
 public class SqlUtilsTest {
 
     public static void main(String[] args) {
-        TestModel model = new TestModel();
+        final TestModel model = new TestModel();
         model.setId(2L);
 //      model.setAge(2);
         model.setAppkey("dd");

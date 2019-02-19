@@ -2,6 +2,7 @@ package com.muwp.sharding.jdbc.service;
 
 import com.muwp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate;
 import com.muwp.sharding.jdbc.model.TestModel;
+import com.muwp.sharding.jdbc.single.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -17,11 +18,25 @@ import java.util.List;
 @ContextConfiguration(locations = "/spring/jdbc-test.xml")
 public class SimpleShardJdbcTemplateTest extends AbstractTestNGSpringContextTests {
 
+    @Test(groups = {"jdbcTemplate"})
+    public void testJdbcTemplate() {
+        final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
+        com.muwp.sharding.jdbc.model.Test test = new com.muwp.sharding.jdbc.model.Test();
+        test.setAge(20);
+        test.setAppkey("appkey");
+        test.setName("name_1");
+        test.setUpdateTime(new Date());
+        final int update = jdbcTemplate.insert(test);
+        System.out.println(update);
+        System.out.println(test);
+    }
+
+
     @Test(groups = {"highLevelShardJdbcTemplate"})
     public void testSimpleSplitJdbcTemplate() {
-         HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("highLevelShardJdbcTemplate");
-         //final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
-         //System.out.println("result:" + update);
+        HighLevelShardJdbcTemplate jdbcTemplate = (HighLevelShardJdbcTemplate) applicationContext.getBean("highLevelShardJdbcTemplate");
+        //final int update = jdbcTemplate.update("test", "insert into sharding_jdbc.test(id,appkey,name,age,update_time) values(?,?,?,?,?)", new Object[]{3, "test", "three", 19, new Date()});
+        //System.out.println("result:" + update);
     }
 
     @Test(groups = {"highLevelShardJdbcTemplate"})
