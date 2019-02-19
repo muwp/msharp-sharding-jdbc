@@ -13,7 +13,7 @@ public class SqlUtilsTest {
         model.setAppkey("dd");
 //        model.setUpdateTime(new Date());
         //model.setValueList(Arrays.asList("1", "2", "4"));
-        SqlBean sqlBean = SqlParserManager.getInstance().generateSearchSql(model, 1, 39);
+        SqlBean sqlBean = SqlParserManager.getInstance().generateSelectSql("id", 1l, TestModel.class);
         System.out.println(sqlBean);
     }
 }

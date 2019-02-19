@@ -43,7 +43,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
-    public <T> int update(T bean) {
+    public <T> int update(final T bean) {
         final SqlBean srb = SqlParserManager.getInstance().generateUpdateSql(bean);
         if (logger.isDebugEnabled()) {
             log.debug("Update, the bean: {} ---> the SQL: {} ---> the params: {}", bean, srb.getSql(), srb.getParams());
@@ -52,7 +52,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
-    public <T> int delete(long id, Class<T> clazz) {
+    public <T> int delete(final long id, final Class<T> clazz) {
         final SqlBean srb = SqlParserManager.getInstance().generateDeleteSql(id, clazz);
         if (logger.isDebugEnabled()) {
             log.debug("Delete, the bean: {} ---> the SQL: {} ---> the params: {}", id, srb.getSql(), srb.getParams());
@@ -61,9 +61,14 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
     }
 
     @Override
-    public <T> T load(long id, final Class<T> clazz) {
+    public <T> T load(final long id, final Class<T> clazz) {
+        return load(id, clazz, new DefaultRowMapper<>(clazz));
+    }
+
+    @Override
+    public <T> T load(final long id, final Class<T> clazz, final RowMapper<T> rowMapper) {
         final SqlBean srb = SqlParserManager.getInstance().generateSelectSql("id", id, clazz);
-        final T bean = this.queryForObject(srb.getSql(), srb.getParams(), new DefaultRowMapper<>(clazz));
+        final T bean = this.queryForObject(srb.getSql(), srb.getParams(), rowMapper);
         return bean;
     }
 
@@ -112,7 +117,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate implements SimpleJdbcOperat
 
     @Override
     public <Result> List<Result> query(String sql, Object[] params, final RowMapper<Result> rowMapper) {
-        final List<Result> beans = this.query(sql, params, rowMapper);
+        final List<Result> beans = super.query(sql, params, rowMapper);
         return beans;
     }
 }

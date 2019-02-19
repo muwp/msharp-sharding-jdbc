@@ -52,6 +52,17 @@ public interface SimpleJdbcOperations {
     <T> T load(long id, final Class<T> clazz);
 
     /**
+     * load
+     *
+     * @param id
+     * @param clazz
+     * @param rowMapper
+     * @param <T>
+     * @return
+     */
+    <T> T load(long id, final Class<T> clazz, RowMapper<T> rowMapper);
+
+    /**
      * get
      *
      * @param name
