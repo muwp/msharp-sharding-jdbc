@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="dataSource" class="com.msharp.sharding.jdbc.single.jdbc.SingleDataSource" init-method="init"
+          destroy-method="close">
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/sharding_jdbc_0?characterEncoding=UTF8&amp;socketTimeout=60000&amp;useSSL=false"/>
+        <property name="user" value="root"/>
+        <property name="password" value="123456"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <!-- 选填，默认值为"c3p0",还支持"tomcat-jdbc"或者"druid" -->
+        <property name="poolType" value="hikaricp"/>
+        <!-- c3p0的minPoolSize,该值对应tomcat-jdbc或druid的"minIdle" -->
+        <property name="minPoolSize" value="2"/>
+        <!-- c3p0的maxPoolSize,该值对应tomcat-jdbc或druid的"maxActive" -->
+        <property name="maxPoolSize" value="10"/>
+        <!-- c3p0的initialPoolSize,该值对应tomcat-jdbc或druid的"initialSize" -->
+        <property name="initialPoolSize" value="2"/>
+        <!-- c3p0的checkoutTimeout,该值对应tomcat-jdbc或druid的"maxWait" -->
+        <property name="checkoutTimeout" value="2000"/>
+        <property name="maxIdleTime" value="1800"/>
+        <property name="idleConnectionTestPeriod" value="60"/>
+        <property name="acquireRetryAttempts" value="3"/>
+        <property name="acquireRetryDelay" value="300"/>
+        <property name="maxStatements" value="0"/>
+        <property name="maxStatementsPerConnection" value="100"/>
+        <property name="numHelperThreads" value="6"/>
+        <property name="maxAdministrativeTaskTime" value="5"/>
+        <property name="preferredTestQuery" value="SELECT 1"/>
+    </bean>
+
+</beans>
+	

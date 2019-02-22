@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="sharding-client" />
         <module name="sharding-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="msharp-sharding-jdbc" target="1.8" />
+      <module name="sharding-client" target="7" />
       <module name="sharding-core" target="1.8" />
     </bytecodeTargetLevel>
   </component>
