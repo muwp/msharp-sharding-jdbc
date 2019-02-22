@@ -10,7 +10,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>sharding-core</module>
-        <module>sharding-client</module>
+        <module>single-core</module>
     </modules>
 
     <properties>

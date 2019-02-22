@@ -5,6 +5,7 @@
 
 # Log file
 *.log
+/sharding-client/target
 /sharding-core/target
 .gitignore
 *.iml

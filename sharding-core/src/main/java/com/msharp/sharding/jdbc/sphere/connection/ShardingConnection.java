@@ -2,9 +2,9 @@ package com.msharp.sharding.jdbc.sphere.connection;
 
 
 import com.msharp.sharding.jdbc.sphere.statement.ShardingStatement;
+import com.msharp.sharding.jdbc.sphere.statement.ShardingPreparedStatement;
 import io.shardingsphere.shardingjdbc.jdbc.adapter.AbstractConnectionAdapter;
 import io.shardingsphere.shardingjdbc.jdbc.core.ShardingContext;
-import com.msharp.sharding.jdbc.sphere.statement.ShardingPreparedStatement;
 import io.shardingsphere.transaction.api.TransactionType;
 import lombok.Getter;
 

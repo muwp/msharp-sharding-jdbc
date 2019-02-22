@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/msharp-sharding-jdbc.iml" filepath="$PROJECT_DIR$/.idea/msharp-sharding-jdbc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sharding-client/sharding-client.iml" filepath="$PROJECT_DIR$/sharding-client/sharding-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharding-core/sharding-core.iml" filepath="$PROJECT_DIR$/sharding-core/sharding-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/single-core/single-core.iml" filepath="$PROJECT_DIR$/single-core/single-core.iml" />
     </modules>
   </component>
 </project>

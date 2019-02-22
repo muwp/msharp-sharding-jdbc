@@ -2,7 +2,6 @@ package com.msharp.sharding.jdbc.core.manager;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
