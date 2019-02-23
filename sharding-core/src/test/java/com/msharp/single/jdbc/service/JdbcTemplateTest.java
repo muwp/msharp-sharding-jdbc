@@ -21,7 +21,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.single.jdbc.model.Test test = new com.msharp.single.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.single.jdbc.model.Test> update = jdbcTemplate.query("select * from product where  appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.single.jdbc.model.Test>() {
+        final List<com.msharp.single.jdbc.model.Test> update = jdbcTemplate.query("select * from test  ", new RowMapper<com.msharp.single.jdbc.model.Test>() {
 
             @Override
             public com.msharp.single.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {

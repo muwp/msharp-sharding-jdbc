@@ -34,7 +34,6 @@ import java.util.List;
  **/
 public final class PreparedStatementExecutor extends AbstractStatementExecutor {
 
-    @Getter
     private final boolean returnGeneratedKeys;
 
     public PreparedStatementExecutor(

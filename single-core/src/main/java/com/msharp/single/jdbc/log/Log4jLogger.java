@@ -3,7 +3,15 @@ package com.msharp.single.jdbc.log;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 
+/**
+ * Log4jLogger
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/02/22 13:51
+ **/
 public class Log4jLogger implements Logger {
+
 	private org.apache.log4j.Logger logger;
 
 	static {
@@ -11,7 +19,7 @@ public class Log4jLogger implements Logger {
 	}
 
 	private static synchronized void init() {
-		new DOMConfigurator().doConfigure(Log4jLogger.class.getResource("zebra_log4j.xml"),
+		new DOMConfigurator().doConfigure(Log4jLogger.class.getResource("msharp_jdbc_log4j.xml"),
 		      LogManager.getLoggerRepository());
 	}
 

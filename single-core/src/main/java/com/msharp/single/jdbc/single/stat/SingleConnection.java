@@ -16,9 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.msharp.single.jdbc.single.jdbc;
+package com.msharp.single.jdbc.single.stat;
 
 import com.msharp.single.jdbc.single.config.DataSourceConfig;
+import com.msharp.single.jdbc.single.jdbc.SingleDataSource;
+import com.msharp.single.jdbc.single.stat.SinglePreparedStatement;
+import com.msharp.single.jdbc.single.stat.SingleStatement;
 
 import java.sql.*;
 import java.util.Map;
@@ -281,12 +284,9 @@ public class SingleConnection implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
-                                              int resultSetHoldability) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         String newSql = processSQL(sql, true);
-        PreparedStatement pstmt = conn.prepareStatement(newSql, resultSetType, resultSetConcurrency,
-                resultSetHoldability);
-
+        PreparedStatement pstmt = conn.prepareStatement(newSql, resultSetType, resultSetConcurrency, resultSetHoldability);
         return new SinglePreparedStatement(this.dsId, this, pstmt, newSql);
     }
 
@@ -315,7 +315,6 @@ public class SingleConnection implements Connection {
     }
 
     protected String processSQL(final String sql, boolean isPreparedStmt) throws SQLException {
-
         return sql;
     }
 

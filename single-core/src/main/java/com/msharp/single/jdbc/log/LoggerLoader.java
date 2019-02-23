@@ -19,10 +19,17 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import java.util.zip.Deflater;
 
+/**
+ * LoggerLoader
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/02/22 13:51
+ **/
 @Deprecated
 public class LoggerLoader {
 
-	private static String LOG_ROOT = System.getProperty("zebra.log.dir", "/data/applogs/zebra");
+	private static String LOG_ROOT = System.getProperty("msharp_jdbc.log.dir", "/data/applogs/msharp_jdbc");
 
 	private static LoggerContext context = null;
 
@@ -46,7 +53,7 @@ public class LoggerLoader {
 		// file info
 		Filter fileInfoFilter = ThresholdFilter.createFilter(Level.ERROR, Result.DENY, Result.ACCEPT);
 		Appender fileInfoAppender = RollingFileAppender.createAppender(LOG_ROOT + "/zebra.log", LOG_ROOT
-		      + "/zebra.log.%d{yyyy-MM-dd}.gz", "true", "FileInfo", "true", "4000", "true",
+		      + "/msharp_jdbc.log.%d{yyyy-MM-dd}.gz", "true", "FileInfo", "true", "4000", "true",
 		      TimeBasedTriggeringPolicy.createPolicy("1", "true"),
 		      ZebraRolloverStrategy.createStrategy("30", "1", null, Deflater.DEFAULT_COMPRESSION + "", config), layout,
 		      fileInfoFilter, "false", null, null, config);

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 /**
  * TODO Comment of AsciiParamContext
  *
- * @author Leo Liang
+ * @author mwup
  */
 public class AsciiParamContext extends ParamContext {
 

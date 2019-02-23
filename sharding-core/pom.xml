@@ -153,7 +153,21 @@
             <scope>provided</scope>
         </dependency>
 
-
     </dependencies>
+
+    <build>
+        <finalName>test</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*/*.thrift</exclude>
+                    <exclude>*/*.properties</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+
+        </resources>
+    </build>
 
 </project>

@@ -36,12 +36,6 @@ public class UnicodeStreamParamContext extends ParamContext {
 		super(index, values);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.dianping.zebra.jdbc.param.ParamContext#setParam(java.sql. PreparedStatement)
-	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setParam(PreparedStatement stmt) throws SQLException {
 		stmt.setUnicodeStream(index, (InputStream) values[0], (Integer) values[1]);

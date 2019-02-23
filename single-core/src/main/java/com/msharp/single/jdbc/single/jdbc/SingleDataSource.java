@@ -28,6 +28,7 @@ import com.msharp.single.jdbc.single.config.DataSourceConfig;
 import com.msharp.single.jdbc.single.pool.DataSourcePool;
 import com.msharp.single.jdbc.single.pool.DataSourcePoolFactory;
 import com.msharp.single.jdbc.single.pool.SingleDataSourceMBean;
+import com.msharp.single.jdbc.single.stat.SingleConnection;
 import com.msharp.single.jdbc.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -88,7 +89,6 @@ public class SingleDataSource extends C3p0DataSourceAdapter implements DataSourc
         this.forceClose = true;
     }
 
-    // internal use only
     public SingleDataSource(DataSourceConfig config) {
         this.datasourceId = config.getId();
         this.config = config;

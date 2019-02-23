@@ -21,7 +21,7 @@ import java.sql.SQLException;
 /**
  * TODO Comment of BooleanParamContext
  *
- * @author Leo Liang
+ * @author mwup
  */
 public class BooleanParamContext extends ParamContext {
 
@@ -35,10 +35,6 @@ public class BooleanParamContext extends ParamContext {
         super(index, values);
     }
 
-    /**
-     * (non-Javadoc)
-     *
-     */
     @Override
     public void setParam(PreparedStatement stmt) throws SQLException {
         stmt.setBoolean(index, (Boolean) values[0]);

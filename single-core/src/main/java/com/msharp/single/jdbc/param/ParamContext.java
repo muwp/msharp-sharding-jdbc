@@ -68,11 +68,6 @@ public abstract class ParamContext implements Serializable {
 
 	public abstract void setParam(PreparedStatement stmt) throws SQLException;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return formatToString(values);

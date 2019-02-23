@@ -1,12 +1,10 @@
 package com.msharp.sharding.jdbc.sphere.connection;
 
-
 import com.msharp.sharding.jdbc.sphere.statement.ShardingStatement;
 import com.msharp.sharding.jdbc.sphere.statement.ShardingPreparedStatement;
 import io.shardingsphere.shardingjdbc.jdbc.adapter.AbstractConnectionAdapter;
 import io.shardingsphere.shardingjdbc.jdbc.core.ShardingContext;
 import io.shardingsphere.transaction.api.TransactionType;
-import lombok.Getter;
 
 import javax.sql.DataSource;
 import java.sql.DatabaseMetaData;
@@ -21,7 +19,6 @@ import java.util.Map;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-@Getter
 public final class ShardingConnection extends AbstractConnectionAdapter {
 
     private final Map<String, DataSource> dataSourceMap;
@@ -82,5 +79,14 @@ public final class ShardingConnection extends AbstractConnectionAdapter {
     @Override
     public Statement createStatement(final int resultSetType, final int resultSetConcurrency, final int resultSetHoldability) {
         return new ShardingStatement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+    }
+
+    @Override
+    protected Map<String, DataSource> getDataSourceMap() {
+        return dataSourceMap;
+    }
+
+    public ShardingContext getShardingContext() {
+        return shardingContext;
     }
 }

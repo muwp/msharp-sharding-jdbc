@@ -35,11 +35,6 @@ public class StringParamContext extends ParamContext {
 		super(index, values);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.dianping.zebra.jdbc.param.ParamContext#setParam(java.sql. PreparedStatement)
-	 */
 	@Override
 	public void setParam(PreparedStatement stmt) throws SQLException {
 		stmt.setString(index, (String) values[0]);

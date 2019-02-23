@@ -12,8 +12,6 @@ import io.shardingsphere.core.executor.StatementExecuteUnit;
 import io.shardingsphere.core.executor.sql.execute.SQLExecuteCallback;
 import io.shardingsphere.core.executor.sql.execute.SQLExecuteTemplate;
 import io.shardingsphere.core.executor.sql.prepare.SQLExecutePrepareTemplate;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,18 +30,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @version 1.0
  * @created 2019/02/15 13:51
  **/
-@Getter(AccessLevel.PROTECTED)
 public class AbstractStatementExecutor {
 
     private final DatabaseType databaseType;
 
-    @Getter
     private final int resultSetType;
 
-    @Getter
     private final int resultSetConcurrency;
 
-    @Getter
     private final int resultSetHoldability;
 
     private final ShardingConnection connection;
@@ -54,13 +48,10 @@ public class AbstractStatementExecutor {
 
     private final Collection<Connection> connections = new LinkedList<>();
 
-    @Getter
     private final List<List<Object>> parameterSets = new LinkedList<>();
 
-    @Getter
     private final List<Statement> statements = new LinkedList<>();
 
-    @Getter
     private final List<ResultSet> resultSets = new CopyOnWriteArrayList<>();
 
     private final Collection<ShardingExecuteGroup<StatementExecuteUnit>> executeGroups = new LinkedList<>();
@@ -119,5 +110,53 @@ public class AbstractStatementExecutor {
         for (Statement each : getStatements()) {
             each.close();
         }
+    }
+
+    public List<Statement> getStatements() {
+        return statements;
+    }
+
+    public DatabaseType getDatabaseType() {
+        return databaseType;
+    }
+
+    public int getResultSetType() {
+        return resultSetType;
+    }
+
+    public int getResultSetConcurrency() {
+        return resultSetConcurrency;
+    }
+
+    public int getResultSetHoldability() {
+        return resultSetHoldability;
+    }
+
+    public ShardingConnection getConnection() {
+        return connection;
+    }
+
+    public SQLExecutePrepareTemplate getSqlExecutePrepareTemplate() {
+        return sqlExecutePrepareTemplate;
+    }
+
+    public SQLExecuteTemplate getSqlExecuteTemplate() {
+        return sqlExecuteTemplate;
+    }
+
+    public Collection<Connection> getConnections() {
+        return connections;
+    }
+
+    public List<List<Object>> getParameterSets() {
+        return parameterSets;
+    }
+
+    public List<ResultSet> getResultSets() {
+        return resultSets;
+    }
+
+    public Collection<ShardingExecuteGroup<StatementExecuteUnit>> getExecuteGroups() {
+        return executeGroups;
     }
 }

@@ -23,7 +23,7 @@ import java.sql.SQLException;
 /**
  * TODO Comment of BlobParamContext
  *
- * @author Leo Liang
+ * @author mwup
  */
 public class BlobParamContext extends ParamContext {
 

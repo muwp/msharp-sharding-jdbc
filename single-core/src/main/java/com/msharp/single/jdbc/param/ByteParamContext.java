@@ -1,12 +1,12 @@
 /**
  * Project: zebra-client
- *
+ * <p>
  * File Created at 2011-6-19
  * $Id$
- *
+ * <p>
  * Copyright 2010 dianping.com.
  * All rights reserved.
- *
+ * <p>
  * This software is the confidential and proprietary information of
  * Dianping Company. ("Confidential Information").  You shall not
  * disclose such Confidential Information and shall use it only in
@@ -21,28 +21,23 @@ import java.sql.SQLException;
 /**
  * TODO Comment of ByteParamContext
  *
- * @author Leo Liang
+ * @author mwup
  */
 public class ByteParamContext extends ParamContext {
 
-	private static final long serialVersionUID = -9109030072336300120L;
+    private static final long serialVersionUID = -9109030072336300120L;
 
-	/**
-	 * @param index
-	 * @param values
-	 */
-	public ByteParamContext(int index, Object[] values) {
-		super(index, values);
-	}
+    /**
+     * @param index
+     * @param values
+     */
+    public ByteParamContext(int index, Object[] values) {
+        super(index, values);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.dianping.zebra.jdbc.param.ParamContext#setParam(java.sql. PreparedStatement)
-	 */
-	@Override
-	public void setParam(PreparedStatement stmt) throws SQLException {
-		stmt.setByte(index, (Byte) values[0]);
-	}
+    @Override
+    public void setParam(PreparedStatement stmt) throws SQLException {
+        stmt.setByte(index, (Byte) values[0]);
+    }
 
 }

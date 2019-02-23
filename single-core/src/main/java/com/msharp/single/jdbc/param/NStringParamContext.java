@@ -42,5 +42,4 @@ public class NStringParamContext extends ParamContext {
     public void setParam(PreparedStatement stmt) throws SQLException {
         stmt.setNString(index, (String) values[0]);
     }
-
 }

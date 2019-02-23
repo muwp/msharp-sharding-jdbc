@@ -16,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.msharp.single.jdbc.single.jdbc;
+package com.msharp.single.jdbc.single.stat;
 
 import com.msharp.single.jdbc.filter.JdbcOperationCallback;
 import com.msharp.single.jdbc.param.*;
+import com.msharp.single.jdbc.single.jdbc.SingleResultSet;
 import com.msharp.single.jdbc.util.SqlType;
 import com.msharp.single.jdbc.util.SqlUtils;
 

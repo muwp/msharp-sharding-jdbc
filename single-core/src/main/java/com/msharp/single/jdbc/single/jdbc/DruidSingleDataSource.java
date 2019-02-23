@@ -156,7 +156,7 @@ public class DruidSingleDataSource extends SingleDataSource {
 	}
 
 	public void setProxyFilters(List<Filter> filters) {
-		throw new UnsupportedOperationException("zerba does not support setProxyFilters in druid.");
+		throw new UnsupportedOperationException("msharp jdbc does not support setProxyFilters in druid.");
 	}
 
 	// add @20170116

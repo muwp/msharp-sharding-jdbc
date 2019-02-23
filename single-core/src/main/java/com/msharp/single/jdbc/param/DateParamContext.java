@@ -37,11 +37,6 @@ public class DateParamContext extends ParamContext {
 		super(index, values);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.dianping.zebra.jdbc.param.ParamContext#setParam(java.sql. PreparedStatement)
-	 */
 	@Override
 	public void setParam(PreparedStatement stmt) throws SQLException {
 		if (values.length == 1) {
@@ -50,5 +45,4 @@ public class DateParamContext extends ParamContext {
 			stmt.setDate(index, (Date) values[0], (Calendar) values[1]);
 		}
 	}
-
 }

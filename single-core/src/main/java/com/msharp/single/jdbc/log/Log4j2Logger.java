@@ -5,6 +5,13 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import java.net.URL;
 
+/**
+ * Log4j2Logger
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/02/22 13:51
+ **/
 public class Log4j2Logger implements Logger {
 
 	private static LoggerContext context = null;

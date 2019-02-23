@@ -1,5 +1,12 @@
 package com.msharp.single.jdbc.log;
 
+/**
+ * SimpleLogger
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/02/22 13:51
+ **/
 public class SimpleLogger implements Logger {
 
 	public SimpleLogger(String loggerName) {
