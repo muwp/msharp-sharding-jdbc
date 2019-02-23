@@ -36,6 +36,7 @@
             <msharp-sharding:table-rules>
                 <msharp-sharding:table-rule logic-table="test" actual-data-nodes="dataSource.test_$->{0..3}" table-strategy-ref="tableStrategy" generate-key-column-name="id"/>
             </msharp-sharding:table-rules>
+
         </msharp-sharding:sharding-rule>
     </msharp-sharding:data-source>
 
@@ -46,7 +47,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="jdbcTemplate" class="com.msharp.sharding.jdbc.single.SimpleJdbcTemplate">
+    <bean id="jdbcTemplate" class="com.msharp.single.jdbc.jtemplate.single.SimpleJdbcTemplate">
         <property name="dataSource">
             <ref bean="shardingDataSource"/>
         </property>

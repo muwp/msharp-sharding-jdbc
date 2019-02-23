@@ -1,7 +1,7 @@
 package com.msharp.single.jdbc;
 
 
-import com.msharp.single.jdbc.single.jdbc.SingleDataSource;
+import com.msharp.single.jdbc.datasource.jdbc.SingleDataSource;
 
 import java.sql.Connection;
 

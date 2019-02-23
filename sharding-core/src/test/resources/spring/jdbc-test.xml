@@ -9,13 +9,13 @@
     </bean>
 
     <!-- simpleSplitJdbcTemplate -->
-    <bean name="highLevelShardJdbcTemplate" class="com.msharp.sharding.jdbc.core.jdbc.HighLevelShardJdbcTemplate">
+    <bean name="highLevelShardJdbcTemplate" class="com.msharp.sharding.jdbc.jtemplate.jdbc.HighLevelShardJdbcTemplate">
         <property name="readWriteSeparate" value="${sharding-jdbc.readWriteSeparate}"/>
         <property name="shardTablesManager" ref="shardTablesManager"/>
     </bean>
 
     <!-- shardTablesManager -->
-    <bean name="shardTablesManager" class="com.msharp.sharding.jdbc.core.manager.ShardTablesManager" init-method="init">
+    <bean name="shardTablesManager" class="com.msharp.sharding.jdbc.jtemplate.manager.ShardTablesManager" init-method="init">
         <property name="splitTableManagers">
             <list>
                 <ref bean="shardTableManager"/>
@@ -24,7 +24,7 @@
     </bean>
 
     <!-- shardTableManager -->
-    <bean name="shardTableManager" class="com.msharp.sharding.jdbc.core.manager.ShardTableManager" init-method="init">
+    <bean name="shardTableManager" class="com.msharp.sharding.jdbc.jtemplate.manager.ShardTableManager" init-method="init">
         <property name="dbNam" value="sharding_jdbc"/>
         <property name="tableName" value="test"/>
         <property name="dbNum" value="1"/>
@@ -40,11 +40,11 @@
     </bean>
 
     <!-- ShardJdbcTemplateManager -->
-    <bean name="templateManager_0" class="com.msharp.sharding.jdbc.core.manager.ShardJdbcTemplateManager">
+    <bean name="templateManager_0" class="com.msharp.sharding.jdbc.jtemplate.manager.ShardJdbcTemplateManager">
         <property name="master" ref="jdbcTemplate_0"/>
     </bean>
 
-    <bean name="templateManager_1" class="com.msharp.sharding.jdbc.core.manager.ShardJdbcTemplateManager">
+    <bean name="templateManager_1" class="com.msharp.sharding.jdbc.jtemplate.manager.ShardJdbcTemplateManager">
         <property name="master" ref="jdbcTemplate_1"/>
     </bean>
 

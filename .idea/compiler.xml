@@ -13,7 +13,7 @@
     <bytecodeTargetLevel>
       <module name="msharp-sharding-jdbc" target="1.8" />
       <module name="sharding-core" target="1.8" />
-      <module name="single-core" target="7" />
+      <module name="single-core" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

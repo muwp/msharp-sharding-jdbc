@@ -19,7 +19,9 @@
         <lombok.version>1.16.16</lombok.version>
         <env>qa</env>
         <druid.version>1.0.26</druid.version>
-      </properties>
+        <sharding-core>1.0.0-SNAPSHOT</sharding-core>
+        <single-core>1.0.0-SNAPSHOT</single-core>
+    </properties>
 
     <repositories>
         <repository>

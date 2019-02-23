@@ -45,13 +45,13 @@ public class LoggerFactory {
         String logType = System.getProperty(DEFAULT_LOG_TYPE_PROPERTY);
         if (logType != null) {
             if (logType.equalsIgnoreCase("slf4j")) {
-                tryImplementation("org.slf4j.Logger", "com.msharp.single.jdbc.log.Slf4jLogger");
+                tryImplementation("org.slf4j.Logger", "com.msharp.datasource.jdbc.log.Slf4jLogger");
             } else if (logType.equalsIgnoreCase("log4j")) {
-                tryImplementation("org.apache.log4j.Logger", "com.msharp.single.jdbc.log.Log4JLogger");
+                tryImplementation("org.apache.log4j.Logger", "com.msharp.datasource.jdbc.log.Log4JLogger");
             } else if (logType.equalsIgnoreCase("log4j2")) {
-                tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.single.jdbc.log.Log4J2Logger");
+                tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.datasource.jdbc.log.Log4J2Logger");
             } else if (logType.equalsIgnoreCase("simple")) {
-                tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.single.jdbc.log.SimpleLogger");
+                tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.datasource.jdbc.log.SimpleLogger");
             } else if (logType.equalsIgnoreCase("nolog")) {
                 try {
                     logConstructor = EmptyLogger.class.getConstructor(String.class);
@@ -61,9 +61,9 @@ public class LoggerFactory {
             }
         }
 
-        tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.single.jdbc.log.Log4J2Logger");
-        tryImplementation("org.apache.log4j.Logger", "com.msharp.single.jdbc.log.Log4JLogger");
-        tryImplementation("org.slf4j.Logger", "com.msharp.single.jdbc.log.Slf4jLogger");
+        tryImplementation("org.apache.logging.log4j.Logger", "com.msharp.datasource.jdbc.log.Log4J2Logger");
+        tryImplementation("org.apache.log4j.Logger", "com.msharp.datasource.jdbc.log.Log4JLogger");
+        tryImplementation("org.slf4j.Logger", "com.msharp.datasource.jdbc.log.Slf4jLogger");
 
         if (logConstructor == null) {
             try {
