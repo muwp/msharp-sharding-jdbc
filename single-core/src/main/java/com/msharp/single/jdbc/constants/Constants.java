@@ -40,5 +40,4 @@ public final class Constants {
     public static final String CONNECTION_POOL_TYPE_HIKARICP = "hikaricp";
 
     public static final String CONFIG_MANAGER_TYPE_LOCAL = "local";
-
 }

@@ -66,8 +66,7 @@ public class ShardSqlStructure {
         if (sqlType == null || StringUtils.isEmptyOrWhitespaceOnly(dbName) || StringUtils.isEmptyOrWhitespaceOnly(tableName) || StringUtils.isEmptyOrWhitespaceOnly(previousPart)) {
             throw new IllegalStateException("The split SQL should be constructed after the SQL is parsed completely.");
         }
-
-        StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
         sb.append(previousPart).append(" ");
         sb.append(dbName).append("_").append(dbNo);
         sb.append(".");

@@ -17,7 +17,6 @@ com/msharp/single/jdbc/param/CharacterStreamParamContext.class
 com/msharp/single/jdbc/datasource/pool/Dbcp2DataSourcePool.class
 com/msharp/single/jdbc/jtemplate/manager/SqlParserManager.class
 com/msharp/single/jdbc/jtemplate/enums/RouterStrategyType.class
-com/msharp/single/jdbc/jtemplate/SimpleJdbcTemplate.class
 com/msharp/single/jdbc/param/NCharacterStreamParamContext.class
 com/msharp/single/jdbc/enums/DataSourceState.class
 com/msharp/single/jdbc/datasource/pool/C3p0DataSourcePool.class
@@ -32,6 +31,7 @@ com/msharp/single/jdbc/util/JdbcDriverClassHelper.class
 com/msharp/single/jdbc/param/URLParamContext.class
 com/msharp/single/jdbc/datasource/statement/SingleStatement$5.class
 com/msharp/single/jdbc/datasource/jdbc/C3p0DataSourceAdapter.class
+com/msharp/single/jdbc/jtemplate/single/SimpleJdbcTemplate.class
 META-INF/org/apache/logging/log4j/core/config/plugins/Log4j2Plugins.dat
 com/msharp/single/jdbc/param/NStringParamContext.class
 com/msharp/single/jdbc/datasource/jdbc/DataSourceLifeCycle.class
@@ -39,7 +39,6 @@ com/msharp/single/jdbc/json/JsonObject.class
 com/msharp/single/jdbc/datasource/jdbc/SingleResultSet.class
 com/msharp/single/jdbc/util/JDBCUtils.class
 com/msharp/single/jdbc/param/IntParamContext.class
-com/msharp/single/jdbc/jtemplate/SimpleJdbcOperations.class
 com/msharp/single/jdbc/json/JsonArray.class
 com/msharp/single/jdbc/jtemplate/core/impl/BatchUpdateSetter.class
 com/msharp/single/jdbc/datasource/statement/SingleStatement$6.class
@@ -78,6 +77,7 @@ com/msharp/single/jdbc/datasource/manager/SingleDataSourceManagerFactory.class
 com/msharp/single/jdbc/datasource/statement/SinglePreparedStatement$2.class
 com/msharp/single/jdbc/datasource/jdbc/DbcpSingleDataSource.class
 com/msharp/single/jdbc/datasource/manager/DefaultSingleDataSourceManager.class
+com/msharp/single/jdbc/jtemplate/single/SimpleJdbcOperations.class
 com/msharp/single/jdbc/datasource/config/Any.class
 com/msharp/single/jdbc/log/LoggerFactory.class
 com/msharp/single/jdbc/json/JsonTokener.class

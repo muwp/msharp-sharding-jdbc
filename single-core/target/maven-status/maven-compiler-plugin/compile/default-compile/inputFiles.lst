@@ -13,7 +13,6 @@
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/bean/ResultBean.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/rowmapper/DefaultRowMapper.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/jdbc/C3p0DataSourceAdapter.java
-/Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/SimpleJdbcOperations.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/TimeParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/pool/TomcatJdbcDataSourcePool.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/enums/SqlType.java
@@ -21,10 +20,12 @@
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/log/Slf4jLogger.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/log/LoggerFactory.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/manager/SingleDataSourceManager.java
+/Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/single/SimpleJdbcOperations.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/pool/DbcpDataSourcePool.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/util/JdbcDriverClassHelper.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/ByteParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/TimestampParamContext.java
+/Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/single/SimpleJdbcTemplate.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/ParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/core/impl/BatchUpdateSetter.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/BigDecimalParamContext.java
@@ -43,7 +44,6 @@
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/jdbc/CountPunisher.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/jdbc/HiKariCPSingleDataSource.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/enums/SearchOperationType.java
-/Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/SimpleJdbcTemplate.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/LongParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/SQLXMLParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/CharacterStreamParamContext.java
@@ -85,7 +85,6 @@
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/ShortParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/log/Log4jLogger.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/log/Logger.java
-/Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/jtemplate/core/package-info.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/ObjectParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/param/BinaryStreamParamContext.java
 /Users/muweiping/ideaProject/old/msharp-sharding-jdbc/single-core/src/main/java/com/msharp/single/jdbc/datasource/jdbc/AbstractDataSource.java
