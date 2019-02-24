@@ -1,9 +1,3 @@
-/**
- * Project: zebra-client
- *
- * File Created at Feb 25, 2014
- *
- */
 package com.msharp.single.jdbc.param;
 
 import java.io.Serializable;

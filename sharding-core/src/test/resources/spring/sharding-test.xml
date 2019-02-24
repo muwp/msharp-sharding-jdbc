@@ -13,30 +13,80 @@
 
     <import resource="datasource.xml"/>
 
+    <bean id="dataSource_1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/sharding_jdbc_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="122816"/>
+        <property name="initialSize" value="5"/>
+        <!-- 连接池最小空闲值，默认值是0 -->
+        <property name="minIdle" value="5"/>
+        <!-- 连接池最大空闲值，0时无限制  默认值是8 -->
+        <property name="maxIdle" value="10"/>
+        <!-- 连接池的最大值，同一时间可以从池分配的最多连接数量，0时无限制   默认值是8 -->
+        <property name="maxTotal" value="15"/>
+
+        <!-- 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. 如果设置为非正数,则不运行空闲连接回收器线程 -->
+        <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+        <!-- 给出一条简单的sql语句进行验证 -->
+        <property name="validationQuery" value="select 'a'"/>
+        <!-- 指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除. 默认为false -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 默认为true -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  默认false -->
+        <property name="testOnReturn" value="false"/>
+
+        <!-- PScache -->
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxOpenPreparedStatements" value="20"/>
+
+    </bean>
+
+    <!-- 分库策略  精确分片算法 -->
+    <bean id="preciseDatabaseShardingAlgorithm"
+          class="com.msharp.sharding.jdbc.service.algorithm.StringPreciseDatabaseShardingAlgorithm">
+        <property name="databaseNum" value="2"/>
+    </bean>
+
+    <!-- 分库策略  范围分片算法-->
+    <bean id="rangeDatabaseShardingAlgorithm"
+          class="com.msharp.sharding.jdbc.algorithm.range.StringRangeTableShardingAlgorithm">
+        <property name="tableNum" value="2"/>
+    </bean>
+
     <!-- 分表策略  精确分片算法 -->
     <bean id="preciseTableShardingAlgorithm"
-          class="com.msharp.sharding.jdbc.sphere.algorithm.precise.StringPreciseTableShardingAlgorithm">
-        <property name="tableNum" value="4"/>
+          class="com.msharp.sharding.jdbc.algorithm.precise.StringPreciseTableShardingAlgorithm">
+        <property name="tableNum" value="8"/>
     </bean>
 
     <!-- 分表策略  范围分片算法-->
     <bean id="rangeTableShardingAlgorithm"
-          class="com.msharp.sharding.jdbc.sphere.algorithm.range.StringRangeTableShardingAlgorithm">
-        <property name="tableNum" value="4"/>
+          class="com.msharp.sharding.jdbc.algorithm.range.StringRangeTableShardingAlgorithm">
+        <property name="tableNum" value="8"/>
     </bean>
 
-    <!--<sharding:inline-strategy id="inlineStrategy" sharding-column="" algorithm-expression="" />-->
+    <!-- 分库策略 -->
+    <msharp-sharding:standard-strategy id="databaseStrategy" sharding-column="appkey"
+                                       precise-algorithm-ref="preciseDatabaseShardingAlgorithm"
+                                       range-algorithm-ref="rangeTableShardingAlgorithm"/>
+
     <!-- 分表策略 -->
     <msharp-sharding:standard-strategy id="tableStrategy" sharding-column="appkey"
                                        precise-algorithm-ref="preciseTableShardingAlgorithm"
-                                       range-algorithm-ref="rangeTableShardingAlgorithm"/>
+                                       range-algorithm-ref="rangeDatabaseShardingAlgorithm"/>
+
 
     <msharp-sharding:data-source id="shardingDataSource">
-        <msharp-sharding:sharding-rule data-source-names="dataSource" default-data-source-name="dataSource">
+        <msharp-sharding:sharding-rule data-source-names="dataSource_0,dataSource_1">
             <msharp-sharding:table-rules>
-                <msharp-sharding:table-rule logic-table="test" actual-data-nodes="dataSource.test_$->{0..3}" table-strategy-ref="tableStrategy" generate-key-column-name="id"/>
+                <msharp-sharding:table-rule logic-table="test"
+                                            actual-data-nodes="dataSource_0.test_$->{0..3},dataSource_1.test_$->{4..7}"
+                                            database-strategy-ref="databaseStrategy" table-strategy-ref="tableStrategy"
+                                            generate-key-column-name="id"/>
             </msharp-sharding:table-rules>
-
         </msharp-sharding:sharding-rule>
     </msharp-sharding:data-source>
 
@@ -45,7 +95,7 @@
         <property name="dataSource" ref="shardingDataSource"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven/>
 
     <bean id="jdbcTemplate" class="com.msharp.single.jdbc.jtemplate.single.SimpleJdbcTemplate">
         <property name="dataSource">

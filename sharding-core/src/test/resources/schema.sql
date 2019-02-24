@@ -15,6 +15,7 @@ create table product
   DEFAULT CHARSET = utf8
   COMMENT = 'product表';
 
+
 create table test_0
 (
   `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -66,3 +67,56 @@ create table test_3
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COMMENT = 'test表4';
+
+
+create table test_4
+(
+  `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `appkey`      VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'appkey',
+  `name`        VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'name',
+  `age`         INT(11)         NOT NULL DEFAULT 0 COMMENT 'age',
+  `update_time` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY `uk_name` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT = 'test表5';
+
+create table test_5
+(
+  `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `appkey`      VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'appkey',
+  `name`        VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'name',
+  `age`         INT(11)         NOT NULL DEFAULT 0 COMMENT 'age',
+  `update_time` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY `uk_name` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT = 'test表6';
+
+create table test_6
+(
+  `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `appkey`      VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'appkey',
+  `name`        VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'name',
+  `age`         INT(11)         NOT NULL DEFAULT 0 COMMENT 'age',
+  `update_time` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY `uk_name` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT = 'test表7';
+
+create table test_7
+(
+  `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `appkey`      VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'appkey',
+  `name`        VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'name',
+  `age`         INT(11)         NOT NULL DEFAULT 0 COMMENT 'age',
+  `update_time` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY `uk_name` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT = 'test表8';

@@ -4,6 +4,7 @@ package com.msharp.single.jdbc;
 import com.msharp.single.jdbc.datasource.jdbc.SingleDataSource;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 /**
  * Test
@@ -22,6 +23,12 @@ public class Test {
         singleDataSource.setPoolType("druid");
         singleDataSource.init();
         final Connection connection = singleDataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from product");
+        preparedStatement.executeQuery();
+
         System.out.println(connection);
+
+        Thread.sleep(399999);
+
     }
 }

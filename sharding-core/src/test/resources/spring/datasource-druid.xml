@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="dataSource" class="com.msharp.single.jdbc.datasource.jdbc.DruidSingleDataSource" init-method="init"
+          destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!-- 连接池最大使用连接数 -->
+        <property name="maxActive" value="50"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="5"/>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="30000"/>
+        <!-- 连接池最大空闲 -->
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="3"/>
+        <!-- 自动清除无用连接 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 清除无用连接的等待时间 -->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!-- 连接属性 -->
+        <property name="connectionProperties" value="clientEncoding=UTF-8"/>
+        <property name="filters" value="stat"/>
+    </bean>
+
+</beans>

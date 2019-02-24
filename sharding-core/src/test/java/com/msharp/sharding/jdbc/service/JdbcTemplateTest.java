@@ -21,7 +21,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select * from test  ", new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
+        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select * from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
             @Override
             public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -67,7 +67,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("supp");
-        test.setName("supp_1");
+        test.setName("supp");
         test.setUpdateTime(new Date());
         test.setAge(1);
         final int update = jdbcTemplate.insert(test);

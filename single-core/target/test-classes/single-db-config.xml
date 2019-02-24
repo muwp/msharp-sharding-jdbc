@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="dataSource" class="com.msharp.sharding.jdbc.single.jdbc.SingleDataSource" init-method="init"
+    <bean id="dataSource" class="com.msharp.single.jdbc.datasource.jdbc.SingleDataSource" init-method="init"
           destroy-method="close">
         <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/sharding_jdbc_0?characterEncoding=UTF8&amp;socketTimeout=60000&amp;useSSL=false"/>
         <property name="user" value="root"/>
@@ -32,6 +32,5 @@
         <property name="maxAdministrativeTaskTime" value="5"/>
         <property name="preferredTestQuery" value="SELECT 1"/>
     </bean>
-
 </beans>
 	
