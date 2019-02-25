@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 /**
- * MonitorCallableStatement
+ * Monitor CallableStatement
  *
  * @author mwup
  * @version 1.0

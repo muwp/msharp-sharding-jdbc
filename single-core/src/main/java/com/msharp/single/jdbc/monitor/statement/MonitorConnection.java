@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
- * Monitorable Statement
+ * Monitor Statement
  *
  * @author mwup
  * @version 1.0
@@ -296,9 +296,5 @@ public class MonitorConnection implements Connection {
     @Override
     public int getNetworkTimeout() throws SQLException {
         throw new UnsupportedOperationException("getNetworkTimeout");
-    }
-
-    public Connection getInnerConnection() {
-        return this.innerConnection;
     }
 }

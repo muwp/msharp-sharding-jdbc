@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Monitorable PreparedStatement
+ * Monitor PreparedStatement
  *
  * @author mwup
  * @version 1.0

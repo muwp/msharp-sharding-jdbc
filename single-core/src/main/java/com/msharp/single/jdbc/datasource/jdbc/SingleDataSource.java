@@ -210,8 +210,8 @@ public class SingleDataSource extends C3p0DataSourceAdapter implements DataSourc
                 if (conn != null) {
                     conn.close();
                 }
-            } catch (SQLException var10) {
-
+            } catch (SQLException sqlException) {
+                //qutie
             }
         }
     }
@@ -219,7 +219,7 @@ public class SingleDataSource extends C3p0DataSourceAdapter implements DataSourc
     private SingleConnection getConnectionOrigin(String username, String password) throws SQLException {
         checkState();
         checkNull();
-        Connection conn = null;
+        Connection conn;
         try {
             conn = this.dataSourcePool.getInnerDataSourcePool().getConnection();
         } catch (SQLException e) {
