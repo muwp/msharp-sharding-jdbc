@@ -1,1 +1,2 @@
 http\://www.ruijing.com/schema/msharp-sharding/msharp-sharding.xsd=/META-INF/msharp-sharding.xsd
+http\://www.ruijing.com/schema/msharp-sharding/msharp-masterslave.xsd=/META-INF/msharp-master-slave.xsd

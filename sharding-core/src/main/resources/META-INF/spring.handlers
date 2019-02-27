@@ -1,1 +1,3 @@
 http\://www.ruijing.com/schema/msharp-sharding=com.msharp.sharding.jdbc.sphere.namespace.handler.ShardingNamespaceHandler
+http\://www.ruijing.com/schema/msharp-masterslave=com.msharp.sharding.jdbc.sphere.namespace.handler.MasterSlaveNamespaceHandler
+
