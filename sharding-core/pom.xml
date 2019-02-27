@@ -40,10 +40,9 @@
             <version>1.2.46</version>
         </dependency>
 
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/io.shardingsphere/sharding-core &ndash;&gt;-->
         <dependency>
             <groupId>io.shardingsphere</groupId>
-            <artifactId>sharding-core</artifactId>
+            <artifactId>sharding-jdbc-core</artifactId>
             <version>3.1.0</version>
             <exclusions>
                 <exclusion>

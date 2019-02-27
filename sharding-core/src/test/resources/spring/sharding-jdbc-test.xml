@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:msharp-sharding="http://www.ruijing.com/schema/msharp-sharding"
+       xmlns:sharding="http://shardingsphere.io/schema/shardingsphere/sharding"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://shardingsphere.io/schema/shardingsphere/sharding
+                        http://shardingsphere.io/schema/shardingsphere/sharding/sharding.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
                         http://www.springframework.org/schema/tx
-                        http://www.springframework.org/schema/tx/spring-tx.xsd
-                        http://www.ruijing.com/schema/msharp-sharding
-                        http://www.ruijing.com/schema/msharp-sharding/msharp-sharding.xsd">
-
+                        http://www.springframework.org/schema/tx/spring-tx.xsd">
     <import resource="datasource.xml"/>
 
     <bean id="dataSource_1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -101,31 +103,30 @@
     </bean>
 
     <!-- 分库策略 -->
-    <msharp-sharding:standard-strategy id="databaseStrategy" sharding-column="appkey"
+    <sharding:standard-strategy id="databaseStrategy" sharding-column="appkey"
                                        precise-algorithm-ref="preciseDatabaseShardingAlgorithm"
                                        range-algorithm-ref="rangeTableShardingAlgorithm"/>
 
     <!-- 分表策略 -->
-    <msharp-sharding:standard-strategy id="tableStrategy" sharding-column="appkey"
+    <sharding:standard-strategy id="tableStrategy" sharding-column="appkey"
                                        precise-algorithm-ref="preciseTableShardingAlgorithm"
                                        range-algorithm-ref="rangeDatabaseShardingAlgorithm"/>
 
 
-    <msharp-sharding:data-source id="shardingDataSource">
-        <msharp-sharding:sharding-rule data-source-names="dataSource_0,dataSource_1,dataSource_2">
-            <msharp-sharding:table-rules>
-                <msharp-sharding:table-rule logic-table="test"
+    <sharding:data-source id="shardingDataSource">
+        <sharding:sharding-rule data-source-names="dataSource_0,dataSource_1"
+                                       default-data-source-name="dataSource_0">
+            <sharding:table-rules>
+                <sharding:table-rule logic-table="test"
                                             actual-data-nodes="dataSource_0.test_$->{0..3},dataSource_1.test_$->{4..7}"
                                             database-strategy-ref="databaseStrategy" table-strategy-ref="tableStrategy"
                                             generate-key-column-name="id"/>
 
-             </msharp-sharding:table-rules>
-            <msharp-sharding:broadcast-table-rules>
-                <msharp-sharding:broadcast-table-rule table=""/>
-            </msharp-sharding:broadcast-table-rules>
-            
-        </msharp-sharding:sharding-rule>
-    </msharp-sharding:data-source>
+
+            </sharding:table-rules>
+
+        </sharding:sharding-rule>
+    </sharding:data-source>
 
     <!-- 事务处理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

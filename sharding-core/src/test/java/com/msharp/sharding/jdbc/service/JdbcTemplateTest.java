@@ -21,16 +21,16 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select * from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
+        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
             @Override
             public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
                 final com.msharp.sharding.jdbc.model.Test model = new com.msharp.sharding.jdbc.model.Test();
                 model.setId(rs.getLong(1));
-                model.setAppkey(rs.getString(2));
-                model.setName(rs.getString(3));
-                model.setAge(rs.getInt(4));
-                model.setUpdateTime(rs.getTimestamp(5));
+               // model.setAppkey(rs.getString(2));
+//                model.setName(rs.getString(3));
+//                model.setAge(rs.getInt(4));
+//                model.setUpdateTime(rs.getTimestamp(5));
                 return model;
             }
         });
@@ -44,7 +44,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select * from test where appkey in( ? ,?)  ", new Object[]{"appkey", "rpc"},
+        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select id from test where appkey in( ? ,?)  ", new Object[]{"appkey", "rpc"},
                 new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
                     @Override
@@ -62,7 +62,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         System.out.println(update.size());
     }
 
-    //@Test(groups = {"jdbcTemplate"})
+    @Test(groups = {"jdbcTemplate"})
     public void testInsertJdbcTemplate() {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
@@ -70,8 +70,8 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         test.setName("supp");
         test.setUpdateTime(new Date());
         test.setAge(1);
-        final int update = jdbcTemplate.insert(test);
-        System.out.println(update);
+        jdbcTemplate.update("update test set id=3 where id=3");
+        // System.out.println(update);
     }
 
     //@Test(groups = {"dataSource"})

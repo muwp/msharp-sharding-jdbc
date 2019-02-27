@@ -23,7 +23,8 @@ public class StringPreciseDatabaseShardingAlgorithm implements PreciseShardingAl
                 return each;
             }
         }
-        throw new IllegalArgumentException();
+        return null;
+        //throw new IllegalArgumentException();
     }
 
     public void setDatabaseNum(int databaseNum) {
