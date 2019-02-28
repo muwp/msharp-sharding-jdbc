@@ -27,8 +27,7 @@ public class SpringMasterSlaveDataSource extends MasterSlaveDataSource {
     }
 
     public SpringMasterSlaveDataSource(final Map<String, DataSource> dataSourceMap, final String name, final String masterDataSourceName, final Collection<String> slaveDataSourceNames, final MasterSlaveLoadBalanceAlgorithmType strategyType, final Map<String, Object> configMap, final Properties props) throws SQLException {
-        super(dataSourceMap, getMasterSlaveRuleConfiguration(name, masterDataSourceName, slaveDataSourceNames, null == strategyType ? null : strategyType.getAlgorithm()),
-                null == configMap ? new LinkedHashMap<String, Object>() : configMap, null == props ? new Properties() : props);
+        super(dataSourceMap, getMasterSlaveRuleConfiguration(name, masterDataSourceName, slaveDataSourceNames, null == strategyType ? null : strategyType.getAlgorithm()), null == configMap ? new LinkedHashMap<String, Object>() : configMap, null == props ? new Properties() : props);
     }
 
     private static MasterSlaveRuleConfiguration getMasterSlaveRuleConfiguration(final String name, final String masterDataSourceName, final Collection<String> slaveDataSourceNames, final MasterSlaveLoadBalanceAlgorithm loadBalanceAlgorithm) {
