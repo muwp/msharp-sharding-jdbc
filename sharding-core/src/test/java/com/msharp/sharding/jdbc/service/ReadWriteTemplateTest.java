@@ -21,7 +21,7 @@ public class ReadWriteTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select id from test where appkey in( ? ,?)  ", new Object[]{"appkey", "rpc"},
+        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select id from test where appkey in( ? ,?) ", new Object[]{"appkey", "rpc"},
                 new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
                     @Override

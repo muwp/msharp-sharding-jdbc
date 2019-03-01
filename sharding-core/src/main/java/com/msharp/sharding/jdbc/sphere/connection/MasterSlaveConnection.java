@@ -13,6 +13,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
+
+/**
+ * MasterSlaveConnection
+ *
+ * @author mwup
+ * @version 1.0
+ * @created 2019/03/01 13:51
+ **/
 public class MasterSlaveConnection extends AbstractConnectionAdapter {
 
     private final MasterSlaveDataSource masterSlaveDataSource;
