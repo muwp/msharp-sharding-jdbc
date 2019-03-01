@@ -21,7 +21,7 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
         com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
-        final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
+          List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
             @Override
             public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -34,6 +34,17 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
                 return model;
             }
         });
+
+        update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
+
+            @Override
+            public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
+                final com.msharp.sharding.jdbc.model.Test model = new com.msharp.sharding.jdbc.model.Test();
+                model.setId(rs.getLong(1));
+                return model;
+            }
+        });
+
         System.out.println(update);
         System.out.println(update.size());
     }

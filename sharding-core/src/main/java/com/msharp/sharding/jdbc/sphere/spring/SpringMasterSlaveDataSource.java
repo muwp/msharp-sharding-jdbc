@@ -1,9 +1,9 @@
 package com.msharp.sharding.jdbc.sphere.spring;
 
+import com.msharp.sharding.jdbc.sphere.datasource.MasterSlaveDataSource;
 import io.shardingsphere.api.algorithm.masterslave.MasterSlaveLoadBalanceAlgorithm;
 import io.shardingsphere.api.algorithm.masterslave.MasterSlaveLoadBalanceAlgorithmType;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
-import io.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

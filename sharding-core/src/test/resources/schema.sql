@@ -28,7 +28,7 @@ create table product_1
   DEFAULT CHARSET = utf8
   COMMENT = 'product_1表';
 
-create table test_0
+create table test
 (
   `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
   `appkey`      VARCHAR(25)     NOT NULL DEFAULT '' COMMENT 'appkey',
@@ -39,7 +39,7 @@ create table test_0
   UNIQUE KEY `uk_name` (`name`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
-  COMMENT = 'test表1';
+  COMMENT = 'test表';
 
 create table test_1
 (
