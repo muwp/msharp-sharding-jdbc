@@ -6,11 +6,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 @ContextConfiguration(locations = "/spring/sharding-readwrite-test.xml")
@@ -18,9 +15,14 @@ public class ReadWriteTemplateTest extends AbstractTestNGSpringContextTests {
 
     @Test(groups = {"jdbcTemplate"})
     public void tesJdbcTemplate() {
+        //
         final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
-        com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
+
+        //
+        final com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
         test.setAppkey("appkey");
+
+
         final List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select id from test where appkey in( ? ,?) ", new Object[]{"appkey", "rpc"},
                 new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 

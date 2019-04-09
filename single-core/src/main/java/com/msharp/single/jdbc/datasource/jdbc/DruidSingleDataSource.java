@@ -43,6 +43,11 @@ public class DruidSingleDataSource extends SingleDataSource {
 	}
 
 	@Override
+	public void setDriverClass(String driverClass) {
+		this.setProperty("driverClassName", driverClass);
+	}
+
+	@Override
 	public void setPoolType(String poolType) {
 		throw new UnsupportedOperationException("DruidSingleDataSource does not need to set up pool type !");
 	}

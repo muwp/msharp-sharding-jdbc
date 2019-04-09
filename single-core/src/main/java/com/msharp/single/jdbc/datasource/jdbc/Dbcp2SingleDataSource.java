@@ -41,6 +41,11 @@ public class Dbcp2SingleDataSource extends SingleDataSource {
     }
 
     @Override
+    public void setDriverClass(String driverClass) {
+        this.setProperty("driverClassName", driverClass);
+    }
+
+    @Override
     public void setPoolType(String poolType) {
         throw new UnsupportedOperationException("DBCP2SingleDataSource does not need to set up pool type !");
     }

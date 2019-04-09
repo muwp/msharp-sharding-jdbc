@@ -15,8 +15,7 @@
 
     <bean id="masterSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/sharding_jdbc_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/sharding_jdbc_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
         <property name="username" value="root"/>
         <property name="password" value="122816"/>
         <property name="initialSize" value="5"/>
@@ -37,11 +36,9 @@
         <property name="testOnBorrow" value="false"/>
         <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  默认false -->
         <property name="testOnReturn" value="false"/>
-
         <!-- PScache -->
         <property name="poolPreparedStatements" value="true"/>
         <property name="maxOpenPreparedStatements" value="20"/>
-
     </bean>
 
 
@@ -73,11 +70,10 @@
         <!-- PScache -->
         <property name="poolPreparedStatements" value="true"/>
         <property name="maxOpenPreparedStatements" value="20"/>
-
     </bean>
 
-    <bean id="loadBalanceAlgorithm" class="com.msharp.sharding.jdbc.service.algorithm.StringMasterSlaveLoadBalanceAlgorithm"/>
-
+    <bean id="loadBalanceAlgorithm"
+          class="com.msharp.sharding.jdbc.service.algorithm.StringMasterSlaveLoadBalanceAlgorithm"/>
 
     <msharp-mastersalve:data-source id="shardingDataSource" master-data-source-name="masterSource"
                                     slave-data-source-names="salveSource" strategy-ref="loadBalanceAlgorithm"/>

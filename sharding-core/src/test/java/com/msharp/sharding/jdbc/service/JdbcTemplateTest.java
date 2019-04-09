@@ -18,22 +18,29 @@ public class JdbcTemplateTest extends AbstractTestNGSpringContextTests {
 
     @Test(groups = {"jdbcTemplate"})
     public void testJdbcTemplate() {
-        final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
-        com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
-        test.setAppkey("appkey");
-          List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
-            @Override
-            public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
-                final com.msharp.sharding.jdbc.model.Test model = new com.msharp.sharding.jdbc.model.Test();
-                model.setId(rs.getLong(1));
-               // model.setAppkey(rs.getString(2));
-//                model.setName(rs.getString(3));
-//                model.setAge(rs.getInt(4));
-//                model.setUpdateTime(rs.getTimestamp(5));
-                return model;
-            }
-        });
+        //quite
+        final SimpleJdbcTemplate jdbcTemplate = (SimpleJdbcTemplate) applicationContext.getBean("jdbcTemplate");
+        final com.msharp.sharding.jdbc.model.Test test = new com.msharp.sharding.jdbc.model.Test();
+
+        //
+        test.setAppkey("appkey");
+
+        //
+        List<com.msharp.sharding.jdbc.model.Test> update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
+
+                    @Override
+                    public com.msharp.sharding.jdbc.model.Test mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        final com.msharp.sharding.jdbc.model.Test model = new com.msharp.sharding.jdbc.model.Test();
+                        //model.setId(rs.getLong(1));
+                        //model.setAppkey(rs.getString(2));
+                        //model.setName(rs.getString(3));
+                        //model.setAge(rs.getInt(4));
+                        //model.setUpdateTime(rs.getTimestamp(5));
+                        return model;
+                    }
+                }
+        );
 
         update = jdbcTemplate.query("select count(*) from product where appkey=?", new Object[]{"supp"}, new RowMapper<com.msharp.sharding.jdbc.model.Test>() {
 
