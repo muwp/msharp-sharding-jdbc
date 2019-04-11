@@ -17,8 +17,7 @@
 
     <bean id="dataSource_1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/sharding_jdbc_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/sharding_jdbc_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true"/>
         <property name="username" value="root"/>
         <property name="password" value="122816"/>
         <property name="initialSize" value="5"/>
@@ -75,7 +74,6 @@
         <!-- PScache -->
         <property name="poolPreparedStatements" value="true"/>
         <property name="maxOpenPreparedStatements" value="20"/>
-
     </bean>
 
     <!-- 分库策略  精确分片算法 -->

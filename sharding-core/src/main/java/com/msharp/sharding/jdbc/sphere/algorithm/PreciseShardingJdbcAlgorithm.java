@@ -1,7 +1,6 @@
 package com.msharp.sharding.jdbc.sphere.algorithm;
 
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
-import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 
 import java.util.Collection;
 
