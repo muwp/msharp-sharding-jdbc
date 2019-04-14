@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ruijing.msharp</groupId>
-    <artifactId>sharding-jdbc</artifactId>
+    <groupId>com.ruijing.fundamental</groupId>
+    <artifactId>sharding-all</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <modules>
         <module>sharding-core</module>
         <module>single-core</module>
@@ -19,9 +19,9 @@
         <lombok.version>1.16.16</lombok.version>
         <env>qa</env>
         <druid.version>1.0.26</druid.version>
-        <sharding-core-version>1.0.0-SNAPSHOT</sharding-core-version>
-        <single-core-version>1.0.0-SNAPSHOT</single-core-version>
-        <cat-client-version>1.1.0-SNAPSHOT</cat-client-version>
+        <sharding-core-version>1.2.0-SNAPSHOT</sharding-core-version>
+        <single-core-version>1.2.0-SNAPSHOT</single-core-version>
+        <cat-client-version>1.2.0-SNAPSHOT</cat-client-version>
         <druid-version>1.1.12</druid-version>
     </properties>
 
